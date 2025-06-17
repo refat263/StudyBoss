@@ -4,30 +4,61 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Cairo', sans-serif;
-      background: #0a1128;
-      color: gold;
+      background-color: #0a1128;
+      color: #FFD700;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       text-align: center;
-      padding: 50px;
     }
-    h1 {
-      font-size: 3em;
+
+    .logo {
+      font-size: 4rem;
       margin-bottom: 20px;
     }
-    p {
-      font-size: 1.3em;
+
+    h1 {
+      font-size: 3rem;
+      margin: 10px 0;
     }
-    .logo {
-      font-size: 4em;
-      margin-bottom: 30px;
+
+    p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+
+    .btn {
+      background-color: #FFD700;
+      color: #0a1128;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #fff;
+      color: #0a1128;
     }
   </style>
 </head>
 <body>
+
   <div class="logo">🎓👑</div>
   <h1>Study Boss</h1>
-  <p>أهلاً بيك في النسخة الأولى من موقعك، هنبدأ نطوره واحدة واحدة 💪</p>
+  <p>منصتك الجامدة لتنظيم مذاكرتك، متابعة محاضراتك، وتحقيق حلمك خطوة بخطوة 💪</p>
+  <button class="btn" onclick="alert('الخاصية لسه جاية!')">ابدأ دلوقتي</button>
+
 </body>
 </html>
