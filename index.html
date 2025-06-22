@@ -8,7 +8,7 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
+      padding: 40px 20px;
       font-family: 'Cairo', sans-serif;
       background-color: #0a1128;
       color: #FFD700;
@@ -16,15 +16,15 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
       background-image: radial-gradient(circle at top, #0a1128, #000d1a);
-      overflow: hidden;
+      overflow-x: hidden;
     }
 
     .logo {
       font-size: 4rem;
-      margin-bottom: 10px;
+      margin-bottom: 15px;
       animation: bounce 1.5s infinite;
     }
 
@@ -35,14 +35,14 @@
 
     h1 {
       font-size: 3rem;
-      margin: 5px 0 10px;
+      margin-bottom: 25px;
     }
 
     p {
-      font-size: 1.2rem;
-      max-width: 600px;
-      margin: 0 auto 15px;
-      line-height: 1.7;
+      font-size: 1.3rem;
+      max-width: 700px;
+      margin: 0 auto 30px;
+      line-height: 2;
       color: #FFD700;
     }
 
@@ -51,6 +51,10 @@
       transform: translateY(30px);
       animation: fadeUp 1s ease forwards;
       animation-delay: 1.5s;
+      font-size: 1.3rem;
+      line-height: 2;
+      margin-bottom: 30px;
+      max-width: 700px;
     }
 
     .fade-btn {
@@ -59,41 +63,55 @@
       transform: translateY(30px);
       animation: fadeUp 1s ease forwards;
       animation-delay: 2.5s;
+      margin-top: 30px;
     }
 
     @keyframes fadeUp {
       to {
         opacity: 1;
-        transform: translate(0);
+        transform: translateY(0);
       }
     }
 
     .btn {
       background-color: #FFD700;
       color: #0a1128;
-      padding: 15px 30px;
-      font-size: 1.1rem;
+      padding: 18px 40px;
+      font-size: 1.3rem;
       border: none;
-      border-radius: 12px;
+      border-radius: 20px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
       font-weight: bold;
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
     }
 
     .btn:hover {
       background-color: #fff;
       color: #0a1128;
+      transform: translateY(-3px);
+      box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5);
     }
 
     .sub-text {
-      margin-top: 15px;
-      font-size: 1rem;
+      margin-top: 25px;
+      font-size: 1.1rem;
       color: #eee;
     }
 
     @media (max-width: 768px) {
       h1 {
         font-size: 2.2rem;
+      }
+
+      p, .fade-text-up {
+        font-size: 1.1rem;
+        line-height: 1.8;
+      }
+
+      .btn {
+        font-size: 1rem;
+        padding: 14px 28px;
       }
     }
   </style>
@@ -112,7 +130,7 @@
   </div>
 
   <a href="plans.html" class="fade-btn">
-    <button class="btn">ابدأ الآن</button>
+    <button class="btn">🚀 ابدأ الآن</button>
   </a>
 
   <div class="sub-text">اختر خطتك وابدأ رحلة التفوق 🧠✨</div>
