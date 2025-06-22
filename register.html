@@ -132,9 +132,7 @@
 
       let maxYears = 4;
       if (college === "طب") maxYears = 6;
-      else if (college === "صيدلة") maxYears = 5;
-      else if (college === "أسنان") maxYears = 5;
-      else if (college === "علاج طبيعي") maxYears = 5;
+      else if (college === "صيدلة" || college === "أسنان" || college === "علاج طبيعي") maxYears = 5;
 
       for (let i = 1; i <= maxYears; i++) {
         const opt = document.createElement("option");
