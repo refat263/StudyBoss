@@ -57,6 +57,10 @@
       color: #0a1128;
     }
 
+    .hidden {
+      display: none;
+    }
+
     @media (max-width: 600px) {
       form {
         padding: 20px;
@@ -68,7 +72,7 @@
 
   <h1>إنشاء حساب جديد</h1>
 
-  <form action="success.html" method="POST">
+  <form id="registerForm">
     <label for="name">الاسم بالكامل</label>
     <input type="text" id="name" name="name" required />
 
@@ -86,7 +90,26 @@
       <option value="صيدلة">صيدلة</option>
       <option value="أسنان">أسنان</option>
       <option value="علاج طبيعي">علاج طبيعي</option>
+      <option value="هندسة">هندسة</option>
+      <option value="علوم تطبيقية">علوم تطبيقية</option>
+      <option value="بيزنس">بيزنس</option>
     </select>
+
+    <!-- أقسام هندسة -->
+    <div id="engineering-section" class="hidden">
+      <label for="engineeringDepartment">قسم الهندسة</label>
+      <select id="engineeringDepartment" name="engineeringDepartment">
+        <option value="">اختر القسم</option>
+        <option value="هندسة كهرباء">هندسة كهرباء</option>
+        <option value="هندسة ميكانيكا">هندسة ميكانيكا</option>
+        <option value="هندسة مدني">هندسة مدني</option>
+        <option value="هندسة عمارة">هندسة عمارة</option>
+        <option value="هندسة حاسبات">هندسة حاسبات</option>
+        <option value="هندسة اتصالات">هندسة اتصالات</option>
+        <option value="هندسة صناعية">هندسة صناعية</option>
+        <option value="هندسة ميكاترونكس">هندسة ميكاترونكس</option>
+      </select>
+    </div>
 
     <label for="year">السنة الدراسية</label>
     <select id="year" name="year" required>
@@ -128,19 +151,45 @@
     function updateYears() {
       const college = document.getElementById("college").value;
       const year = document.getElementById("year");
-      year.innerHTML = '<option value="">اختر السنة</option>';
+      const engineeringSection = document.getElementById("engineering-section");
 
+      // Reset
+      year.innerHTML = '<option value="">اختر السنة</option>';
+      engineeringSection.classList.add("hidden");
+
+      // أقسام هندسة تظهر
+      if (college === "هندسة") {
+        engineeringSection.classList.remove("hidden");
+      }
+
+      // عدد السنوات حسب الكلية
       let maxYears = 4;
       if (college === "طب") maxYears = 6;
-      else if (college === "صيدلة" || college === "أسنان" || college === "علاج طبيعي") maxYears = 5;
+      else if (["صيدلة", "أسنان", "علاج طبيعي", "هندسة"].includes(college)) maxYears = 5;
 
       for (let i = 1; i <= maxYears; i++) {
         const opt = document.createElement("option");
-        opt.value = i;
+        opt.value = `السنة ${i}`;
         opt.text = `السنة ${i}`;
         year.appendChild(opt);
       }
     }
+
+    // منع الإرسال لو البيانات ناقصة + التحويل لـ success.html
+    document.getElementById("registerForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const pass = form['password'].value;
+      const confirmPass = form['confirm-password'].value;
+
+      if (pass !== confirmPass) {
+        alert("كلمة المرور غير متطابقة.");
+        return;
+      }
+
+      // كل البيانات تمام؟ نروح لـ success.html
+      window.location.href = "success.html";
+    });
   </script>
 
 </body>
