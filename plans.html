@@ -3,9 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>خطط Study Boss</title>
+  <title>خطط الاشتراك | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       padding: 40px 20px;
@@ -23,26 +27,46 @@
 
     .plans-container {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 30px;
       max-width: 1200px;
       margin: auto;
     }
 
     .plan {
+      position: relative;
       background-color: #1c2541;
       border: 2px solid #FFD700;
       border-radius: 25px;
       padding: 30px 25px;
       width: 320px;
       box-shadow: 0 8px 25px rgba(255, 215, 0, 0.15);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      animation: fadeIn 1s ease;
     }
 
     .plan:hover {
       transform: translateY(-10px);
       box-shadow: 0 12px 35px rgba(255, 215, 0, 0.3);
+    }
+
+    .plan.popular {
+      border: 3px solid #FFD700;
+      background-color: #263159;
+    }
+
+    .badge {
+      position: absolute;
+      top: -15px;
+      right: -15px;
+      background-color: #FFD700;
+      color: #0a1128;
+      padding: 5px 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.2);
     }
 
     .plan h2 {
@@ -52,9 +76,9 @@
     }
 
     .price {
-      font-size: 1.5rem;
-      margin: 15px 0 20px;
+      font-size: 1.6rem;
       color: #FFD700;
+      margin-bottom: 20px;
     }
 
     .features {
@@ -65,23 +89,32 @@
       margin-bottom: 25px;
     }
 
+    .features span {
+      display: inline-block;
+      margin-left: 6px;
+    }
+
     .btn {
       background-color: #FFD700;
       color: #0a1128;
-      padding: 12px 28px;
-      font-size: 1.1rem;
+      padding: 12px 25px;
+      font-size: 1rem;
       border: none;
-      border-radius: 14px;
+      border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
-      transition: all 0.3s ease;
       text-decoration: none;
-      display: inline-block;
+      transition: 0.3s;
     }
 
     .btn:hover {
       background-color: #fff;
       color: #0a1128;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
@@ -111,12 +144,12 @@
       <h2>⭐ الخطة الأساسية</h2>
       <div class="price">119 جنيه / شهريًا</div>
       <div class="features">
-        ✅ ملخصات المحاضرات أول بأول<br>
-        ✅ وضع ليلي ونهاري<br>
-        ✅ متابعة شهرية من فريق الدعم<br>
-        ❌ لا يوجد تواصل مباشر<br>
-        ❌ لا توجد مراجعة نهائية<br>
-        ❌ يجب حل Quiz لفتح الأسابيع
+        ✅ <span>ملخصات المحاضرات أول بأول</span><br>
+        ✅ <span>وضع ليلي ونهاري</span><br>
+        ✅ <span>متابعة شهرية من فريق الدعم</span><br>
+        ❌ <span>لا يوجد تواصل مباشر</span><br>
+        ❌ <span>لا توجد مراجعة نهائية</span><br>
+        ❌ <span>يجب حل Quiz لفتح الأسابيع</span>
       </div>
       <a href="login.html" class="btn">اشترك الآن</a>
     </div>
@@ -126,26 +159,27 @@
       <h2>🔥 خطة المتابعة</h2>
       <div class="price">179 جنيه / شهريًا</div>
       <div class="features">
-        ✅ كل مميزات الخطة الأساسية<br>
-        ✅ تواصل واتساب/مكالمات<br>
-        ✅ جدول مذاكرة وتنبيهات<br>
-        ✅ متابعة كل أسبوعين<br>
-        ❌ يجب حل Quiz لفتح الأسابيع
+        ✅ <span>كل مميزات الخطة الأساسية</span><br>
+        ✅ <span>تواصل واتساب/مكالمات</span><br>
+        ✅ <span>جدول مذاكرة وتنبيهات</span><br>
+        ✅ <span>متابعة كل أسبوعين</span><br>
+        ❌ <span>يجب حل Quiz لفتح الأسابيع</span>
       </div>
       <a href="login.html" class="btn">اشترك الآن</a>
     </div>
 
     <!-- خطة المحترف -->
-    <div class="plan">
+    <div class="plan popular">
+      <div class="badge">الأكثر اختيارًا</div>
       <h2>👑 خطة المحترف</h2>
       <div class="price">249 جنيه / شهريًا</div>
       <div class="features">
-        ✅ كل مميزات خطة المتابعة<br>
-        ✅ كل الأسابيع مفتوحة بدون Quiz<br>
-        ✅ مراجعة نهائية مجانية<br>
-        ✅ متابعة أسبوعية شخصية<br>
-        ✅ تقارير أداء شهرية<br>
-        ✅ نقاط وشهادات تحفيزية
+        ✅ <span>كل مميزات خطة المتابعة</span><br>
+        ✅ <span>كل الأسابيع مفتوحة بدون Quiz</span><br>
+        ✅ <span>مراجعة نهائية مجانية</span><br>
+        ✅ <span>متابعة أسبوعية شخصية</span><br>
+        ✅ <span>تقارير أداء شهرية</span><br>
+        ✅ <span>نقاط وشهادات تحفيزية</span>
       </div>
       <a href="login.html" class="btn">اشترك الآن</a>
     </div>
