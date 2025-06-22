@@ -38,26 +38,19 @@
       margin: 5px 0 10px;
     }
 
-    .fade-text {
-      opacity: 0;
-      animation: fadeIn 1s ease forwards;
-      margin-bottom: 15px;
+    p {
       font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 15px;
+      line-height: 1.7;
       color: #FFD700;
     }
 
-    .fade-text:nth-of-type(1) {
-      animation-delay: 0.5s;
-    }
-
-    .fade-text:nth-of-type(2) {
+    .fade-text-up {
+      opacity: 0;
+      transform: translateY(30px);
+      animation: fadeUp 1s ease forwards;
       animation-delay: 1.5s;
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
     }
 
     .fade-btn {
@@ -110,8 +103,13 @@
   <div class="logo">🎓👑</div>
   <h1>Study Boss</h1>
 
-  <div class="fade-text">😌 من غير توتر، من غير لخبطة... Study Boss هتنظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال. 🎯📆</div>
-  <div class="fade-text">💡 مشكلتك مش في المذاكرة... مشكلتك إنك تبدأ صح. وده دورنا إحنا 💪</div>
+  <p>
+    😌 من غير توتر، من غير لخبطة... Study Boss هتنظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال. 🎯📆
+  </p>
+
+  <div class="fade-text-up">
+    💡 مشكلتك مش في المذاكرة... مشكلتك إنك تبدأ صح. وده دورنا إحنا 💪
+  </div>
 
   <a href="plans.html" class="fade-btn">
     <button class="btn">ابدأ الآن</button>
