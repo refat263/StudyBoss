@@ -18,22 +18,30 @@
       align-items: center;
       height: 100vh;
       text-align: center;
+      background-image: radial-gradient(circle at top, #0a1128, #000d1a);
     }
 
     .logo {
       font-size: 4rem;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
+      animation: bounce 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
     }
 
     h1 {
       font-size: 3rem;
-      margin: 10px 0;
+      margin: 5px 0 10px;
     }
 
     p {
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       max-width: 600px;
-      margin: 0 auto 30px;
+      margin: 0 auto 25px;
+      line-height: 1.7;
     }
 
     .btn {
@@ -42,14 +50,21 @@
       padding: 15px 30px;
       font-size: 1.1rem;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transition: 0.3s;
+      font-weight: bold;
     }
 
     .btn:hover {
       background-color: #fff;
       color: #0a1128;
+    }
+
+    .sub-text {
+      margin-top: 15px;
+      font-size: 1rem;
+      color: #eee;
     }
   </style>
 </head>
@@ -58,7 +73,8 @@
   <div class="logo">🎓👑</div>
   <h1>Study Boss</h1>
   <p>منصتك الجامدة لتنظيم مذاكرتك، متابعة محاضراتك، وتحقيق حلمك خطوة بخطوة 💪</p>
-  <button class="btn" onclick="alert('الخاصية لسه جاية!')">ابدأ دلوقتي</button>
+  <a href="plans.html"><button class="btn">ابدأ الآن</button></a>
+  <div class="sub-text">اختر خطتك وابدأ رحلة التفوق 🧠✨</div>
 
 </body>
 </html>
