@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>إنشاء حساب | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      padding: 30px 20px;
+      font-family: 'Cairo', sans-serif;
+      background-color: #0a1128;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      color: #FFD700;
+      margin-bottom: 30px;
+    }
+
+    form {
+      background-color: #1c2541;
+      max-width: 600px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      text-align: right;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      border: none;
+      font-family: 'Cairo', sans-serif;
+    }
+
+    input[type="submit"] {
+      background-color: #FFD700;
+      color: #0a1128;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #fff;
+      color: #0a1128;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>إنشاء حساب جديد</h1>
+
+  <form action="success.html" method="POST">
+    <label for="name">الاسم بالكامل</label>
+    <input type="text" id="name" name="name" required />
+
+    <label for="email">البريد الإلكتروني</label>
+    <input type="email" id="email" name="email" required />
+
+    <label for="phone">رقم التليفون</label>
+    <input type="tel" id="phone" name="phone" required />
+
+    <label for="college">الكلية</label>
+    <select id="college" name="college" required onchange="updateYears()">
+      <option value="">اختر الكلية</option>
+      <option value="تمريض">تمريض</option>
+      <option value="طب">طب</option>
+      <option value="صيدلة">صيدلة</option>
+      <option value="أسنان">أسنان</option>
+      <option value="علاج طبيعي">علاج طبيعي</option>
+    </select>
+
+    <label for="year">السنة الدراسية</label>
+    <select id="year" name="year" required>
+      <option value="">اختر السنة</option>
+    </select>
+
+    <label for="governorate">المحافظة</label>
+    <select id="governorate" name="governorate" required>
+      <option value="">اختر المحافظة</option>
+      <option>القاهرة</option>
+      <option>الجيزة</option>
+      <option>الاسكندرية</option>
+      <option>الدقهلية</option>
+      <option>الشرقية</option>
+      <option>الغربية</option>
+      <option>المنوفية</option>
+      <option>المنيا</option>
+      <option>أسيوط</option>
+      <option>سوهاج</option>
+      <option>قنا</option>
+      <option>أسوان</option>
+      <option>البحر الأحمر</option>
+      <option>جنوب سيناء</option>
+      <option>شمال سيناء</option>
+      <option>مطروح</option>
+      <option>دمياط</option>
+    </select>
+
+    <label for="password">كلمة المرور</label>
+    <input type="password" id="password" name="password" required />
+
+    <label for="confirm-password">تأكيد كلمة المرور</label>
+    <input type="password" id="confirm-password" name="confirm-password" required />
+
+    <input type="submit" value="إنشاء الحساب" />
+  </form>
+
+  <script>
+    function updateYears() {
+      const college = document.getElementById("college").value;
+      const year = document.getElementById("year");
+      year.innerHTML = '<option value="">اختر السنة</option>';
+
+      let maxYears = 4;
+      if (college === "طب") maxYears = 6;
+      else if (college === "صيدلة") maxYears = 5;
+      else if (college === "أسنان") maxYears = 5;
+      else if (college === "علاج طبيعي") maxYears = 5;
+
+      for (let i = 1; i <= maxYears; i++) {
+        const opt = document.createElement("option");
+        opt.value = i;
+        opt.text = `السنة ${i}`;
+        year.appendChild(opt);
+      }
+    }
+  </script>
+
+</body>
+</html>
