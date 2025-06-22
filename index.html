@@ -1,120 +1,115 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Study Boss | نظم ترمك من أول يوم</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
     body {
-      margin: 0;
-      padding: 40px 20px;
       font-family: 'Cairo', sans-serif;
       background-color: #0a1128;
-      color: #FFD700;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      color: #fff;
+      margin: 0;
+      padding: 0;
       text-align: center;
-      background-image: radial-gradient(circle at top, #0a1128, #000d1a);
-      overflow-x: hidden;
     }
 
-    .logo {
-      font-size: 4rem;
-      margin-bottom: 15px;
-      animation: bounce 1.5s infinite;
+    header {
+      padding: 20px;
+      background-color: #1c2541;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
     }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    header h1 {
+      margin: 0;
+      color: #FFD700;
+      font-size: 1.8rem;
     }
 
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 25px;
+    .login-link {
+      color: #FFD700;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
     }
 
-    p {
-      font-size: 1.3rem;
-      max-width: 700px;
-      margin: 0 auto 30px;
-      line-height: 2;
+    .hero {
+      padding: 100px 20px 60px;
     }
 
-    .fade-text-up {
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 1s ease forwards;
-      animation-delay: 1.5s;
-      font-size: 1.3rem;
-      line-height: 2;
+    .hero h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #FFD700;
+      animation: fadeIn 1.5s ease;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
       margin-bottom: 30px;
-      max-width: 700px;
-    }
-
-    .fade-btn {
-      display: inline-block;
-      opacity: 0;
-      transform: translateY(30px);
-      animation: fadeUp 1s ease forwards;
-      animation-delay: 2.5s;
-      margin-top: 30px;
-    }
-
-    @keyframes fadeUp {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      color: #eee;
     }
 
     .btn {
       background-color: #FFD700;
       color: #0a1128;
-      padding: 18px 40px;
-      font-size: 1.3rem;
+      padding: 14px 30px;
       border: none;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      border-radius: 12px;
+      font-size: 1.1rem;
       font-weight: bold;
-      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.3);
+      cursor: pointer;
+      transition: 0.3s;
+      text-decoration: none;
     }
 
     .btn:hover {
       background-color: #fff;
-      transform: translateY(-3px);
-      box-shadow: 0 15px 35px rgba(255, 215, 0, 0.5);
+      color: #0a1128;
     }
 
-    .sub-text {
-      margin-top: 25px;
-      font-size: 1.1rem;
-      color: #eee;
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .hero h2 {
+        font-size: 1.6rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .btn {
+        font-size: 1rem;
+        padding: 12px 25px;
+      }
     }
   </style>
 </head>
 <body>
 
-  <div class="logo">🎓👑</div>
-  <h1>Study Boss</h1>
+  <header>
+    <h1>Study Boss 🎓</h1>
+    <a href="login.html" class="login-link">تسجيل الدخول</a>
+  </header>
 
-  <p>😌 من غير توتر، من غير لخبطة... Study Boss هتنظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال. 🎯📆</p>
-
-  <div class="fade-text-up">
-    💡 مشكلتك مش في المذاكرة... مشكلتك إنك تبدأ صح. وده دورنا إحنا 💪
-  </div>
-
-  <a href="plans.html" class="fade-btn">
-    <button class="btn">🚀 ابدأ الآن</button>
-  </a>
-
-  <div class="sub-text">اختر خطتك وابدأ رحلة التفوق 🧠✨</div>
+  <section class="hero">
+    <h2>مشكلتك مش في المذاكرة... مشكلتك في إنك تبدأ صح. وده دورنا إحنا 💪</h2>
+    <p>من غير توتر، من غير لخبطة... Study Boss هينظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال.</p>
+    <a href="plans.html" class="btn">ابدأ الآن</a>
+  </section>
 
 </body>
 </html>
