@@ -5,16 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>إنشاء حساب | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {
-      margin: 0;
       font-family: 'Cairo', sans-serif;
       background: linear-gradient(135deg, #0a1128, #1c2541);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
     .register-card {
@@ -26,31 +25,34 @@
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
       width: 100%;
       max-width: 500px;
-      text-align: center;
       color: #fff;
     }
 
     .register-card h2 {
-      margin-bottom: 30px;
       color: #FFD700;
-      font-size: 2rem;
+      margin-bottom: 25px;
+      text-align: center;
     }
 
     .input-group {
-      position: relative;
-      margin-bottom: 20px;
-      text-align: right;
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
     }
 
     .input-group input,
     .input-group select {
       width: 100%;
-      padding: 12px 15px;
+      padding: 12px;
       border: none;
-      border-radius: 12px;
+      border-radius: 10px;
       background: #f2f2f2;
+      color: #000;
       font-size: 1rem;
-      color: #0a1128;
       box-sizing: border-box;
     }
 
@@ -64,23 +66,10 @@
       font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     .register-card button:hover {
       background: linear-gradient(90deg, #fff, #FFD700);
-    }
-
-    .login-link {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-
-    .login-link a {
-      color: #FFD700;
-      text-decoration: none;
-      font-weight: bold;
     }
 
     .message {
@@ -89,8 +78,13 @@
       font-size: 1rem;
     }
 
-    .success { color: #00ff88; }
-    .error { color: #ff4d4d; }
+    .success {
+      color: #00ff88;
+    }
+
+    .error {
+      color: #ff4d4d;
+    }
   </style>
 </head>
 <body>
@@ -99,57 +93,76 @@
     <h2>إنشاء حساب جديد</h2>
     <form id="registerForm">
       <div class="input-group">
-        <input type="text" id="name" placeholder="الاسم بالكامل" required>
+        <label for="name">الاسم</label>
+        <input type="text" id="name" required>
       </div>
+
       <div class="input-group">
-        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+        <label for="email">البريد الإلكتروني</label>
+        <input type="email" id="email" required>
       </div>
+
       <div class="input-group">
-        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <label for="password">كلمة المرور</label>
+        <input type="password" id="password" required>
       </div>
+
       <div class="input-group">
+        <label for="college">الكلية</label>
         <select id="college" required>
-          <option disabled selected>اختر الكلية</option>
-          <option>التمريض</option>
-          <option>الطب</option>
-          <option>الهندسة</option>
-          <option>العلوم التطبيقية</option>
-          <option>بيزنس</option>
+          <option value="">اختر الكلية</option>
+          <option value="تمريض">تمريض</option>
+          <option value="علوم طبية تطبيقية">علوم طبية تطبيقية</option>
+          <option value="هندسة">هندسة</option>
+          <option value="بيزنس">بيزنس</option>
         </select>
       </div>
+
+      <div class="input-group" id="engineering-department" style="display:none;">
+        <label for="department">قسم هندسة</label>
+        <select id="department">
+          <option value="">اختر القسم</option>
+          <option value="مدني">مدني</option>
+          <option value="كهرباء">كهرباء</option>
+          <option value="اتصالات">اتصالات</option>
+          <option value="ميكانيكا">ميكانيكا</option>
+          <option value="معماري">معماري</option>
+        </select>
+      </div>
+
       <div class="input-group">
+        <label for="year">السنة الدراسية</label>
         <select id="year" required>
-          <option disabled selected>اختر السنة الدراسية</option>
-          <option>الأولى</option>
-          <option>الثانية</option>
-          <option>الثالثة</option>
-          <option>الرابعة</option>
+          <option value="">اختر السنة</option>
+          <option value="الأولى">الأولى</option>
+          <option value="الثانية">الثانية</option>
+          <option value="الثالثة">الثالثة</option>
+          <option value="الرابعة">الرابعة</option>
         </select>
       </div>
+
       <div class="input-group">
+        <label for="governorate">المحافظة</label>
         <select id="governorate" required>
-          <option disabled selected>اختر المحافظة</option>
-          <option>القاهرة</option>
-          <option>الجيزة</option>
-          <option>الإسكندرية</option>
-          <option>الدقهلية</option>
-          <option>الشرقية</option>
-          <!-- زوّد الباقي لو حبيت -->
+          <option value="">اختر المحافظة</option>
+          <option value="الدقهلية">الدقهلية</option>
+          <option value="القاهرة">القاهرة</option>
+          <option value="الإسكندرية">الإسكندرية</option>
+          <option value="الجيزة">الجيزة</option>
+          <option value="الشرقية">الشرقية</option>
+          <!-- ضيف اللي تحبه هنا -->
         </select>
       </div>
 
       <button type="submit">تسجيل</button>
       <div id="message" class="message"></div>
     </form>
-
-    <div class="login-link">
-      عندك حساب بالفعل؟ <a href="login.html">سجّل الدخول</a>
-    </div>
   </div>
 
-  <!-- Firebase + Registration Script -->
+  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
@@ -164,11 +177,17 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     const form = document.getElementById("registerForm");
     const message = document.getElementById("message");
+
+    document.getElementById("college").addEventListener("change", () => {
+      const college = document.getElementById("college").value;
+      document.getElementById("engineering-department").style.display = college === "هندسة" ? "block" : "none";
+    });
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -177,6 +196,7 @@
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
       const college = document.getElementById("college").value;
+      const department = document.getElementById("department").value;
       const year = document.getElementById("year").value;
       const governorate = document.getElementById("governorate").value;
 
@@ -188,20 +208,22 @@
           name,
           email,
           college,
+          department: college === "هندسة" ? department : "",
           year,
           governorate
         });
 
-        message.textContent = "تم إنشاء الحساب بنجاح ✅";
+        message.textContent = "✅ تم إنشاء الحساب بنجاح!";
         message.className = "message success";
-
-        // بعد النجاح: ممكن توجّهه للصفحة الرئيسية أو الخطط
-        // window.location.href = "plans.html";
+        setTimeout(() => {
+          window.location.href = "login.html";
+        }, 1000);
       } catch (error) {
-        message.textContent = "❌ حصلت مشكلة أثناء التسجيل: " + error.message;
+        message.textContent = "❌ حصلت مشكلة: " + error.message;
         message.className = "message error";
       }
     });
   </script>
+
 </body>
 </html>
