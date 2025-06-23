@@ -1,43 +1,49 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تسجيل الدخول | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #0a1128 40%, #1c2541);
       font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      color: #fff;
+      height: 100vh;
     }
 
-    .login-container {
-      background-color: rgba(28, 37, 65, 0.95);
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       padding: 40px 30px;
       border-radius: 20px;
-      box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
       width: 100%;
-      max-width: 420px;
-      animation: slideIn 1s ease;
+      max-width: 400px;
+      text-align: center;
+      color: #fff;
+      animation: slideFade 1s ease forwards;
     }
 
-    .login-container h2 {
-      margin-bottom: 25px;
+    .login-card h2 {
+      margin-bottom: 30px;
       color: #FFD700;
       font-size: 2rem;
     }
 
     .input-group {
       position: relative;
-      margin: 15px 0;
+      margin-bottom: 20px;
     }
 
     .input-group i {
@@ -45,43 +51,40 @@
       top: 50%;
       left: 15px;
       transform: translateY(-50%);
-      color: #666;
+      color: #888;
     }
 
     .input-group input {
       width: 100%;
       padding: 12px 45px 12px 15px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
+      background: #f2f2f2;
       font-size: 1rem;
-      background-color: #f2f2f2;
       color: #0a1128;
-      outline: none;
     }
 
-    .login-container button {
+    .login-card button {
       width: 100%;
-      background-color: #FFD700;
-      color: #0a1128;
       padding: 12px;
+      background: linear-gradient(90deg, #FFD700, #ffa600);
+      color: #0a1128;
       border: none;
-      border-radius: 10px;
-      font-weight: bold;
+      border-radius: 12px;
       font-size: 1.1rem;
-      margin-top: 20px;
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: background 0.3s ease;
     }
 
-    .login-container button:hover {
-      background-color: #fff;
+    .login-card button:hover {
+      background: linear-gradient(90deg, #fff, #FFD700);
     }
 
     .signup-link {
       margin-top: 20px;
       font-size: 0.9rem;
       color: #ccc;
-      text-align: center;
     }
 
     .signup-link a {
@@ -90,13 +93,19 @@
       font-weight: bold;
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(40px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes slideFade {
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @media (max-width: 480px) {
-      .login-container {
+      .login-card {
         padding: 30px 20px;
       }
     }
@@ -104,7 +113,7 @@
 </head>
 <body>
 
-  <div class="login-container">
+  <div class="login-card">
     <h2>تسجيل الدخول إلى Study Boss</h2>
     <form>
       <div class="input-group">
