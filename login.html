@@ -7,70 +7,104 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
+      margin: 0;
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(to right, #0a1128, #1c2541);
-      color: #fff;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
 
-    .form-container {
-      background-color: rgba(255,255,255,0.05);
-      padding: 30px;
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
       border-radius: 20px;
-      width: 90%;
-      max-width: 450px;
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
-    }
-
-    h2 {
-      text-align: center;
-      color: #FFD700;
-    }
-
-    .input-wrapper {
-      position: relative;
-    }
-
-    input {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
+      max-width: 400px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .login-card h2 {
+      margin-bottom: 30px;
+      color: #FFD700;
+      font-size: 2rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 45px;
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
+      background: #f2f2f2;
+      font-size: 1rem;
+      color: #0a1128;
+    }
+
+    .input-group i.icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      color: #888;
       font-size: 1rem;
     }
 
     .toggle-password {
       position: absolute;
       top: 50%;
-      left: 10px;
+      right: 15px;
       transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 1rem;
       background: none;
       border: none;
-      cursor: pointer;
-      font-size: 1.1rem;
-      color: #FFD700;
     }
 
-    button {
+    .login-card button {
       width: 100%;
-      background-color: #FFD700;
-      color: #0a1128;
       padding: 12px;
-      font-weight: bold;
+      background: linear-gradient(90deg, #FFD700, #ffa600);
+      color: #0a1128;
       border: none;
-      border-radius: 10px;
-      font-size: 1rem;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
 
-    .msg {
-      margin-top: 10px;
+    .login-card button:hover {
+      background: linear-gradient(90deg, #fff, #FFD700);
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .signup-link a {
+      color: #FFD700;
+      text-decoration: none;
       font-weight: bold;
-      text-align: center;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.3s;
     }
 
     .success {
@@ -84,66 +118,441 @@
 </head>
 <body>
 
-<div class="form-container">
-  <h2>تسجيل الدخول</h2>
-  <form id="loginForm">
-    <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-
-    <div class="input-wrapper">
-      <input type="password" id="password" placeholder="كلمة المرور" required>
-      <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+  <div class="login-card">
+    <h2>تسجيل الدخول إلى Study Boss</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو الاسم" required>
+        <i class="fas fa-user icon"></i>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <i class="fas fa-lock icon"></i>
+        <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+      </div>
+      <button type="submit">دخول</button>
+      <div id="message" class="message"></div>
+    </form>
+    <div class="signup-link">
+      لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
     </div>
+  </div>
 
-    <button type="submit">دخول</button>
-    <div id="message" class="msg"></div>
-  </form>
-</div>
+  <!-- Firebase plus auth logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.firebasestorage.app",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.firebasestorage.app",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-    measurementId: "G-BSM3P8C40G"
-  };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const analytics = getAnalytics(app);
+    const form = document.getElementById("loginForm");
+    const msg = document.getElementById("message");
 
-  const form = document.getElementById("loginForm");
-  const msg = document.getElementById("message");
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const pwd = document.getElementById("password").value;
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
+      try {
+        await signInWithEmailAndPassword(auth, email, pwd);
+        msg.textContent = "تم تسجيل الدخول بنجاح ✅";
+        msg.className = "message success";
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
+      } catch {
+        msg.textContent = "البريد أو كلمة المرور غير صحيحة ❌";
+        msg.className = "message error";
+      }
+    });
 
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      msg.textContent = "تم تسجيل الدخول بنجاح ✅";
-      msg.className = "msg success";
-      setTimeout(() => {
-        window.location.href = "dashboard.html";
-      }, 1500);
-    } catch (error) {
-      msg.textContent = "❌ البريد أو كلمة المرور غير صحيحة";
-      msg.className = "msg error";
+    window.togglePassword = () => {
+      const p = document.getElementById("password");
+      p.type = p.type === "password" ? "text" : "password";
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-  });
 
-  window.togglePassword = function () {
-    const passField = document.getElementById("password");
-    passField.type = passField.type === "password" ? "text" : "password";
-  };
-</script>
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      color: #fff;
+    }
 
+    .login-card h2 {
+      margin-bottom: 30px;
+      color: #FFD700;
+      font-size: 2rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 45px;
+      border: none;
+      border-radius: 12px;
+      background: #f2f2f2;
+      font-size: 1rem;
+      color: #0a1128;
+    }
+
+    .input-group i.icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 1rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 1rem;
+      background: none;
+      border: none;
+    }
+
+    .login-card button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #FFD700, #ffa600);
+      color: #0a1128;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-card button:hover {
+      background: linear-gradient(90deg, #fff, #FFD700);
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .signup-link a {
+      color: #FFD700;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .success {
+      color: #00ff88;
+    }
+
+    .error {
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>تسجيل الدخول إلى Study Boss</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو الاسم" required>
+        <i class="fas fa-user icon"></i>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <i class="fas fa-lock icon"></i>
+        <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+      </div>
+      <button type="submit">دخول</button>
+      <div id="message" class="message"></div>
+    </form>
+    <div class="signup-link">
+      لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
+    </div>
+  </div>
+
+  <!-- Firebase plus auth logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.firebasestorage.app",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById("loginForm");
+    const msg = document.getElementById("message");
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const pwd = document.getElementById("password").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pwd);
+        msg.textContent = "تم تسجيل الدخول بنجاح ✅";
+        msg.className = "message success";
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
+      } catch {
+        msg.textContent = "البريد أو كلمة المرور غير صحيحة ❌";
+        msg.className = "message error";
+      }
+    });
+
+    window.togglePassword = () => {
+      const p = document.getElementById("password");
+      p.type = p.type === "password" ? "text" : "password";
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .login-card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+      color: #fff;
+    }
+
+    .login-card h2 {
+      margin-bottom: 30px;
+      color: #FFD700;
+      font-size: 2rem;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 45px;
+      border: none;
+      border-radius: 12px;
+      background: #f2f2f2;
+      font-size: 1rem;
+      color: #0a1128;
+    }
+
+    .input-group i.icon {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 1rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #888;
+      font-size: 1rem;
+      background: none;
+      border: none;
+    }
+
+    .login-card button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #FFD700, #ffa600);
+      color: #0a1128;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .login-card button:hover {
+      background: linear-gradient(90deg, #fff, #FFD700);
+    }
+
+    .signup-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .signup-link a {
+      color: #FFD700;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1rem;
+      transition: 0.3s;
+    }
+
+    .success {
+      color: #00ff88;
+    }
+
+    .error {
+      color: #ff4d4d;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>تسجيل الدخول إلى Study Boss</h2>
+    <form id="loginForm">
+      <div class="input-group">
+        <input type="text" id="email" placeholder="البريد الإلكتروني أو الاسم" required>
+        <i class="fas fa-user icon"></i>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+        <i class="fas fa-lock icon"></i>
+        <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
+      </div>
+      <button type="submit">دخول</button>
+      <div id="message" class="message"></div>
+    </form>
+    <div class="signup-link">
+      لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
+    </div>
+  </div>
+
+  <!-- Firebase plus auth logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.firebasestorage.app",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const form = document.getElementById("loginForm");
+    const msg = document.getElementById("message");
+
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const email = document.getElementById("email").value.trim();
+      const pwd = document.getElementById("password").value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pwd);
+        msg.textContent = "تم تسجيل الدخول بنجاح ✅";
+        msg.className = "message success";
+        setTimeout(() => window.location.href = "dashboard.html", 1000);
+      } catch {
+        msg.textContent = "البريد أو كلمة المرور غير صحيحة ❌";
+        msg.className = "message error";
+      }
+    });
+
+    window.togglePassword = () => {
+      const p = document.getElementById("password");
+      p.type = p.type === "password" ? "text" : "password";
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"></script>
 </body>
 </html>
