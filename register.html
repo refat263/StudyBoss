@@ -1,196 +1,179 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>إنشاء حساب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل حساب | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
-      padding: 30px 20px;
       font-family: 'Cairo', sans-serif;
-      background-color: #0a1128;
+      background: linear-gradient(to right, #0a1128, #1c2541);
       color: #fff;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    h1 {
-      color: #FFD700;
-      margin-bottom: 30px;
-    }
-
-    form {
-      background-color: #1c2541;
-      max-width: 600px;
-      margin: auto;
+    .form-container {
+      background-color: rgba(255,255,255,0.05);
       padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+      width: 90%;
+      max-width: 450px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
     }
 
-    label {
-      display: block;
-      margin-bottom: 8px;
-      text-align: right;
+    h2 {
+      text-align: center;
+      color: #FFD700;
     }
 
     input, select {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 10px;
+      padding: 12px;
+      margin: 10px 0;
       border: none;
-      font-family: 'Cairo', sans-serif;
+      border-radius: 10px;
+      font-size: 1rem;
     }
 
-    input[type="submit"] {
+    button {
+      width: 100%;
       background-color: #FFD700;
       color: #0a1128;
+      padding: 12px;
       font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    input[type="submit"]:hover {
-      background-color: #fff;
-      color: #0a1128;
+    .msg {
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: center;
     }
 
-    .hidden {
-      display: none;
+    .success {
+      color: #00ff88;
     }
 
-    @media (max-width: 600px) {
-      form {
-        padding: 20px;
-      }
+    .error {
+      color: #ff4d4d;
     }
   </style>
 </head>
 <body>
 
-  <h1>إنشاء حساب جديد</h1>
-
+<div class="form-container">
+  <h2>تسجيل حساب جديد</h2>
   <form id="registerForm">
-    <label for="name">الاسم بالكامل</label>
-    <input type="text" id="name" name="name" required />
+    <input type="text" id="name" placeholder="الاسم بالكامل" required>
+    <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+    <input type="password" id="password" placeholder="كلمة المرور" required>
 
-    <label for="email">البريد الإلكتروني</label>
-    <input type="email" id="email" name="email" required />
-
-    <label for="phone">رقم التليفون</label>
-    <input type="tel" id="phone" name="phone" required />
-
-    <label for="college">الكلية</label>
-    <select id="college" name="college" required onchange="updateYears()">
-      <option value="">اختر الكلية</option>
-      <option value="تمريض">تمريض</option>
-      <option value="طب">طب</option>
-      <option value="صيدلة">صيدلة</option>
-      <option value="أسنان">أسنان</option>
-      <option value="علاج طبيعي">علاج طبيعي</option>
-      <option value="هندسة">هندسة</option>
-      <option value="علوم تطبيقية">علوم تطبيقية</option>
-      <option value="بيزنس">بيزنس</option>
+    <select id="college" required>
+      <option disabled selected>اختر الكلية</option>
+      <option>تمريض</option>
+      <option>طب</option>
+      <option>هندسة</option>
+      <option>علوم تطبيقية</option>
+      <option>بيزنس</option>
     </select>
 
-    <!-- أقسام هندسة -->
-    <div id="engineering-section" class="hidden">
-      <label for="engineeringDepartment">قسم الهندسة</label>
-      <select id="engineeringDepartment" name="engineeringDepartment">
-        <option value="">اختر القسم</option>
-        <option value="هندسة كهرباء">هندسة كهرباء</option>
-        <option value="هندسة ميكانيكا">هندسة ميكانيكا</option>
-        <option value="هندسة مدني">هندسة مدني</option>
-        <option value="هندسة عمارة">هندسة عمارة</option>
-        <option value="هندسة حاسبات">هندسة حاسبات</option>
-        <option value="هندسة اتصالات">هندسة اتصالات</option>
-        <option value="هندسة صناعية">هندسة صناعية</option>
-        <option value="هندسة ميكاترونكس">هندسة ميكاترونكس</option>
+    <div id="engineering-department" style="display:none;">
+      <select id="department">
+        <option disabled selected>اختر قسم الهندسة</option>
+        <option>هندسة كهرباء</option>
+        <option>هندسة ميكانيكا</option>
+        <option>هندسة مدني</option>
+        <option>هندسة اتصالات</option>
+        <option>هندسة حاسبات</option>
       </select>
     </div>
 
-    <label for="year">السنة الدراسية</label>
-    <select id="year" name="year" required>
-      <option value="">اختر السنة</option>
+    <select id="year" required>
+      <option disabled selected>اختر السنة الدراسية</option>
+      <option>الأولى</option>
+      <option>الثانية</option>
+      <option>الثالثة</option>
+      <option>الرابعة</option>
     </select>
 
-    <label for="governorate">المحافظة</label>
-    <select id="governorate" name="governorate" required>
-      <option value="">اختر المحافظة</option>
+    <select id="governorate" required>
+      <option disabled selected>اختر المحافظة</option>
       <option>القاهرة</option>
-      <option>الجيزة</option>
-      <option>الاسكندرية</option>
+      <option>الإسكندرية</option>
       <option>الدقهلية</option>
       <option>الشرقية</option>
       <option>الغربية</option>
       <option>المنوفية</option>
-      <option>المنيا</option>
-      <option>أسيوط</option>
-      <option>سوهاج</option>
-      <option>قنا</option>
-      <option>أسوان</option>
-      <option>البحر الأحمر</option>
-      <option>جنوب سيناء</option>
-      <option>شمال سيناء</option>
-      <option>مطروح</option>
-      <option>دمياط</option>
+      <!-- أضف باقي المحافظات -->
     </select>
 
-    <label for="password">كلمة المرور</label>
-    <input type="password" id="password" name="password" required />
-
-    <label for="confirm-password">تأكيد كلمة المرور</label>
-    <input type="password" id="confirm-password" name="confirm-password" required />
-
-    <input type="submit" value="إنشاء الحساب" />
+    <button type="submit">سجل الآن</button>
+    <div id="message" class="msg"></div>
   </form>
+</div>
 
-  <script>
-    function updateYears() {
-      const college = document.getElementById("college").value;
-      const year = document.getElementById("year");
-      const engineeringSection = document.getElementById("engineering-section");
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-      // Reset
-      year.innerHTML = '<option value="">اختر السنة</option>';
-      engineeringSection.classList.add("hidden");
+  const firebaseConfig = {
+    apiKey: "AIzaSyCDP-joF__rfWpSKskPrxBiUgxrJYAky5k",
+    authDomain: "studyboss-820fb.firebaseapp.com",
+    projectId: "studyboss-820fb",
+    storageBucket: "studyboss-820fb.firebasestorage.app",
+    messagingSenderId: "229979415926",
+    appId: "1:229979415926:web:ef954173bbd467de730657",
+    measurementId: "G-9514LXL0DF"
+  };
 
-      // أقسام هندسة تظهر
-      if (college === "هندسة") {
-        engineeringSection.classList.remove("hidden");
-      }
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-      // عدد السنوات حسب الكلية
-      let maxYears = 4;
-      if (college === "طب") maxYears = 6;
-      else if (["صيدلة", "أسنان", "علاج طبيعي", "هندسة"].includes(college)) maxYears = 5;
+  const form = document.getElementById('registerForm');
+  const msg = document.getElementById('message');
 
-      for (let i = 1; i <= maxYears; i++) {
-        const opt = document.createElement("option");
-        opt.value = `السنة ${i}`;
-        opt.text = `السنة ${i}`;
-        year.appendChild(opt);
-      }
+  document.getElementById('college').addEventListener('change', function () {
+    const selected = this.value;
+    document.getElementById('engineering-department').style.display = selected === "هندسة" ? 'block' : 'none';
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const password = form.password.value.trim();
+    const college = form.college.value;
+    const year = form.year.value;
+    const governorate = form.governorate.value;
+    const department = document.getElementById('department')?.value || "";
+
+    try {
+      const userCred = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCred.user.uid;
+
+      await setDoc(doc(db, "users", uid), {
+        name, email, college, year, governorate, department
+      });
+
+      msg.textContent = "تم التسجيل بنجاح ✅";
+      msg.className = "msg success";
+      form.reset();
+    } catch (error) {
+      msg.textContent = "خطأ: " + error.message;
+      msg.className = "msg error";
     }
-
-    // منع الإرسال لو البيانات ناقصة + التحويل لـ success.html
-    document.getElementById("registerForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
-      const pass = form['password'].value;
-      const confirmPass = form['confirm-password'].value;
-
-      if (pass !== confirmPass) {
-        alert("كلمة المرور غير متطابقة.");
-        return;
-      }
-
-      // كل البيانات تمام؟ نروح لـ success.html
-      window.location.href = "success.html";
-    });
-  </script>
+  });
+</script>
 
 </body>
 </html>
