@@ -7,10 +7,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
       font-family: 'Cairo', sans-serif;
@@ -93,6 +89,20 @@
       font-weight: bold;
     }
 
+    .message {
+      margin-top: 15px;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .success {
+      color: #00ff88;
+    }
+
+    .error {
+      color: #ff4d4d;
+    }
+
     @keyframes slideFade {
       from {
         opacity: 0;
@@ -103,33 +113,57 @@
         transform: translateY(0);
       }
     }
-
-    @media (max-width: 480px) {
-      .login-card {
-        padding: 30px 20px;
-      }
-    }
   </style>
 </head>
 <body>
 
   <div class="login-card">
     <h2>تسجيل الدخول إلى Study Boss</h2>
-    <form>
+    <form id="loginForm">
       <div class="input-group">
         <i class="fas fa-user"></i>
-        <input type="text" placeholder="البريد الإلكتروني أو الاسم" required>
+        <input type="text" id="username" placeholder="البريد الإلكتروني أو الاسم" required>
       </div>
       <div class="input-group">
         <i class="fas fa-lock"></i>
-        <input type="password" placeholder="كلمة المرور" required>
+        <input type="password" id="password" placeholder="كلمة المرور" required>
       </div>
       <button type="submit">دخول</button>
+      <div id="message" class="message"></div>
     </form>
     <div class="signup-link">
       لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
     </div>
   </div>
+
+  <script>
+    // قاعدة بيانات وهمية
+    const users = [
+      { username: "refaat", password: "123456" },
+      { username: "admin", password: "admin123" }
+    ];
+
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const enteredUser = document.getElementById("username").value.trim();
+      const enteredPass = document.getElementById("password").value;
+
+      const found = users.find(u => u.username === enteredUser && u.password === enteredPass);
+
+      if (found) {
+        message.textContent = "تم تسجيل الدخول بنجاح ✅";
+        message.className = "message success";
+        // ممكن توديه على صفحة تانية:
+        // setTimeout(() => window.location.href = 'dashboard.html', 1000);
+      } else {
+        message.textContent = "البيانات غير صحيحة ❌";
+        message.className = "message error";
+      }
+    });
+  </script>
 
 </body>
 </html>
