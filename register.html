@@ -9,162 +9,107 @@
     body {
       font-family: 'Cairo', sans-serif;
       background: linear-gradient(135deg, #0a1128, #1c2541);
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
     .register-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 40px 30px;
+      padding: 30px;
       border-radius: 20px;
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
-      width: 100%;
       max-width: 500px;
-      color: #fff;
-    }
-
-    .register-card h2 {
-      color: #FFD700;
-      margin-bottom: 25px;
+      width: 100%;
       text-align: center;
     }
 
-    .input-group {
-      margin-bottom: 15px;
+    h2 {
+      color: #FFD700;
+      margin-bottom: 20px;
     }
 
-    .input-group label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-
-    .input-group input,
-    .input-group select {
+    input, select {
       width: 100%;
       padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
       border: none;
-      border-radius: 10px;
-      background: #f2f2f2;
-      color: #000;
       font-size: 1rem;
-      box-sizing: border-box;
     }
 
-    .register-card button {
-      width: 100%;
-      padding: 12px;
+    button {
       background: linear-gradient(90deg, #FFD700, #ffa600);
       color: #0a1128;
       border: none;
-      border-radius: 12px;
+      padding: 12px;
+      width: 100%;
+      border-radius: 10px;
       font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
     }
 
-    .register-card button:hover {
-      background: linear-gradient(90deg, #fff, #FFD700);
-    }
-
     .message {
       margin-top: 15px;
       font-weight: bold;
-      font-size: 1rem;
     }
 
-    .success {
-      color: #00ff88;
-    }
-
-    .error {
-      color: #ff4d4d;
-    }
+    .success { color: #00ff88; }
+    .error { color: #ff4d4d; }
   </style>
 </head>
 <body>
 
   <div class="register-card">
-    <h2>إنشاء حساب جديد</h2>
+    <h2>سجل حسابك على Study Boss</h2>
     <form id="registerForm">
-      <div class="input-group">
-        <label for="name">الاسم</label>
-        <input type="text" id="name" required>
-      </div>
-
-      <div class="input-group">
-        <label for="email">البريد الإلكتروني</label>
-        <input type="email" id="email" required>
-      </div>
-
-      <div class="input-group">
-        <label for="password">كلمة المرور</label>
-        <input type="password" id="password" required>
-      </div>
-
-      <div class="input-group">
-        <label for="college">الكلية</label>
-        <select id="college" required>
-          <option value="">اختر الكلية</option>
-          <option value="تمريض">تمريض</option>
-          <option value="علوم طبية تطبيقية">علوم طبية تطبيقية</option>
-          <option value="هندسة">هندسة</option>
-          <option value="بيزنس">بيزنس</option>
-        </select>
-      </div>
-
-      <div class="input-group" id="engineering-department" style="display:none;">
-        <label for="department">قسم هندسة</label>
-        <select id="department">
-          <option value="">اختر القسم</option>
-          <option value="مدني">مدني</option>
-          <option value="كهرباء">كهرباء</option>
-          <option value="اتصالات">اتصالات</option>
-          <option value="ميكانيكا">ميكانيكا</option>
-          <option value="معماري">معماري</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label for="year">السنة الدراسية</label>
-        <select id="year" required>
-          <option value="">اختر السنة</option>
-          <option value="الأولى">الأولى</option>
-          <option value="الثانية">الثانية</option>
-          <option value="الثالثة">الثالثة</option>
-          <option value="الرابعة">الرابعة</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <label for="governorate">المحافظة</label>
-        <select id="governorate" required>
-          <option value="">اختر المحافظة</option>
-          <option value="الدقهلية">الدقهلية</option>
-          <option value="القاهرة">القاهرة</option>
-          <option value="الإسكندرية">الإسكندرية</option>
-          <option value="الجيزة">الجيزة</option>
-          <option value="الشرقية">الشرقية</option>
-          <!-- ضيف اللي تحبه هنا -->
-        </select>
-      </div>
-
+      <input type="text" id="name" placeholder="الاسم" required>
+      <select id="college" required>
+        <option value="">اختار الكلية</option>
+        <option>تمريض</option>
+        <option>طب</option>
+        <option>صيدلة</option>
+        <option>هندسة</option>
+        <option>علوم تطبيقية</option>
+        <option>بيزنس</option>
+      </select>
+      <select id="year" required>
+        <option value="">السنة الدراسية</option>
+        <option>الأولى</option>
+        <option>الثانية</option>
+        <option>الثالثة</option>
+        <option>الرابعة</option>
+        <option>الخامسة</option>
+      </select>
+      <select id="governorate" required>
+        <option value="">المحافظة</option>
+        <option>القاهرة</option>
+        <option>الجيزة</option>
+        <option>الدقهلية</option>
+        <option>الإسكندرية</option>
+        <option>الشرقية</option>
+        <option>الغربية</option>
+        <option>أسيوط</option>
+        <option>سوهاج</option>
+        <option>المنوفية</option>
+        <!-- زوّد باقي المحافظات لو حبيت -->
+      </select>
+      <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      <input type="password" id="password" placeholder="كلمة المرور" required>
       <button type="submit">تسجيل</button>
-      <div id="message" class="message"></div>
+      <div class="message" id="message"></div>
     </form>
   </div>
 
-  <!-- Firebase Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getFirestore, setDoc, doc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
@@ -177,49 +122,42 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(app);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
     const form = document.getElementById("registerForm");
     const message = document.getElementById("message");
 
-    document.getElementById("college").addEventListener("change", () => {
-      const college = document.getElementById("college").value;
-      document.getElementById("engineering-department").style.display = college === "هندسة" ? "block" : "none";
-    });
-
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value;
       const college = document.getElementById("college").value;
-      const department = document.getElementById("department").value;
       const year = document.getElementById("year").value;
       const governorate = document.getElementById("governorate").value;
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
 
       try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
+        const uid = userCredential.user.uid;
 
-        await setDoc(doc(db, "users", user.uid), {
+        await setDoc(doc(db, "users", uid), {
           name,
-          email,
           college,
-          department: college === "هندسة" ? department : "",
           year,
           governorate
         });
 
         message.textContent = "✅ تم إنشاء الحساب بنجاح!";
         message.className = "message success";
+
         setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1000);
+          window.location.href = "dashboard.html";
+        }, 1500);
+
       } catch (error) {
-        message.textContent = "❌ حصلت مشكلة: " + error.message;
+        message.textContent = "❌ حصلت مشكلة أثناء التسجيل: " + error.message;
         message.className = "message error";
       }
     });
