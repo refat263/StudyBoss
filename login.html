@@ -41,7 +41,18 @@
       margin-bottom: 20px;
     }
 
-    .input-group i {
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 45px;
+      border: none;
+      border-radius: 12px;
+      background: #f2f2f2;
+      font-size: 1rem;
+      color: #0a1128;
+      box-sizing: border-box;
+    }
+
+    .input-group i.icon {
       position: absolute;
       top: 50%;
       left: 15px;
@@ -50,23 +61,14 @@
       font-size: 1rem;
     }
 
-    .input-group input {
-      width: 100%;
-      padding: 12px 45px 12px 40px;
-      border: none;
-      border-radius: 12px;
-      background: #f2f2f2;
-      font-size: 1rem;
-      color: #0a1128;
-    }
-
-    .input-group .toggle-password {
+    .toggle-password {
       position: absolute;
-      right: 15px;
       top: 50%;
+      right: 15px;
       transform: translateY(-50%);
       cursor: pointer;
       color: #888;
+      font-size: 1rem;
     }
 
     .login-card button {
@@ -120,24 +122,26 @@
     <h2>تسجيل الدخول إلى Study Boss</h2>
     <form id="loginForm">
       <div class="input-group">
-        <i class="fas fa-envelope"></i>
         <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+        <i class="fas fa-envelope icon"></i>
       </div>
+
       <div class="input-group">
-        <i class="fas fa-lock"></i>
         <input type="password" id="password" placeholder="كلمة المرور" required>
+        <i class="fas fa-lock icon"></i>
         <i class="fas fa-eye toggle-password" id="togglePassword"></i>
       </div>
+
       <button type="submit">دخول</button>
       <div id="message" class="message"></div>
     </form>
+
     <div class="signup-link">
       لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
     </div>
   </div>
 
   <script>
-    // اظهار / إخفاء كلمة المرور
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
 
@@ -147,7 +151,6 @@
       togglePassword.classList.toggle("fa-eye-slash");
     });
 
-    // التحقق من البيانات
     const form = document.getElementById("loginForm");
     const message = document.getElementById("message");
 
@@ -163,7 +166,6 @@
       if (found) {
         message.textContent = "تم تسجيل الدخول بنجاح ✅";
         message.className = "message success";
-        // هنا ممكن تحول المستخدم للـ dashboard
         // setTimeout(() => window.location.href = "dashboard.html", 1000);
       } else {
         message.textContent = "البريد الإلكتروني أو كلمة المرور غير صحيحة ❌";
