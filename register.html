@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تسجيل حساب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <title>إنشاء حساب | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {
       margin: 0;
@@ -14,10 +15,9 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      color: #fff;
     }
 
-    .login-card, .form-container {
+    .register-card {
       background: rgba(255, 255, 255, 0.05);
       backdrop-filter: blur(15px);
       border: 1px solid rgba(255, 255, 255, 0.1);
@@ -25,23 +25,27 @@
       border-radius: 20px;
       box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
       text-align: center;
+      color: #fff;
     }
 
-    h2 {
+    .register-card h2 {
       margin-bottom: 30px;
       color: #FFD700;
+      font-size: 2rem;
     }
 
     .input-group {
       position: relative;
       margin-bottom: 20px;
+      text-align: right;
     }
 
-    .input-group input, .input-group select {
+    .input-group input,
+    .input-group select {
       width: 100%;
-      padding: 12px 40px 12px 15px;
+      padding: 12px 15px;
       border: none;
       border-radius: 12px;
       background: #f2f2f2;
@@ -50,819 +54,154 @@
       box-sizing: border-box;
     }
 
-    .toggle-mask, .input-group i.icon {
-      position: absolute;
-      top: 50%;
-      color: #888;
-      transform: translateY(-50%);
-      font-size: 1rem;
-    }
-
-    .input-group i.icon {
-      left: 15px;
-    }
-
-    .toggle-mask {
-      right: 15px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    button {
+    .register-card button {
       width: 100%;
       padding: 12px;
       background: linear-gradient(90deg, #FFD700, #ffa600);
       color: #0a1128;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: linear-gradient(90deg, #fff, #FFD700);
-    }
-
-    .msg {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    .msg.success { color: #00ff88; }
-    .msg.error { color: #ff4d4d; }
-  </style>
-</head>
-<body>
-
-<div class="form-container">
-  <h2>تسجيل حساب جديد</h2>
-  <form id="registerForm">
-    <div class="input-group"><input type="text" id="name" placeholder="الاسم بالكامل" required></div>
-    <div class="input-group"><input type="email" id="email" placeholder="البريد الإلكتروني" required></div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="كلمة المرور" required>
-      <button type="button" class="toggle-mask" onclick="toggleMask()">👁️</button>
-    </div>
-
-    <div class="input-group">
-      <select id="college" required>
-        <option disabled selected>اختر الكلية</option>
-        <option>تمريض</option>
-        <option>طب</option>
-        <option>هندسة</option>
-        <option>علوم تطبيقية</option>
-        <option>بيزنس</option>
-      </select>
-    </div>
-
-    <div class="input-group" id="dept-group" style="display:none;">
-      <select id="department">
-        <option disabled selected>اختر قسم الهندسة</option>
-        <option>هندسة كهرباء</option>
-        <option>هندسة ميكانيكا</option>
-        <option>هندسة مدني</option>
-        <option>هندسة اتصالات</option>
-        <option>هندسة حاسبات</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <select id="year" required>
-        <option disabled selected>اختر السنة الدراسية</option>
-        <option>الأولى</option>
-        <option>الثانية</option>
-        <option>الثالثة</option>
-        <option>الرابعة</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <select id="governorate" required>
-        <option disabled selected>اختر المحافظة</option>
-        <option>القاهرة</option>
-        <option>الإسكندرية</option>
-        <option>الدقهلية</option>
-        <option>الشرقية</option>
-        <option>الغربية</option>
-      </select>
-    </div>
-
-    <button type="submit">سجل الآن</button>
-    <div id="message" class="msg"></div>
-  </form>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.firebasestorage.app",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-    measurementId: "G-BSM3P8C40G"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const analytics = getAnalytics(app);
-
-  document.getElementById('college').addEventListener('change', () => {
-    document.getElementById('dept-group').style.display =
-      document.getElementById('college').value === "هندسة" ? 'block' : 'none';
-  });
-
-  const form = document.getElementById('registerForm');
-  const msg = document.getElementById('message');
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const name = form.name.value.trim(),
-          email = form.email.value.trim(),
-          password = form.password.value.trim(),
-          college = form.college.value,
-          department = document.getElementById('department')?.value || "",
-          year = form.year.value,
-          governorate = form.governorate.value;
-
-    try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
-      await setDoc(doc(db, "users", uid), { name, email, college, department, year, governorate });
-
-      msg.textContent = "تم التسجيل بنجاح ✅";
-      msg.className = "msg success";
-      form.reset();
-    } catch (error) {
-      msg.textContent = "❌ " + error.message;
-      msg.className = "msg error";
-    }
-  });
-
-  window.toggleMask = () => {
-    const p = document.getElementById("password");
-    p.type = p.type === "password" ? "text" : "password";
-  };
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تسجيل حساب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0a1128, #1c2541);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
-
-    .login-card, .form-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 30px;
-      color: #FFD700;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .input-group input, .input-group select {
-      width: 100%;
-      padding: 12px 40px 12px 15px;
       border: none;
       border-radius: 12px;
-      background: #f2f2f2;
-      font-size: 1rem;
-      color: #0a1128;
-      box-sizing: border-box;
-    }
-
-    .toggle-mask, .input-group i.icon {
-      position: absolute;
-      top: 50%;
-      color: #888;
-      transform: translateY(-50%);
-      font-size: 1rem;
-    }
-
-    .input-group i.icon {
-      left: 15px;
-    }
-
-    .toggle-mask {
-      right: 15px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(90deg, #FFD700, #ffa600);
-      color: #0a1128;
+      font-size: 1.1rem;
       font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
       cursor: pointer;
       transition: background 0.3s ease;
     }
 
-    button:hover {
+    .register-card button:hover {
       background: linear-gradient(90deg, #fff, #FFD700);
     }
 
-    .msg {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    .msg.success { color: #00ff88; }
-    .msg.error { color: #ff4d4d; }
-  </style>
-</head>
-<body>
-
-<div class="form-container">
-  <h2>تسجيل حساب جديد</h2>
-  <form id="registerForm">
-    <div class="input-group"><input type="text" id="name" placeholder="الاسم بالكامل" required></div>
-    <div class="input-group"><input type="email" id="email" placeholder="البريد الإلكتروني" required></div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="كلمة المرور" required>
-      <button type="button" class="toggle-mask" onclick="toggleMask()">👁️</button>
-    </div>
-
-    <div class="input-group">
-      <select id="college" required>
-        <option disabled selected>اختر الكلية</option>
-        <option>تمريض</option>
-        <option>طب</option>
-        <option>هندسة</option>
-        <option>علوم تطبيقية</option>
-        <option>بيزنس</option>
-      </select>
-    </div>
-
-    <div class="input-group" id="dept-group" style="display:none;">
-      <select id="department">
-        <option disabled selected>اختر قسم الهندسة</option>
-        <option>هندسة كهرباء</option>
-        <option>هندسة ميكانيكا</option>
-        <option>هندسة مدني</option>
-        <option>هندسة اتصالات</option>
-        <option>هندسة حاسبات</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <select id="year" required>
-        <option disabled selected>اختر السنة الدراسية</option>
-        <option>الأولى</option>
-        <option>الثانية</option>
-        <option>الثالثة</option>
-        <option>الرابعة</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <select id="governorate" required>
-        <option disabled selected>اختر المحافظة</option>
-        <option>القاهرة</option>
-        <option>الإسكندرية</option>
-        <option>الدقهلية</option>
-        <option>الشرقية</option>
-        <option>الغربية</option>
-      </select>
-    </div>
-
-    <button type="submit">سجل الآن</button>
-    <div id="message" class="msg"></div>
-  </form>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.firebasestorage.app",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-    measurementId: "G-BSM3P8C40G"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const analytics = getAnalytics(app);
-
-  document.getElementById('college').addEventListener('change', () => {
-    document.getElementById('dept-group').style.display =
-      document.getElementById('college').value === "هندسة" ? 'block' : 'none';
-  });
-
-  const form = document.getElementById('registerForm');
-  const msg = document.getElementById('message');
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const name = form.name.value.trim(),
-          email = form.email.value.trim(),
-          password = form.password.value.trim(),
-          college = form.college.value,
-          department = document.getElementById('department')?.value || "",
-          year = form.year.value,
-          governorate = form.governorate.value;
-
-    try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
-      await setDoc(doc(db, "users", uid), { name, email, college, department, year, governorate });
-
-      msg.textContent = "تم التسجيل بنجاح ✅";
-      msg.className = "msg success";
-      form.reset();
-    } catch (error) {
-      msg.textContent = "❌ " + error.message;
-      msg.className = "msg error";
-    }
-  });
-
-  window.toggleMask = () => {
-    const p = document.getElementById("password");
-    p.type = p.type === "password" ? "text" : "password";
-  };
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تسجيل حساب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0a1128, #1c2541);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
+    .login-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #ccc;
     }
 
-    .login-card, .form-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 30px;
+    .login-link a {
       color: #FFD700;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .input-group input, .input-group select {
-      width: 100%;
-      padding: 12px 40px 12px 15px;
-      border: none;
-      border-radius: 12px;
-      background: #f2f2f2;
-      font-size: 1rem;
-      color: #0a1128;
-      box-sizing: border-box;
-    }
-
-    .toggle-mask, .input-group i.icon {
-      position: absolute;
-      top: 50%;
-      color: #888;
-      transform: translateY(-50%);
-      font-size: 1rem;
-    }
-
-    .input-group i.icon {
-      left: 15px;
-    }
-
-    .toggle-mask {
-      right: 15px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(90deg, #FFD700, #ffa600);
-      color: #0a1128;
+      text-decoration: none;
       font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
     }
 
-    button:hover {
-      background: linear-gradient(90deg, #fff, #FFD700);
-    }
-
-    .msg {
+    .message {
       margin-top: 15px;
       font-weight: bold;
       font-size: 1rem;
     }
-    .msg.success { color: #00ff88; }
-    .msg.error { color: #ff4d4d; }
+
+    .success { color: #00ff88; }
+    .error { color: #ff4d4d; }
   </style>
 </head>
 <body>
 
-<div class="form-container">
-  <h2>تسجيل حساب جديد</h2>
-  <form id="registerForm">
-    <div class="input-group"><input type="text" id="name" placeholder="الاسم بالكامل" required></div>
-    <div class="input-group"><input type="email" id="email" placeholder="البريد الإلكتروني" required></div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="كلمة المرور" required>
-      <button type="button" class="toggle-mask" onclick="toggleMask()">👁️</button>
+  <div class="register-card">
+    <h2>إنشاء حساب جديد</h2>
+    <form id="registerForm">
+      <div class="input-group">
+        <input type="text" id="name" placeholder="الاسم بالكامل" required>
+      </div>
+      <div class="input-group">
+        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
+      </div>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="كلمة المرور" required>
+      </div>
+      <div class="input-group">
+        <select id="college" required>
+          <option disabled selected>اختر الكلية</option>
+          <option>التمريض</option>
+          <option>الطب</option>
+          <option>الهندسة</option>
+          <option>العلوم التطبيقية</option>
+          <option>بيزنس</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <select id="year" required>
+          <option disabled selected>اختر السنة الدراسية</option>
+          <option>الأولى</option>
+          <option>الثانية</option>
+          <option>الثالثة</option>
+          <option>الرابعة</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <select id="governorate" required>
+          <option disabled selected>اختر المحافظة</option>
+          <option>القاهرة</option>
+          <option>الجيزة</option>
+          <option>الإسكندرية</option>
+          <option>الدقهلية</option>
+          <option>الشرقية</option>
+          <!-- زوّد الباقي لو حبيت -->
+        </select>
+      </div>
+
+      <button type="submit">تسجيل</button>
+      <div id="message" class="message"></div>
+    </form>
+
+    <div class="login-link">
+      عندك حساب بالفعل؟ <a href="login.html">سجّل الدخول</a>
     </div>
+  </div>
 
-    <div class="input-group">
-      <select id="college" required>
-        <option disabled selected>اختر الكلية</option>
-        <option>تمريض</option>
-        <option>طب</option>
-        <option>هندسة</option>
-        <option>علوم تطبيقية</option>
-        <option>بيزنس</option>
-      </select>
-    </div>
+  <!-- Firebase + Registration Script -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    <div class="input-group" id="dept-group" style="display:none;">
-      <select id="department">
-        <option disabled selected>اختر قسم الهندسة</option>
-        <option>هندسة كهرباء</option>
-        <option>هندسة ميكانيكا</option>
-        <option>هندسة مدني</option>
-        <option>هندسة اتصالات</option>
-        <option>هندسة حاسبات</option>
-      </select>
-    </div>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.firebasestorage.app",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
 
-    <div class="input-group">
-      <select id="year" required>
-        <option disabled selected>اختر السنة الدراسية</option>
-        <option>الأولى</option>
-        <option>الثانية</option>
-        <option>الثالثة</option>
-        <option>الرابعة</option>
-      </select>
-    </div>
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    <div class="input-group">
-      <select id="governorate" required>
-        <option disabled selected>اختر المحافظة</option>
-        <option>القاهرة</option>
-        <option>الإسكندرية</option>
-        <option>الدقهلية</option>
-        <option>الشرقية</option>
-        <option>الغربية</option>
-      </select>
-    </div>
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
 
-    <button type="submit">سجل الآن</button>
-    <div id="message" class="msg"></div>
-  </form>
-</div>
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const college = document.getElementById("college").value;
+      const year = document.getElementById("year").value;
+      const governorate = document.getElementById("governorate").value;
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.firebasestorage.app",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-    measurementId: "G-BSM3P8C40G"
-  };
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const analytics = getAnalytics(app);
+        await setDoc(doc(db, "users", user.uid), {
+          name,
+          email,
+          college,
+          year,
+          governorate
+        });
 
-  document.getElementById('college').addEventListener('change', () => {
-    document.getElementById('dept-group').style.display =
-      document.getElementById('college').value === "هندسة" ? 'block' : 'none';
-  });
+        message.textContent = "تم إنشاء الحساب بنجاح ✅";
+        message.className = "message success";
 
-  const form = document.getElementById('registerForm');
-  const msg = document.getElementById('message');
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const name = form.name.value.trim(),
-          email = form.email.value.trim(),
-          password = form.password.value.trim(),
-          college = form.college.value,
-          department = document.getElementById('department')?.value || "",
-          year = form.year.value,
-          governorate = form.governorate.value;
-
-    try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
-      await setDoc(doc(db, "users", uid), { name, email, college, department, year, governorate });
-
-      msg.textContent = "تم التسجيل بنجاح ✅";
-      msg.className = "msg success";
-      form.reset();
-    } catch (error) {
-      msg.textContent = "❌ " + error.message;
-      msg.className = "msg error";
-    }
-  });
-
-  window.toggleMask = () => {
-    const p = document.getElementById("password");
-    p.type = p.type === "password" ? "text" : "password";
-  };
-</script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تسجيل حساب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0a1128, #1c2541);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #fff;
-    }
-
-    .login-card, .form-container {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      padding: 40px 30px;
-      border-radius: 20px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 30px;
-      color: #FFD700;
-    }
-
-    .input-group {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .input-group input, .input-group select {
-      width: 100%;
-      padding: 12px 40px 12px 15px;
-      border: none;
-      border-radius: 12px;
-      background: #f2f2f2;
-      font-size: 1rem;
-      color: #0a1128;
-      box-sizing: border-box;
-    }
-
-    .toggle-mask, .input-group i.icon {
-      position: absolute;
-      top: 50%;
-      color: #888;
-      transform: translateY(-50%);
-      font-size: 1rem;
-    }
-
-    .input-group i.icon {
-      left: 15px;
-    }
-
-    .toggle-mask {
-      right: 15px;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      background: linear-gradient(90deg, #FFD700, #ffa600);
-      color: #0a1128;
-      font-weight: bold;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-
-    button:hover {
-      background: linear-gradient(90deg, #fff, #FFD700);
-    }
-
-    .msg {
-      margin-top: 15px;
-      font-weight: bold;
-      font-size: 1rem;
-    }
-    .msg.success { color: #00ff88; }
-    .msg.error { color: #ff4d4d; }
-  </style>
-</head>
-<body>
-
-<div class="form-container">
-  <h2>تسجيل حساب جديد</h2>
-  <form id="registerForm">
-    <div class="input-group"><input type="text" id="name" placeholder="الاسم بالكامل" required></div>
-    <div class="input-group"><input type="email" id="email" placeholder="البريد الإلكتروني" required></div>
-    <div class="input-group">
-      <input type="password" id="password" placeholder="كلمة المرور" required>
-      <button type="button" class="toggle-mask" onclick="toggleMask()">👁️</button>
-    </div>
-
-    <div class="input-group">
-      <select id="college" required>
-        <option disabled selected>اختر الكلية</option>
-        <option>تمريض</option>
-        <option>طب</option>
-        <option>هندسة</option>
-        <option>علوم تطبيقية</option>
-        <option>بيزنس</option>
-      </select>
-    </div>
-
-    <div class="input-group" id="dept-group" style="display:none;">
-      <select id="department">
-        <option disabled selected>اختر قسم الهندسة</option>
-        <option>هندسة كهرباء</option>
-        <option>هندسة ميكانيكا</option>
-        <option>هندسة مدني</option>
-        <option>هندسة اتصالات</option>
-        <option>هندسة حاسبات</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <select id="year" required>
-        <option disabled selected>اختر السنة الدراسية</option>
-        <option>الأولى</option>
-        <option>الثانية</option>
-        <option>الثالثة</option>
-        <option>الرابعة</option>
-      </select>
-    </div>
-
-    <div class="input-group">
-      <select id="governorate" required>
-        <option disabled selected>اختر المحافظة</option>
-        <option>القاهرة</option>
-        <option>الإسكندرية</option>
-        <option>الدقهلية</option>
-        <option>الشرقية</option>
-        <option>الغربية</option>
-      </select>
-    </div>
-
-    <button type="submit">سجل الآن</button>
-    <div id="message" class="msg"></div>
-  </form>
-</div>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.firebasestorage.app",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-    measurementId: "G-BSM3P8C40G"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-  const analytics = getAnalytics(app);
-
-  document.getElementById('college').addEventListener('change', () => {
-    document.getElementById('dept-group').style.display =
-      document.getElementById('college').value === "هندسة" ? 'block' : 'none';
-  });
-
-  const form = document.getElementById('registerForm');
-  const msg = document.getElementById('message');
-
-  form.addEventListener('submit', async e => {
-    e.preventDefault();
-    const name = form.name.value.trim(),
-          email = form.email.value.trim(),
-          password = form.password.value.trim(),
-          college = form.college.value,
-          department = document.getElementById('department')?.value || "",
-          year = form.year.value,
-          governorate = form.governorate.value;
-
-    try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
-      await setDoc(doc(db, "users", uid), { name, email, college, department, year, governorate });
-
-      msg.textContent = "تم التسجيل بنجاح ✅";
-      msg.className = "msg success";
-      form.reset();
-    } catch (error) {
-      msg.textContent = "❌ " + error.message;
-      msg.className = "msg error";
-    }
-  });
-
-  window.toggleMask = () => {
-    const p = document.getElementById("password");
-    p.type = p.type === "password" ? "text" : "password";
-  };
-</script>
+        // بعد النجاح: ممكن توجّهه للصفحة الرئيسية أو الخطط
+        // window.location.href = "plans.html";
+      } catch (error) {
+        message.textContent = "❌ حصلت مشكلة أثناء التسجيل: " + error.message;
+        message.className = "message error";
+      }
+    });
+  </script>
 </body>
 </html>
