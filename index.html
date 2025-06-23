@@ -12,7 +12,6 @@
       background: #0a1128;
       font-family: 'Cairo', sans-serif;
       color: #fff;
-      text-align: center;
     }
 
     .top-bar {
@@ -30,35 +29,47 @@
       font-size: 1rem;
     }
 
-    .banner {
+    .container {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 30px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .image-side {
+      flex: 1;
+      max-width: 400px;
+    }
+
+    .image-side img {
       width: 100%;
-      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      animation: fadeIn 1.2s ease-in-out;
     }
 
-    .banner img {
-      width: 100%;
-      height: auto;
-      border-bottom: 4px solid #FFD700;
-      animation: fadeIn 1.3s ease-in-out;
+    .text-side {
+      flex: 1;
+      max-width: 600px;
+      text-align: right;
     }
 
-    .hero {
-      padding: 60px 20px 80px;
-    }
-
-    h2 {
+    .text-side h2 {
       font-size: 2rem;
       color: #00bfff;
       margin-bottom: 20px;
-      animation: fadeInUp 1.3s ease;
+      animation: fadeInUp 1s ease-in-out;
     }
 
-    p {
+    .text-side p {
       font-size: 1.2rem;
       color: #FFD700;
-      max-width: 600px;
-      margin: 0 auto 30px;
       line-height: 1.7;
+      margin-bottom: 30px;
+      animation: fadeInUp 1.4s ease-in-out;
     }
 
     .btn {
@@ -80,39 +91,22 @@
     }
 
     @keyframes fadeIn {
-      from {
-        opacity: 0;
-        transform: scale(0.95);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
     }
 
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 768px) {
-      h2 {
-        font-size: 1.6rem;
+      .container {
+        flex-direction: column;
+        text-align: center;
       }
-
-      p {
-        font-size: 1rem;
-      }
-
-      .btn {
-        font-size: 1rem;
-        padding: 12px 25px;
+      .text-side {
+        text-align: center;
       }
     }
   </style>
@@ -123,15 +117,16 @@
     <a href="login.html" class="login-link">تسجيل الدخول</a>
   </div>
 
-  <div class="banner">
-    <img src="studyboss_banner.jpg" alt="بانر Study Boss">
+  <div class="container">
+    <div class="image-side">
+      <img src="studyboss_banner.jpg" alt="لوجو Study Boss">
+    </div>
+    <div class="text-side">
+      <h2>مشكلتك مش في المذاكرة... مشكلتك في إنك تبدأ صح. وده دورنا إحنا 💪</h2>
+      <p>من غير توتر، من غير لخبطة... Study Boss هينظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال.</p>
+      <a href="plans.html" class="btn">ابدأ الآن</a>
+    </div>
   </div>
-
-  <section class="hero">
-    <h2>مشكلتك مش في المذاكرة... مشكلتك في إنك تبدأ صح. وده دورنا إحنا 💪</h2>
-    <p>من غير توتر، من غير لخبطة... Study Boss هينظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال.</p>
-    <a href="plans.html" class="btn">ابدأ الآن</a>
-  </section>
 
 </body>
 </html>
