@@ -7,55 +7,64 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
-      margin: 0;
       font-family: 'Cairo', sans-serif;
-      background-color: #0a1128;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
+      color: white;
+      padding: 20px;
       text-align: center;
     }
 
     h1 {
-      font-size: 2.5rem;
       color: #FFD700;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
-    p {
+    .card {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 25px;
+      margin: auto;
+      max-width: 500px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+    }
+
+    .info {
       font-size: 1.2rem;
-      color: #ccc;
+      margin-bottom: 15px;
+      line-height: 1.8;
     }
 
-    .btn {
-      margin-top: 30px;
-      padding: 10px 20px;
+    .logout-btn {
       background-color: #FFD700;
       color: #0a1128;
       border: none;
-      border-radius: 10px;
+      padding: 10px 20px;
+      border-radius: 8px;
       font-size: 1rem;
-      font-weight: bold;
       cursor: pointer;
+      margin-top: 20px;
     }
 
-    .btn:hover {
-      background-color: #fff;
+    .logout-btn:hover {
+      background-color: white;
     }
   </style>
 </head>
 <body>
 
-  <h1>أهلاً بيك في Study Boss ✨</h1>
-  <p>دي لوحة التحكم الخاصة بيك. من هنا تقدر تدخل على خططك، المذاكرة، الدعم... وكل حاجة تخصك.</p>
-  <button class="btn" onclick="logout()">تسجيل الخروج</button>
+  <h1>مرحبًا بيك في Study Boss ✨</h1>
+  <div class="card" id="userCard">
+    <div class="info" id="username">جاري التحميل...</div>
+  </div>
 
+  <button class="logout-btn" onclick="logout()">تسجيل الخروج</button>
+
+  <!-- Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
@@ -68,10 +77,30 @@
     };
 
     const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
     const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    onAuthStateChanged(auth, user => {
-      if (!user) {
+    const userCard = document.getElementById("username");
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const uid = user.uid;
+        const docRef = doc(db, "users", uid);
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          userCard.innerHTML = `
+            👤 الاسم: ${data.name}<br>
+            🏫 الكلية: ${data.college}<br>
+            🎓 السنة الدراسية: ${data.year}<br>
+            🌍 المحافظة: ${data.governorate}
+          `;
+        } else {
+          userCard.textContent = "⚠️ لم يتم العثور على بياناتك.";
+        }
+      } else {
         window.location.href = "login.html";
       }
     });
@@ -81,9 +110,6 @@
         window.location.href = "login.html";
       });
     }
-
-    window.logout = logout;
   </script>
-
 </body>
 </html>
