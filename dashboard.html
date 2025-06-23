@@ -11,226 +11,131 @@
       font-family: 'Cairo', sans-serif;
       background: #0a1128;
       color: #fff;
-      padding: 20px;
+      padding: 30px;
     }
-
     h1 {
-      text-align: center;
       color: #FFD700;
-      margin-bottom: 20px;
+      font-size: 2.2rem;
     }
-
-    .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-around;
-      gap: 30px;
-    }
-
-    .box {
+    .section {
       background: #1c2541;
-      border: 1px solid #FFD700;
-      border-radius: 20px;
+      border-radius: 15px;
       padding: 20px;
-      flex: 1 1 300px;
-      min-height: 300px;
+      margin-top: 20px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
     }
-
-    .box h2 {
-      color: #FFD700;
-      margin-bottom: 15px;
-      font-size: 1.4rem;
-      text-align: center;
+    .progress-bar {
+      height: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
     }
-
-    /* Pomodoro */
-    .timer {
-      text-align: center;
-      font-size: 3rem;
-      margin: 20px 0;
+    .progress {
+      height: 100%;
+      background-color: #FFD700;
+      width: 18%; /* عدل حسب الأسبوع */
     }
-
-    .pomodoro-btns button {
-      background: #FFD700;
-      color: #0a1128;
+    .todo input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      border-radius: 10px;
       border: none;
-      padding: 10px 15px;
-      margin: 0 5px;
-      border-radius: 8px;
-      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .todo button {
+      padding: 10px;
+      background: #FFD700;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
     }
-
-    /* To-Do */
-    .todo-list {
+    .todo ul {
       list-style: none;
       padding: 0;
     }
-
-    .todo-list li {
-      background: #fff;
-      color: #000;
+    .todo li {
+      background: #0a1128;
       padding: 10px;
-      border-radius: 10px;
       margin: 5px 0;
+      border: 1px solid #FFD700;
+      border-radius: 10px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
     }
-
-    .todo-list li button {
-      background: #ff4d4d;
-      color: white;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    #newTask {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 10px;
-      border: none;
-    }
-
-    /* Progress */
-    .progress-container {
-      margin-top: 20px;
-    }
-
-    .progress-bar {
-      background: #444;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 20px;
-    }
-
-    .progress-bar-inner {
-      height: 100%;
-      width: 0%;
+    .pomodoro-link {
+      display: inline-block;
+      margin-top: 15px;
       background: #FFD700;
-      transition: width 0.5s ease-in-out;
-    }
-
-    @media (max-width: 768px) {
-      .dashboard {
-        flex-direction: column;
-      }
+      color: #0a1128;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
 
-<h1>أهلاً بيك في لوحة تحكم Study Boss 💪</h1>
+  <h1>أهلاً، رفعت! 👋</h1>
 
-<div class="dashboard">
-
-  <!-- Pomodoro Timer -->
-  <div class="box">
-    <h2>⏱️ تايمر بومودورو</h2>
-    <div class="timer" id="pomodoroTimer">25:00</div>
-    <div class="pomodoro-btns">
-      <button onclick="startTimer()">ابدأ</button>
-      <button onclick="resetTimer()">إعادة</button>
+  <div class="section">
+    <h2>📚 خطتك الدراسية: خطة المحترف</h2>
+    <p>أنت حالياً في الأسبوع 3 من 16</p>
+    <div class="progress-bar">
+      <div class="progress"></div>
     </div>
   </div>
 
-  <!-- To Do List -->
-  <div class="box">
-    <h2>📝 المهام اليومية</h2>
-    <ul class="todo-list" id="todoList"></ul>
-    <input type="text" id="newTask" placeholder="أضف مهمة جديدة..." onkeypress="handleKey(event)">
+  <div class="section todo">
+    <h2>✅ قائمة المهام اليومية</h2>
+    <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة...">
+    <button onclick="addTask()">إضافة</button>
+    <ul id="taskList"></ul>
   </div>
 
-  <!-- Progress Tracker -->
-  <div class="box">
-    <h2>🎯 الإنجازات اليومية</h2>
-    <p>عدد المهام المُنجزة: <span id="doneCount">0</span></p>
-    <div class="progress-container">
-      <div class="progress-bar">
-        <div class="progress-bar-inner" id="progressBar"></div>
-      </div>
-    </div>
+  <div class="section">
+    <h2>⏱️ محتاج تركيز؟</h2>
+    <p>جرب تقنية Pomodoro عشان تزود إنتاجيتك 👇</p>
+    <a href="pomodoro.html" class="pomodoro-link">ابدأ Pomodoro</a>
   </div>
 
-</div>
+  <script>
+    // Load tasks from localStorage
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
+      saved.forEach(task => renderTask(task));
+    });
 
-<script>
-  // Pomodoro
-  let minutes = 25;
-  let seconds = 0;
-  let interval;
+    function addTask() {
+      const input = document.getElementById("taskInput");
+      const value = input.value.trim();
+      if (value === "") return;
 
-  function updateTimerDisplay() {
-    document.getElementById("pomodoroTimer").textContent =
-      `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-  }
+      renderTask(value);
 
-  function startTimer() {
-    clearInterval(interval);
-    interval = setInterval(() => {
-      if (seconds === 0) {
-        if (minutes === 0) {
-          clearInterval(interval);
-          alert("انتهت الجلسة! خد بريك 🌟");
-          return;
-        }
-        minutes--;
-        seconds = 59;
-      } else {
-        seconds--;
-      }
-      updateTimerDisplay();
-    }, 1000);
-  }
+      let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+      tasks.push(value);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
 
-  function resetTimer() {
-    clearInterval(interval);
-    minutes = 25;
-    seconds = 0;
-    updateTimerDisplay();
-  }
-
-  updateTimerDisplay();
-
-  // To-Do List
-  const todoList = document.getElementById("todoList");
-  const newTaskInput = document.getElementById("newTask");
-  let doneTasks = 0;
-
-  function addTask(taskText) {
-    const li = document.createElement("li");
-    li.textContent = taskText;
-
-    const delBtn = document.createElement("button");
-    delBtn.textContent = "حذف";
-    delBtn.onclick = () => {
-      li.remove();
-      doneTasks++;
-      updateProgress();
-    };
-
-    li.appendChild(delBtn);
-    todoList.appendChild(li);
-  }
-
-  function handleKey(e) {
-    if (e.key === "Enter" && newTaskInput.value.trim()) {
-      addTask(newTaskInput.value.trim());
-      newTaskInput.value = "";
+      input.value = "";
     }
-  }
 
-  function updateProgress() {
-    document.getElementById("doneCount").textContent = doneTasks;
-    const total = todoList.children.length + doneTasks;
-    const percentage = total ? (doneTasks / total) * 100 : 0;
-    document.getElementById("progressBar").style.width = `${percentage}%`;
-  }
-</script>
+    function renderTask(task) {
+      const li = document.createElement("li");
+      li.textContent = task;
+      const btn = document.createElement("button");
+      btn.textContent = "✔️";
+      btn.onclick = () => {
+        li.remove();
+        let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+        tasks = tasks.filter(t => t !== task);
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      };
+      li.appendChild(btn);
+      document.getElementById("taskList").appendChild(li);
+    }
+  </script>
 
 </body>
 </html>
