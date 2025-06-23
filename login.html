@@ -100,17 +100,6 @@
       font-weight: bold;
     }
 
-    .reset-link {
-      margin-top: 15px;
-      font-size: 0.9rem;
-    }
-
-    .reset-link a {
-      color: #FFD700;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
     .message {
       margin-top: 15px;
       font-weight: bold;
@@ -147,16 +136,29 @@
       <div id="message" class="message"></div>
     </form>
 
-    <div class="reset-link">
-      <a href="reset.html">نسيت كلمة المرور؟</a>
-    </div>
-
     <div class="signup-link">
-      لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
+      لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a><br>
+      نسيت كلمة المرور؟ <a href="reset.html">إعادة تعيين</a>
     </div>
   </div>
 
-  <script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.appspot.com",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
 
@@ -169,22 +171,21 @@
     const form = document.getElementById("loginForm");
     const message = document.getElementById("message");
 
-    form.addEventListener("submit", function(e) {
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      const users = JSON.parse(localStorage.getItem("users") || "[]");
-
-      const found = users.find(u => u.email === email && u.password === password);
-
-      if (found) {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
         message.textContent = "تم تسجيل الدخول بنجاح ✅";
         message.className = "message success";
-        // setTimeout(() => window.location.href = "dashboard.html", 1000);
-      } else {
+        // بعد تسجيل الدخول الناجح:
+        // window.location.href = "dashboard.html";
+      } catch (error) {
         message.textContent = "البريد الإلكتروني أو كلمة المرور غير صحيحة ❌";
         message.className = "message error";
+        console.error(error);
       }
     });
   </script>
