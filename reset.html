@@ -1,108 +1,97 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إعادة تعيين كلمة المرور | Study Boss</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>نسيت كلمة المرور | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background-color: #0a1128;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       color: #fff;
-      text-align: center;
-      padding: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-
-    .container {
-      max-width: 400px;
-      margin: auto;
-      background-color: #1c2541;
-      padding: 30px;
-      border-radius: 15px;
+    .reset-card {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 40px;
+      border-radius: 20px;
+      backdrop-filter: blur(15px);
       box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
     }
-
-    h2 {
-      color: #FFD700;
-      margin-bottom: 25px;
-    }
-
-    input[type="email"] {
+    input {
       width: 100%;
       padding: 12px;
-      margin-bottom: 15px;
+      margin: 20px 0;
       border-radius: 10px;
       border: none;
       font-size: 1rem;
+      box-sizing: border-box;
     }
-
     button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
       background-color: #FFD700;
       color: #0a1128;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
+      font-size: 1.1rem;
       cursor: pointer;
     }
-
-    button:hover {
-      background-color: #fff;
-    }
-
-    .message {
-      margin-top: 20px;
-      font-size: 1rem;
+    #message {
+      margin-top: 15px;
       font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>إعادة تعيين كلمة المرور</h2>
-    <input type="email" id="resetEmail" placeholder="أدخل بريدك الإلكتروني" required>
-    <button onclick="resetPassword()">إرسال رابط التعيين</button>
-    <div id="message" class="message"></div>
-  </div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+<div class="reset-card">
+  <h2>إعادة تعيين كلمة المرور</h2>
+  <input type="email" id="resetEmail" placeholder="ادخل بريدك الإلكتروني" required>
+  <button onclick="sendResetLink()">إرسال رابط التعيين</button>
+  <div id="message"></div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-      authDomain: "studyboss-b2550.firebaseapp.com",
-      projectId: "studyboss-b2550",
-      storageBucket: "studyboss-b2550.appspot.com",
-      messagingSenderId: "951238590009",
-      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-      measurementId: "G-BSM3P8C40G"
-    };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+    authDomain: "studyboss-b2550.firebaseapp.com",
+    projectId: "studyboss-b2550",
+    storageBucket: "studyboss-b2550.appspot.com",
+    messagingSenderId: "951238590009",
+    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+    measurementId: "G-BSM3P8C40G"
+  };
 
-    const resetPassword = async () => {
-      const email = document.getElementById("resetEmail").value.trim();
-      const messageDiv = document.getElementById("message");
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-      if (!email) {
-        messageDiv.textContent = "من فضلك أدخل البريد الإلكتروني";
-        messageDiv.style.color = "red";
-        return;
-      }
+  window.sendResetLink = () => {
+    const email = document.getElementById("resetEmail").value;
+    const message = document.getElementById("message");
 
-      try {
-        await sendPasswordResetEmail(auth, email);
-        messageDiv.textContent = "تم إرسال رابط تعيين كلمة المرور لبريدك الإلكتروني ✅";
-        messageDiv.style.color = "#00ff88";
-      } catch (error) {
-        messageDiv.textContent = `❌ حصلت مشكلة: ${error.message}`;
-        messageDiv.style.color = "red";
-        console.error(error);
-      }
-    };
-  </script>
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        message.style.color = "lightgreen";
+        message.innerText = "تم إرسال رابط إعادة تعيين كلمة المرور إلى بريدك الإلكتروني ✅";
+      })
+      .catch((error) => {
+        message.style.color = "salmon";
+        message.innerText = "حدث خطأ: " + error.message;
+      });
+  };
+</script>
+
 </body>
 </html>
