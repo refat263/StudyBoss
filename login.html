@@ -49,7 +49,6 @@
       background: #f2f2f2;
       font-size: 1rem;
       color: #0a1128;
-      box-sizing: border-box;
     }
 
     .input-group i.icon {
@@ -58,7 +57,6 @@
       left: 15px;
       transform: translateY(-50%);
       color: #888;
-      font-size: 1rem;
     }
 
     .toggle-password {
@@ -68,7 +66,6 @@
       transform: translateY(-50%);
       cursor: pointer;
       color: #888;
-      font-size: 1rem;
     }
 
     .login-card button {
@@ -81,7 +78,6 @@
       font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     .login-card button:hover {
@@ -107,8 +103,13 @@
       transition: 0.3s;
     }
 
-    .success { color: #00ff88; }
-    .error { color: #ff4d4d; }
+    .success {
+      color: #00ff88;
+    }
+
+    .error {
+      color: #ff4d4d;
+    }
   </style>
 </head>
 <body>
@@ -136,7 +137,6 @@
     </div>
   </div>
 
-  <!-- Firebase + Login Script -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
@@ -156,30 +156,33 @@
 
     const passwordInput = document.getElementById("password");
     const togglePassword = document.getElementById("togglePassword");
+
     togglePassword.addEventListener("click", () => {
-      passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+      const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+      passwordInput.setAttribute("type", type);
       togglePassword.classList.toggle("fa-eye-slash");
     });
 
     const form = document.getElementById("loginForm");
     const message = document.getElementById("message");
 
-    form.addEventListener("submit", async (e) => {
+    form.addEventListener("submit", function(e) {
       e.preventDefault();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
 
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        message.textContent = "تم تسجيل الدخول بنجاح ✅";
-        message.className = "message success";
-        // بعد الدخول بنجاح، ممكن توجهه لصفحة رئيسية
-        // window.location.href = "dashboard.html";
-      } catch (error) {
-        message.textContent = "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
-        message.className = "message error";
-      }
+      signInWithEmailAndPassword(auth, email, password)
+        .then(() => {
+          message.textContent = "تم تسجيل الدخول بنجاح ✅";
+          message.className = "message success";
+          setTimeout(() => window.location.href = "dashboard.html", 1000);
+        })
+        .catch((error) => {
+          message.textContent = "❌ البريد الإلكتروني أو كلمة المرور غير صحيحة";
+          message.className = "message error";
+        });
     });
   </script>
+
 </body>
 </html>
