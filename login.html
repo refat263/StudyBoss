@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تسجيل حساب | Study Boss</title>
+  <title>تسجيل الدخول | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
@@ -30,13 +30,29 @@
       color: #FFD700;
     }
 
-    input, select {
+    .input-wrapper {
+      position: relative;
+    }
+
+    input {
       width: 100%;
       padding: 12px;
       margin: 10px 0;
       border: none;
       border-radius: 10px;
       font-size: 1rem;
+    }
+
+    .toggle-password {
+      position: absolute;
+      top: 50%;
+      left: 10px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1.1rem;
+      color: #FFD700;
     }
 
     button {
@@ -69,110 +85,64 @@
 <body>
 
 <div class="form-container">
-  <h2>تسجيل حساب جديد</h2>
-  <form id="registerForm">
-    <input type="text" id="name" placeholder="الاسم بالكامل" required>
+  <h2>تسجيل الدخول</h2>
+  <form id="loginForm">
     <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-    <input type="password" id="password" placeholder="كلمة المرور" required>
 
-    <select id="college" required>
-      <option disabled selected>اختر الكلية</option>
-      <option>تمريض</option>
-      <option>طب</option>
-      <option>هندسة</option>
-      <option>علوم تطبيقية</option>
-      <option>بيزنس</option>
-    </select>
-
-    <div id="engineering-department" style="display:none;">
-      <select id="department">
-        <option disabled selected>اختر قسم الهندسة</option>
-        <option>هندسة كهرباء</option>
-        <option>هندسة ميكانيكا</option>
-        <option>هندسة مدني</option>
-        <option>هندسة اتصالات</option>
-        <option>هندسة حاسبات</option>
-      </select>
+    <div class="input-wrapper">
+      <input type="password" id="password" placeholder="كلمة المرور" required>
+      <button type="button" class="toggle-password" onclick="togglePassword()">👁️</button>
     </div>
 
-    <select id="year" required>
-      <option disabled selected>اختر السنة الدراسية</option>
-      <option>الأولى</option>
-      <option>الثانية</option>
-      <option>الثالثة</option>
-      <option>الرابعة</option>
-    </select>
-
-    <select id="governorate" required>
-      <option disabled selected>اختر المحافظة</option>
-      <option>القاهرة</option>
-      <option>الإسكندرية</option>
-      <option>الدقهلية</option>
-      <option>الشرقية</option>
-      <option>الغربية</option>
-      <option>المنوفية</option>
-      <!-- أضف باقي المحافظات -->
-    </select>
-
-    <button type="submit">سجل الآن</button>
+    <button type="submit">دخول</button>
     <div id="message" class="msg"></div>
   </form>
 </div>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
 
   const firebaseConfig = {
-    apiKey: "AIzaSyCDP-joF__rfWpSKskPrxBiUgxrJYAky5k",
-    authDomain: "studyboss-820fb.firebaseapp.com",
-    projectId: "studyboss-820fb",
-    storageBucket: "studyboss-820fb.firebasestorage.app",
-    messagingSenderId: "229979415926",
-    appId: "1:229979415926:web:ef954173bbd467de730657",
-    measurementId: "G-9514LXL0DF"
+    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+    authDomain: "studyboss-b2550.firebaseapp.com",
+    projectId: "studyboss-b2550",
+    storageBucket: "studyboss-b2550.firebasestorage.app",
+    messagingSenderId: "951238590009",
+    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+    measurementId: "G-BSM3P8C40G"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  const analytics = getAnalytics(app);
 
-  const form = document.getElementById('registerForm');
-  const msg = document.getElementById('message');
+  const form = document.getElementById("loginForm");
+  const msg = document.getElementById("message");
 
-  document.getElementById('college').addEventListener('change', function () {
-    const selected = this.value;
-    document.getElementById('engineering-department').style.display = selected === "هندسة" ? 'block' : 'none';
-  });
-
-  form.addEventListener('submit', async (e) => {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
-
-    const name = form.name.value.trim();
-    const email = form.email.value.trim();
-    const password = form.password.value.trim();
-    const college = form.college.value;
-    const year = form.year.value;
-    const governorate = form.governorate.value;
-    const department = document.getElementById('department')?.value || "";
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
     try {
-      const userCred = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCred.user.uid;
-
-      await setDoc(doc(db, "users", uid), {
-        name, email, college, year, governorate, department
-      });
-
-      msg.textContent = "تم التسجيل بنجاح ✅";
+      await signInWithEmailAndPassword(auth, email, password);
+      msg.textContent = "تم تسجيل الدخول بنجاح ✅";
       msg.className = "msg success";
-      form.reset();
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1500);
     } catch (error) {
-      msg.textContent = "خطأ: " + error.message;
+      msg.textContent = "❌ البريد أو كلمة المرور غير صحيحة";
       msg.className = "msg error";
     }
   });
+
+  window.togglePassword = function () {
+    const passField = document.getElementById("password");
+    passField.type = passField.type === "password" ? "text" : "password";
+  };
 </script>
 
 </body>
