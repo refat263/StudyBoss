@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>إعادة تعيين كلمة المرور | Study Boss</title>
+  <style>
+    body {
+      background: #0a1128;
+      font-family: 'Cairo', sans-serif;
+      color: #fff;
+      text-align: center;
+      padding: 50px;
+    }
+    input {
+      padding: 12px;
+      border-radius: 10px;
+      border: none;
+      width: 300px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+    }
+    button {
+      padding: 12px 30px;
+      background-color: #FFD700;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 20px;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>إعادة تعيين كلمة المرور</h1>
+  <input type="email" id="resetEmail" placeholder="ادخل بريدك الإلكتروني" required />
+  <br />
+  <button onclick="resetPassword()">إرسال رابط التعيين</button>
+  <div class="message" id="message"></div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.appspot.com",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const resetPassword = () => {
+      const email = document.getElementById("resetEmail").value.trim();
+      const message = document.getElementById("message");
+
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          message.textContent = "✅ تم إرسال رابط إعادة تعيين كلمة المرور لبريدك الإلكتروني.";
+          message.style.color = "#00ff88";
+        })
+        .catch(error => {
+          message.textContent = "❌ حصلت مشكلة: " + error.message;
+          message.style.color = "#ff4d4d";
+        });
+    };
+  </script>
+</body>
+</html>
