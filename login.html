@@ -1,104 +1,104 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
+      margin: 0;
+      padding: 0;
+      background: #0a1128;
       font-family: 'Cairo', sans-serif;
-      background-color: #0a1128;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
       color: #fff;
-      text-align: center;
-      padding: 60px 20px;
     }
 
-    h1 {
-      color: #FFD700;
-      margin-bottom: 30px;
-    }
-
-    form {
-      max-width: 400px;
-      margin: auto;
+    .login-container {
       background-color: #1c2541;
-      padding: 30px;
+      padding: 40px 30px;
       border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-    }
-
-    label {
-      display: block;
-      text-align: right;
-      margin-bottom: 8px;
-    }
-
-    input {
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
       width: 100%;
-      padding: 10px;
-      margin-bottom: 20px;
-      border-radius: 10px;
-      border: none;
-      font-family: 'Cairo', sans-serif;
+      max-width: 400px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
     }
 
-    input[type="submit"] {
+    .login-container h2 {
+      margin-bottom: 30px;
+      color: #FFD700;
+      font-size: 1.8rem;
+    }
+
+    .login-container input {
+      width: 100%;
+      padding: 12px 15px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .login-container input[type="text"],
+    .login-container input[type="password"] {
+      background-color: #eaeaea;
+      color: #0a1128;
+    }
+
+    .login-container button {
+      width: 100%;
       background-color: #FFD700;
       color: #0a1128;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
       font-weight: bold;
+      font-size: 1rem;
+      margin-top: 15px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background-color 0.3s ease;
     }
 
-    input[type="submit"]:hover {
+    .login-container button:hover {
       background-color: #fff;
-      color: #0a1128;
     }
 
-    .error {
-      color: #ff6666;
-      margin-bottom: 15px;
+    .login-container .signup-link {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    .login-container .signup-link a {
+      color: #FFD700;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
     }
   </style>
 </head>
 <body>
 
-  <h1>تسجيل الدخول</h1>
-
-  <form id="loginForm">
-    <div class="error" id="errorMessage"></div>
-
-    <label for="email">البريد الإلكتروني</label>
-    <input type="email" id="email" name="email" required />
-
-    <label for="password">كلمة المرور</label>
-    <input type="password" id="password" name="password" required />
-
-    <input type="submit" value="تسجيل الدخول" />
-  </form>
-
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const email = document.getElementById("email").value;
-      const password = document.getElementById("password").value;
-      const errorMessage = document.getElementById("errorMessage");
-
-      // بيانات وهمية – ممكن نغيرها بعدين
-      const fakeUser = {
-        email: "user@studyboss.com",
-        password: "123456"
-      };
-
-      if (email === fakeUser.email && password === fakeUser.password) {
-        window.location.href = "dashboard.html";
-      } else {
-        errorMessage.textContent = "البريد الإلكتروني أو كلمة المرور غير صحيحة.";
-      }
-    });
-  </script>
+  <div class="login-container">
+    <h2>تسجيل الدخول إلى Study Boss</h2>
+    <form>
+      <input type="text" placeholder="البريد الإلكتروني أو الاسم" required>
+      <input type="password" placeholder="كلمة المرور" required>
+      <button type="submit">دخول</button>
+    </form>
+    <div class="signup-link">
+      لسه مش عندك حساب؟ <a href="register.html">أنشئ حساب</a>
+    </div>
+  </div>
 
 </body>
 </html>
