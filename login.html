@@ -5,49 +5,58 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تسجيل الدخول | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #0a1128;
+      background: linear-gradient(135deg, #0a1128 40%, #1c2541);
       font-family: 'Cairo', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       color: #fff;
     }
 
     .login-container {
-      background-color: #1c2541;
+      background-color: rgba(28, 37, 65, 0.95);
       padding: 40px 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 25px rgba(255, 215, 0, 0.15);
+      border-radius: 20px;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
       width: 100%;
-      max-width: 400px;
-      text-align: center;
-      animation: fadeIn 1s ease-in-out;
+      max-width: 420px;
+      animation: slideIn 1s ease;
     }
 
     .login-container h2 {
-      margin-bottom: 30px;
+      margin-bottom: 25px;
       color: #FFD700;
-      font-size: 1.8rem;
+      font-size: 2rem;
     }
 
-    .login-container input {
+    .input-group {
+      position: relative;
+      margin: 15px 0;
+    }
+
+    .input-group i {
+      position: absolute;
+      top: 50%;
+      left: 15px;
+      transform: translateY(-50%);
+      color: #666;
+    }
+
+    .input-group input {
       width: 100%;
-      padding: 12px 15px;
-      margin: 10px 0;
+      padding: 12px 45px 12px 15px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 1rem;
-    }
-
-    .login-container input[type="text"],
-    .login-container input[type="password"] {
-      background-color: #eaeaea;
+      background-color: #f2f2f2;
       color: #0a1128;
+      outline: none;
     }
 
     .login-container button {
@@ -56,10 +65,10 @@
       color: #0a1128;
       padding: 12px;
       border: none;
-      border-radius: 8px;
+      border-radius: 10px;
       font-weight: bold;
-      font-size: 1rem;
-      margin-top: 15px;
+      font-size: 1.1rem;
+      margin-top: 20px;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
@@ -68,21 +77,28 @@
       background-color: #fff;
     }
 
-    .login-container .signup-link {
+    .signup-link {
       margin-top: 20px;
       font-size: 0.9rem;
       color: #ccc;
+      text-align: center;
     }
 
-    .login-container .signup-link a {
+    .signup-link a {
       color: #FFD700;
       text-decoration: none;
       font-weight: bold;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.95); }
-      to { opacity: 1; transform: scale(1); }
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 480px) {
+      .login-container {
+        padding: 30px 20px;
+      }
     }
   </style>
 </head>
@@ -91,8 +107,14 @@
   <div class="login-container">
     <h2>تسجيل الدخول إلى Study Boss</h2>
     <form>
-      <input type="text" placeholder="البريد الإلكتروني أو الاسم" required>
-      <input type="password" placeholder="كلمة المرور" required>
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" placeholder="البريد الإلكتروني أو الاسم" required>
+      </div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" placeholder="كلمة المرور" required>
+      </div>
       <button type="submit">دخول</button>
     </form>
     <div class="signup-link">
