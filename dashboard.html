@@ -9,93 +9,108 @@
     body {
       margin: 0;
       font-family: 'Cairo', sans-serif;
-      background: #0a1128;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       color: #fff;
       padding: 30px;
     }
 
     h1 {
       color: #FFD700;
-      font-size: 2.2rem;
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 5px rgba(255, 215, 0, 0.4);
     }
 
     .section {
-      background: #1c2541;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.2);
       border-radius: 15px;
-      padding: 20px;
-      margin-top: 20px;
-      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+      padding: 25px;
+      margin-top: 25px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: 0.3s;
     }
 
-    /* Progress */
+    .section:hover {
+      box-shadow: 0 6px 25px rgba(255, 215, 0, 0.3);
+    }
+
     .progress-bar {
       height: 20px;
-      background-color: #fff;
+      background-color: #ccc;
       border-radius: 10px;
       overflow: hidden;
       margin-top: 10px;
     }
+
     .progress {
       height: 100%;
-      background-color: #FFD700;
+      background: linear-gradient(to right, #FFD700, #ffa600);
       width: 18%;
     }
 
-    /* To-Do List */
+    /* To-Do */
     .todo input[type="text"] {
-      width: 80%;
-      padding: 10px;
-      border-radius: 10px;
+      width: calc(100% - 120px);
+      padding: 12px;
+      border-radius: 8px;
       border: none;
-      margin-bottom: 10px;
       font-size: 1rem;
     }
 
     .todo button {
-      padding: 10px;
-      background: #FFD700;
+      padding: 12px;
+      background: linear-gradient(to right, #FFD700, #ffa600);
       border: none;
-      border-radius: 10px;
-      cursor: pointer;
+      border-radius: 8px;
       font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .todo button:hover {
+      background: linear-gradient(to right, #fff, #FFD700);
+      color: #000;
     }
 
     .todo ul {
       list-style: none;
       padding: 0;
+      margin-top: 15px;
     }
 
     .todo li {
       background: #0a1128;
-      padding: 10px;
-      margin: 5px 0;
+      padding: 12px;
+      margin-bottom: 10px;
       border: 1px solid #FFD700;
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      transition: 0.3s;
+      transition: all 0.3s ease;
     }
 
     .todo li.done {
       text-decoration: line-through;
-      opacity: 0.6;
+      background-color: #132033;
+      opacity: 0.7;
       transform: scale(0.98);
-      background-color: #15203b;
     }
 
     .todo li button {
       background: none;
       color: #00ff88;
-      border: none;
       font-size: 1.2rem;
+      border: none;
       cursor: pointer;
     }
 
+    /* Pomodoro */
     .pomodoro-link {
       display: inline-block;
       margin-top: 15px;
-      background: #FFD700;
+      background: linear-gradient(to right, #FFD700, #ffa600);
       color: #0a1128;
       padding: 10px 20px;
       border-radius: 10px;
@@ -103,7 +118,12 @@
       font-weight: bold;
     }
 
-    /* Weekly planner */
+    .pomodoro-link:hover {
+      background: #fff;
+      color: #000;
+    }
+
+    /* Weekly Planner */
     .week {
       background-color: #16213e;
       border: 1px solid #FFD700;
@@ -111,10 +131,15 @@
       margin-top: 15px;
       padding: 15px;
       cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .week:hover {
+      background-color: #1f2e4b;
     }
 
     .week-title {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       color: #FFD700;
       display: flex;
       justify-content: space-between;
@@ -128,8 +153,8 @@
 
     .day {
       background-color: #0a1128;
-      padding: 10px;
-      margin: 10px 0;
+      padding: 12px;
+      margin: 8px 0;
       border-radius: 10px;
       border: 1px solid #FFD700;
     }
@@ -137,11 +162,6 @@
     .day h4 {
       margin: 0 0 10px;
       color: #fff;
-    }
-
-    .resources, .quiz {
-      margin-bottom: 8px;
-      font-size: 0.95rem;
     }
 
     .quiz button, .weekly-quiz button {
@@ -168,7 +188,7 @@
 
   <h1>أهلاً، رفعت! 👋</h1>
 
-  <!-- خطة المحترف -->
+  <!-- Progress Section -->
   <div class="section">
     <h2>📚 خطتك الدراسية: خطة المحترف</h2>
     <p>أنت حالياً في الأسبوع 3 من 16</p>
@@ -177,7 +197,7 @@
     </div>
   </div>
 
-  <!-- قائمة المهام -->
+  <!-- To-Do Section -->
   <div class="section todo">
     <h2>✅ قائمة المهام اليومية</h2>
     <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة...">
@@ -185,21 +205,21 @@
     <ul id="taskList"></ul>
   </div>
 
-  <!-- Pomodoro -->
+  <!-- Pomodoro Section -->
   <div class="section">
     <h2>⏱️ محتاج تركيز؟</h2>
     <p>جرب تقنية Pomodoro عشان تزود إنتاجيتك 👇</p>
     <a href="pomodoro.html" class="pomodoro-link">ابدأ Pomodoro</a>
   </div>
 
-  <!-- خطة الأسابيع -->
+  <!-- Weekly Plan Section -->
   <div class="section">
     <h2>🗓️ خطة الأسابيع</h2>
     <div class="weeks-container" id="weeksContainer"></div>
   </div>
 
   <script>
-    // ✅ To-do List
+    // To-Do Logic
     const input = document.getElementById("taskInput");
     const list = document.getElementById("taskList");
 
@@ -211,34 +231,29 @@
     function addTask() {
       const value = input.value.trim();
       if (value === "") return;
-
       renderTask(value);
-
-      let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+      const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
       tasks.push(value);
       localStorage.setItem("tasks", JSON.stringify(tasks));
-
       input.value = "";
     }
 
-    function renderTask(taskText) {
+    function renderTask(text) {
       const li = document.createElement("li");
-      li.innerHTML = `${taskText} <button>✔️</button>`;
-
+      li.innerHTML = `${text} <button>✔️</button>`;
       li.querySelector("button").addEventListener("click", () => {
         li.classList.add("done");
         setTimeout(() => {
           li.remove();
           let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-          tasks = tasks.filter(t => t !== taskText);
+          tasks = tasks.filter(t => t !== text);
           localStorage.setItem("tasks", JSON.stringify(tasks));
         }, 500);
       });
-
       list.appendChild(li);
     }
 
-    // ✅ Weekly planner
+    // Weekly planner
     const weeksContainer = document.getElementById("weeksContainer");
     const daysOfWeek = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس"];
     const totalWeeks = 16;
@@ -249,10 +264,7 @@
 
       const weekTitle = document.createElement("div");
       weekTitle.className = "week-title";
-      weekTitle.innerHTML = `
-        <span>📅 الأسبوع ${i}</span>
-        <span>➕</span>
-      `;
+      weekTitle.innerHTML = `<span>📅 الأسبوع ${i}</span><span>➕</span>`;
 
       const daysContainer = document.createElement("div");
       daysContainer.className = "days";
@@ -270,16 +282,13 @@
 
       const weeklyQuiz = document.createElement("div");
       weeklyQuiz.className = "weekly-quiz";
-      weeklyQuiz.innerHTML = `
-        <h4>📊 كويز الأسبوع ${i}</h4>
-        <button>ابدأ الكويز</button>
-      `;
+      weeklyQuiz.innerHTML = `<h4>📊 كويز الأسبوع ${i}</h4><button>ابدأ الكويز</button>`;
       daysContainer.appendChild(weeklyQuiz);
 
       weekTitle.addEventListener("click", () => {
-        const isVisible = daysContainer.style.display === "block";
-        daysContainer.style.display = isVisible ? "none" : "block";
-        weekTitle.querySelector("span:last-child").textContent = isVisible ? "➕" : "➖";
+        const visible = daysContainer.style.display === "block";
+        daysContainer.style.display = visible ? "none" : "block";
+        weekTitle.querySelector("span:last-child").textContent = visible ? "➕" : "➖";
       });
 
       week.appendChild(weekTitle);
