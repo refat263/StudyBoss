@@ -13,9 +13,8 @@
       color: #fff;
       padding: 30px;
     }
-    h1 {
+    h1, h2 {
       color: #FFD700;
-      font-size: 2.2rem;
     }
     .section {
       background: #1c2541;
@@ -73,14 +72,20 @@
       text-decoration: none;
       font-weight: bold;
     }
+    .user-info {
+      font-size: 1rem;
+      margin-top: 10px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
 
-  <h1>أهلاً، رفعت! 👋</h1>
+  <h1>أهلاً، <span id="userName">...</span> 👋</h1>
+  <div class="user-info" id="userEmail"></div>
 
   <div class="section">
-    <h2>📚 خطتك الدراسية: خطة المحترف</h2>
+    <h2>📚 خطتك الدراسية: <span id="userPlan">...</span></h2>
     <p>أنت حالياً في الأسبوع 3 من 16</p>
     <div class="progress-bar">
       <div class="progress"></div>
@@ -95,42 +100,95 @@
   </div>
 
   <div class="section">
+    <h2>🌟 نقاط الإنجاز</h2>
+    <p>نقاطك الحالية: <strong id="points">0</strong></p>
+  </div>
+
+  <div class="section">
     <h2>⏱️ محتاج تركيز؟</h2>
     <p>جرب تقنية Pomodoro عشان تزود إنتاجيتك 👇</p>
     <a href="pomodoro.html" class="pomodoro-link">ابدأ Pomodoro</a>
   </div>
 
-  <script>
-    // Load tasks from localStorage
-    document.addEventListener("DOMContentLoaded", () => {
-      const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
-      saved.forEach(task => renderTask(task));
+  <!-- Firebase -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+      authDomain: "studyboss-b2550.firebaseapp.com",
+      projectId: "studyboss-b2550",
+      storageBucket: "studyboss-b2550.appspot.com",
+      messagingSenderId: "951238590009",
+      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+      measurementId: "G-BSM3P8C40G"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
+
+    let currentUserUID = null;
+
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        currentUserUID = user.uid;
+        const userDoc = await getDoc(doc(db, "users", currentUserUID));
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          document.getElementById("userName").textContent = data.name || "طالب";
+          document.getElementById("userPlan").textContent = data.plan || "غير محدد";
+          document.getElementById("userEmail").textContent = data.email;
+        }
+        loadTasks();
+      } else {
+        window.location.href = "login.html";
+      }
     });
 
-    function addTask() {
+    async function loadTasks() {
+      const taskList = document.getElementById("taskList");
+      taskList.innerHTML = "";
+      let count = 0;
+      const snapshot = await getDocs(collection(db, "users", currentUserUID, "tasks"));
+      snapshot.forEach(docSnap => {
+        const task = docSnap.data().text;
+        renderTask(task, docSnap.id);
+        count++;
+      });
+      document.getElementById("points").textContent = count * 10;
+    }
+
+    async function addTask() {
       const input = document.getElementById("taskInput");
       const value = input.value.trim();
       if (value === "") return;
 
-      renderTask(value);
+      const docRef = await addDoc(collection(db, "users", currentUserUID, "tasks"), {
+        text: value,
+        createdAt: new Date()
+      });
 
-      let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-      tasks.push(value);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-
+      renderTask(value, docRef.id);
       input.value = "";
+
+      const snapshot = await getDocs(collection(db, "users", currentUserUID, "tasks"));
+      document.getElementById("points").textContent = snapshot.size * 10;
     }
 
-    function renderTask(task) {
+    function renderTask(task, taskId) {
       const li = document.createElement("li");
       li.textContent = task;
       const btn = document.createElement("button");
       btn.textContent = "✔️";
-      btn.onclick = () => {
+      btn.onclick = async () => {
+        await deleteDoc(doc(db, "users", currentUserUID, "tasks", taskId));
         li.remove();
-        let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-        tasks = tasks.filter(t => t !== task);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+
+        const snapshot = await getDocs(collection(db, "users", currentUserUID, "tasks"));
+        document.getElementById("points").textContent = snapshot.size * 10;
       };
       li.appendChild(btn);
       document.getElementById("taskList").appendChild(li);
