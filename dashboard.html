@@ -13,10 +13,12 @@
       color: #fff;
       padding: 30px;
     }
+
     h1 {
       color: #FFD700;
       font-size: 2.2rem;
     }
+
     .section {
       background: #1c2541;
       border-radius: 15px;
@@ -24,6 +26,7 @@
       margin-top: 20px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
     }
+
     .progress-bar {
       height: 20px;
       background-color: #fff;
@@ -31,18 +34,27 @@
       overflow: hidden;
       margin-top: 10px;
     }
+
     .progress {
       height: 100%;
       background-color: #FFD700;
-      width: 18%; /* عدل حسب الأسبوع */
+      width: 18%;
     }
+
+    .points {
+      font-size: 1.2rem;
+      margin-top: 10px;
+      color: #00ff88;
+    }
+
     .todo input[type="text"] {
-      width: 80%;
+      width: 75%;
       padding: 10px;
       border-radius: 10px;
       border: none;
       margin-bottom: 10px;
     }
+
     .todo button {
       padding: 10px;
       background: #FFD700;
@@ -50,10 +62,12 @@
       border-radius: 10px;
       cursor: pointer;
     }
+
     .todo ul {
       list-style: none;
       padding: 0;
     }
+
     .todo li {
       background: #0a1128;
       padding: 10px;
@@ -62,7 +76,9 @@
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
     }
+
     .pomodoro-link {
       display: inline-block;
       margin-top: 15px;
@@ -71,6 +87,16 @@
       padding: 10px 20px;
       border-radius: 10px;
       text-decoration: none;
+      font-weight: bold;
+    }
+
+    .badge {
+      background: #FFD700;
+      color: #0a1128;
+      padding: 5px 10px;
+      border-radius: 10px;
+      margin-top: 5px;
+      display: inline-block;
       font-weight: bold;
     }
   </style>
@@ -85,6 +111,8 @@
     <div class="progress-bar">
       <div class="progress"></div>
     </div>
+    <div class="points">نقاطك: <span id="points">0</span></div>
+    <div id="badge" class="badge">🏅 مبتدئ</div>
   </div>
 
   <div class="section todo">
@@ -101,10 +129,13 @@
   </div>
 
   <script>
-    // Load tasks from localStorage
+    let points = 0;
+    const badgeEl = document.getElementById("badge");
+
     document.addEventListener("DOMContentLoaded", () => {
       const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
       saved.forEach(task => renderTask(task));
+      updatePoints(0);
     });
 
     function addTask() {
@@ -113,17 +144,16 @@
       if (value === "") return;
 
       renderTask(value);
-
       let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
       tasks.push(value);
       localStorage.setItem("tasks", JSON.stringify(tasks));
-
       input.value = "";
     }
 
     function renderTask(task) {
       const li = document.createElement("li");
       li.textContent = task;
+
       const btn = document.createElement("button");
       btn.textContent = "✔️";
       btn.onclick = () => {
@@ -131,9 +161,21 @@
         let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
         tasks = tasks.filter(t => t !== task);
         localStorage.setItem("tasks", JSON.stringify(tasks));
+        updatePoints(10);
       };
+
       li.appendChild(btn);
       document.getElementById("taskList").appendChild(li);
+    }
+
+    function updatePoints(amount) {
+      points += amount;
+      document.getElementById("points").textContent = points;
+      if (points >= 50 && points < 100) {
+        badgeEl.textContent = "🥈 مجتهد";
+      } else if (points >= 100) {
+        badgeEl.textContent = "👑 محترف";
+      }
     }
   </script>
 
