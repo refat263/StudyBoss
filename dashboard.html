@@ -13,12 +13,10 @@
       color: #fff;
       padding: 30px;
     }
-
     h1 {
       color: #FFD700;
       font-size: 2.2rem;
     }
-
     .section {
       background: #1c2541;
       border-radius: 15px;
@@ -26,226 +24,292 @@
       margin-top: 20px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
     }
-
-    .section h2 {
-      color: #FFD700;
-      font-size: 1.4rem;
-      margin-bottom: 15px;
+    .progress-bar {
+      height: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress {
+      height: 100%;
+      background-color: #FFD700;
+      width: 18%;
     }
 
-    /* ✅ Pomodoro Timer */
-    .pomodoro {
+    .weeks-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .week-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      padding: 20px;
+      transition: 0.3s;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    }
+    .week-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(255, 215, 0, 0.2);
+    }
+    .week-header {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      gap: 15px;
+      color: #FFD700;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    .days-list {
+      display: none;
+      margin-top: 15px;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    .day-item {
+      background-color: #0a1128;
+      margin-bottom: 10px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #FFD700;
+    }
+    .day-item h4 {
+      margin: 0 0 8px;
+      color: #FFD700;
+    }
+    .quiz button, .weekly-quiz button {
+      background: #FFD700;
+      color: #0a1128;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .weekly-quiz {
+      text-align: center;
+      margin-top: 10px;
     }
 
-    .timer-circle {
+    /* To-Do */
+    .todo input[type="text"] {
+      width: 80%;
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      margin-bottom: 10px;
+    }
+    .todo button {
+      padding: 10px;
+      background: #FFD700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    .todo ul {
+      list-style: none;
+      padding: 0;
+    }
+    .todo li {
+      background: #0a1128;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #FFD700;
+      border-radius: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+    .todo li.completed {
+      text-decoration: line-through;
+      color: #ccc;
+      animation: completedTask 0.3s ease-in-out;
+    }
+    @keyframes completedTask {
+      from { transform: scale(1); opacity: 1; }
+      to { transform: scale(0.98); opacity: 0.7; }
+    }
+
+    /* Pomodoro */
+    .pomodoro {
+      text-align: center;
+    }
+    .pomodoro-timer {
       width: 200px;
       height: 200px;
-      border: 10px solid #FFD700;
+      margin: 20px auto;
+      border: 8px solid #FFD700;
       border-radius: 50%;
+      background: #1c2541;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 2rem;
       font-weight: bold;
-      background: #0a1128;
     }
-
-    .controls {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .controls button, .controls input {
-      padding: 10px;
-      border-radius: 10px;
-      font-weight: bold;
+    .pomodoro-controls input {
+      width: 60px;
+      padding: 5px;
+      border-radius: 6px;
       border: none;
+      text-align: center;
+      margin: 0 5px;
     }
-
-    .controls button {
+    .pomodoro-controls button {
       background: #FFD700;
       color: #0a1128;
+      border: none;
+      padding: 8px 16px;
+      margin: 0 5px;
+      font-size: 1rem;
+      font-weight: bold;
+      border-radius: 10px;
       cursor: pointer;
-      transition: 0.3s;
     }
 
-    .controls button:hover {
-      background: #fff;
-      color: #0a1128;
-    }
-
-    .controls input {
-      width: 60px;
-      text-align: center;
-    }
-
-    .input-label {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.9rem;
-      color: #FFD700;
-    }
-
-    @media (max-width: 600px) {
-      .timer-circle {
-        width: 160px;
-        height: 160px;
-        font-size: 1.5rem;
-      }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-  <h1>أهلاً، رفعت! 👋</h1>
+<h1>أهلاً، رفعت! 👋</h1>
 
-  <div class="section">
-    <h2>📚 خطتك الدراسية: خطة المحترف</h2>
-    <p>أنت حالياً في الأسبوع 3 من 16</p>
-    <div style="height: 20px; background: #fff; border-radius: 10px; overflow: hidden;">
-      <div style="height: 100%; width: 18%; background: #FFD700;"></div>
-    </div>
+<div class="section">
+  <h2>📚 خطتك الدراسية: خطة المحترف</h2>
+  <p>أنت حالياً في الأسبوع 3 من 16</p>
+  <div class="progress-bar">
+    <div class="progress"></div>
   </div>
+</div>
 
-  <div class="section">
-    <h2>✅ قائمة المهام اليومية</h2>
-    <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة..." style="width: 80%; padding: 10px; border-radius: 10px; border: none;">
-    <button onclick="addTask()" style="padding: 10px; background: #FFD700; border: none; border-radius: 10px; cursor: pointer;">إضافة</button>
-    <ul id="taskList" style="list-style: none; padding: 0; margin-top: 15px;"></ul>
+<div class="section">
+  <h2>📆 الأسابيع الدراسية</h2>
+  <div class="weeks-container" id="weeksContainer"></div>
+</div>
+
+<div class="section todo">
+  <h2>✅ قائمة المهام اليومية</h2>
+  <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة...">
+  <button onclick="addTask()">إضافة</button>
+  <ul id="taskList"></ul>
+</div>
+
+<div class="section pomodoro">
+  <h2>⏱️ مؤقت Pomodoro</h2>
+  <p>حدد وقت الجلسة والراحة وعدد الجولات</p>
+  <div>
+    <label>المدة (د):</label><input id="workInput" type="number" value="25">
+    <label>الراحة (د):</label><input id="breakInput" type="number" value="5">
   </div>
+  <div class="pomodoro-timer" id="timer">25:00</div>
+  <div class="pomodoro-controls">
+    <button onclick="startTimer()">ابدأ</button>
+    <button onclick="pauseTimer()">إيقاف</button>
+    <button onclick="resetTimer()">إعادة</button>
+  </div>
+</div>
 
-  <div class="section">
-    <h2>⏱️ مؤقت التركيز (Pomodoro)</h2>
-    <div class="pomodoro">
-      <div class="timer-circle" id="timer">25:00</div>
-      <div class="controls">
-        <button onclick="startTimer()">ابدأ</button>
-        <button onclick="pauseTimer()">إيقاف</button>
-        <button onclick="resetTimer()">إعادة</button>
+<script>
+// الأسابيع
+const weeksContainer = document.getElementById("weeksContainer");
+const days = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس"];
+for (let i = 1; i <= 16; i++) {
+  const card = document.createElement("div");
+  card.className = "week-card";
+  card.innerHTML = `
+    <div class="week-header">الأسبوع ${i} <span>📂</span></div>
+    <div class="days-list">${days.map(d => `
+      <div class="day-item">
+        <h4>📘 ${d}</h4>
+        <p>📄 الملخصات: <em>لم يتم الإضافة بعد</em></p>
+        <div class="quiz"><button>ابدأ كويز اليوم</button></div>
+      </div>`).join("")}
+      <div class="weekly-quiz">
+        <h4>📊 كويز الأسبوع ${i}</h4>
+        <button>ابدأ الآن</button>
       </div>
-      <div class="controls">
-        <label class="input-label">
-          جلسة:
-          <input type="number" id="focusInput" value="25" min="1">
-          دقيقة
-        </label>
-        <label class="input-label">
-          راحة:
-          <input type="number" id="breakInput" value="5" min="1">
-          دقيقة
-        </label>
-      </div>
-    </div>
-  </div>
+    </div>`;
+  const daysList = card.querySelector(".days-list");
+  card.querySelector(".week-header").onclick = () => {
+    daysList.style.display = daysList.style.display === "block" ? "none" : "block";
+  };
+  weeksContainer.appendChild(card);
+}
 
-  <script>
-    // ✅ To-Do List
-    document.addEventListener("DOMContentLoaded", () => {
-      const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
-      saved.forEach(task => renderTask(task));
-    });
+// To-do
+document.addEventListener("DOMContentLoaded", () => {
+  const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
+  saved.forEach(renderTask);
+});
+function addTask() {
+  const input = document.getElementById("taskInput");
+  const value = input.value.trim();
+  if (!value) return;
+  renderTask(value);
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  tasks.push(value);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  input.value = "";
+}
+function renderTask(task) {
+  const li = document.createElement("li");
+  li.textContent = task;
+  const btn = document.createElement("button");
+  btn.textContent = "✔️";
+  btn.onclick = () => {
+    li.classList.add("completed");
+    setTimeout(() => li.remove(), 500);
+    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]").filter(t => t !== task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+  li.appendChild(btn);
+  document.getElementById("taskList").appendChild(li);
+}
 
-    function addTask() {
-      const input = document.getElementById("taskInput");
-      const value = input.value.trim();
-      if (value === "") return;
-
-      renderTask(value);
-      let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-      tasks.push(value);
-      localStorage.setItem("tasks", JSON.stringify(tasks));
-      input.value = "";
-    }
-
-    function renderTask(task) {
-      const li = document.createElement("li");
-      li.textContent = task;
-      li.style.background = "#0a1128";
-      li.style.margin = "5px 0";
-      li.style.padding = "10px";
-      li.style.border = "1px solid #FFD700";
-      li.style.borderRadius = "10px";
-      li.style.display = "flex";
-      li.style.justifyContent = "space-between";
-      li.style.alignItems = "center";
-
-      const btn = document.createElement("button");
-      btn.textContent = "✔️";
-      btn.style.background = "#FFD700";
-      btn.style.border = "none";
-      btn.style.borderRadius = "8px";
-      btn.style.padding = "5px 10px";
-      btn.style.cursor = "pointer";
-
-      btn.onclick = () => {
-        li.style.textDecoration = "line-through";
-        li.style.opacity = "0.6";
-        setTimeout(() => li.remove(), 500);
-
-        let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-        tasks = tasks.filter(t => t !== task);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-      };
-
-      li.appendChild(btn);
-      document.getElementById("taskList").appendChild(li);
-    }
-
-    // ✅ Pomodoro Timer
-    let timer;
-    let time = 25 * 60;
-    let running = false;
-    let isBreak = false;
-
-    function updateDisplay() {
-      const mins = Math.floor(time / 60).toString().padStart(2, '0');
-      const secs = (time % 60).toString().padStart(2, '0');
-      document.getElementById("timer").textContent = `${mins}:${secs}`;
-    }
-
-    function startTimer() {
-      if (running) return;
-      running = true;
-      timer = setInterval(() => {
-        if (time > 0) {
-          time--;
-          updateDisplay();
-        } else {
-          clearInterval(timer);
-          running = false;
-          isBreak = !isBreak;
-          alert(isBreak ? "👏 وقت الراحة! خد استراحة شوية ☕" : "🔥 نرجع نكمل تركيزك 💪");
-          const newTime = isBreak
-            ? parseInt(document.getElementById("breakInput").value || 5)
-            : parseInt(document.getElementById("focusInput").value || 25);
-          time = newTime * 60;
-          updateDisplay();
-        }
-      }, 1000);
-    }
-
-    function pauseTimer() {
-      clearInterval(timer);
-      running = false;
-    }
-
-    function resetTimer() {
-      clearInterval(timer);
-      running = false;
-      isBreak = false;
-      const focus = parseInt(document.getElementById("focusInput").value || 25);
-      time = focus * 60;
-      updateDisplay();
-    }
-
-    updateDisplay();
-  </script>
+// Pomodoro
+let interval, time = 25 * 60, running = false;
+function updateDisplay() {
+  const mins = Math.floor(time / 60).toString().padStart(2, '0');
+  const secs = (time % 60).toString().padStart(2, '0');
+  document.getElementById("timer").textContent = `${mins}:${secs}`;
+}
+function startTimer() {
+  const work = parseInt(document.getElementById("workInput").value) || 25;
+  const rest = parseInt(document.getElementById("breakInput").value) || 5;
+  if (!running) {
+    time = work * 60;
+    running = true;
+    interval = setInterval(() => {
+      if (time > 0) {
+        time--;
+        updateDisplay();
+      } else {
+        clearInterval(interval);
+        alert("👏 خلصت الجولة! خد بريك وارجع تاني");
+        running = false;
+      }
+    }, 1000);
+  }
+}
+function pauseTimer() {
+  clearInterval(interval);
+  running = false;
+}
+function resetTimer() {
+  clearInterval(interval);
+  const mins = parseInt(document.getElementById("workInput").value) || 25;
+  time = mins * 60;
+  updateDisplay();
+  running = false;
+}
+updateDisplay();
+</script>
 </body>
 </html>
