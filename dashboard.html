@@ -13,9 +13,12 @@
       color: #fff;
       padding: 30px;
     }
-    h1, h2 {
+
+    h1 {
       color: #FFD700;
+      font-size: 2.2rem;
     }
+
     .section {
       background: #1c2541;
       border-radius: 15px;
@@ -23,6 +26,8 @@
       margin-top: 20px;
       box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
     }
+
+    /* Progress */
     .progress-bar {
       height: 20px;
       background-color: #fff;
@@ -33,26 +38,33 @@
     .progress {
       height: 100%;
       background-color: #FFD700;
-      width: 18%; /* عدل حسب الأسبوع */
+      width: 18%;
     }
+
+    /* To-Do List */
     .todo input[type="text"] {
       width: 80%;
       padding: 10px;
       border-radius: 10px;
       border: none;
       margin-bottom: 10px;
+      font-size: 1rem;
     }
+
     .todo button {
       padding: 10px;
       background: #FFD700;
       border: none;
       border-radius: 10px;
       cursor: pointer;
+      font-weight: bold;
     }
+
     .todo ul {
       list-style: none;
       padding: 0;
     }
+
     .todo li {
       background: #0a1128;
       padding: 10px;
@@ -61,7 +73,25 @@
       border-radius: 10px;
       display: flex;
       justify-content: space-between;
+      align-items: center;
+      transition: 0.3s;
     }
+
+    .todo li.done {
+      text-decoration: line-through;
+      opacity: 0.6;
+      transform: scale(0.98);
+      background-color: #15203b;
+    }
+
+    .todo li button {
+      background: none;
+      color: #00ff88;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
     .pomodoro-link {
       display: inline-block;
       margin-top: 15px;
@@ -72,26 +102,82 @@
       text-decoration: none;
       font-weight: bold;
     }
-    .user-info {
-      font-size: 1rem;
-      margin-top: 10px;
-      color: #ccc;
+
+    /* Weekly planner */
+    .week {
+      background-color: #16213e;
+      border: 1px solid #FFD700;
+      border-radius: 15px;
+      margin-top: 15px;
+      padding: 15px;
+      cursor: pointer;
+    }
+
+    .week-title {
+      font-size: 1.4rem;
+      color: #FFD700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .days {
+      display: none;
+      margin-top: 15px;
+    }
+
+    .day {
+      background-color: #0a1128;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid #FFD700;
+    }
+
+    .day h4 {
+      margin: 0 0 10px;
+      color: #fff;
+    }
+
+    .resources, .quiz {
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    .quiz button, .weekly-quiz button {
+      background-color: #FFD700;
+      color: #0a1128;
+      border: none;
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .weekly-quiz {
+      margin-top: 15px;
+      padding: 10px;
+      background-color: #1c2541;
+      border: 1px solid #FFD700;
+      border-radius: 10px;
+      text-align: center;
     }
   </style>
 </head>
 <body>
 
-  <h1>أهلاً، <span id="userName">...</span> 👋</h1>
-  <div class="user-info" id="userEmail"></div>
+  <h1>أهلاً، رفعت! 👋</h1>
 
+  <!-- خطة المحترف -->
   <div class="section">
-    <h2>📚 خطتك الدراسية: <span id="userPlan">...</span></h2>
+    <h2>📚 خطتك الدراسية: خطة المحترف</h2>
     <p>أنت حالياً في الأسبوع 3 من 16</p>
     <div class="progress-bar">
       <div class="progress"></div>
     </div>
   </div>
 
+  <!-- قائمة المهام -->
   <div class="section todo">
     <h2>✅ قائمة المهام اليومية</h2>
     <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة...">
@@ -99,99 +185,106 @@
     <ul id="taskList"></ul>
   </div>
 
-  <div class="section">
-    <h2>🌟 نقاط الإنجاز</h2>
-    <p>نقاطك الحالية: <strong id="points">0</strong></p>
-  </div>
-
+  <!-- Pomodoro -->
   <div class="section">
     <h2>⏱️ محتاج تركيز؟</h2>
     <p>جرب تقنية Pomodoro عشان تزود إنتاجيتك 👇</p>
     <a href="pomodoro.html" class="pomodoro-link">ابدأ Pomodoro</a>
   </div>
 
-  <!-- Firebase -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, doc, getDoc, setDoc, collection, addDoc, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  <!-- خطة الأسابيع -->
+  <div class="section">
+    <h2>🗓️ خطة الأسابيع</h2>
+    <div class="weeks-container" id="weeksContainer"></div>
+  </div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-      authDomain: "studyboss-b2550.firebaseapp.com",
-      projectId: "studyboss-b2550",
-      storageBucket: "studyboss-b2550.appspot.com",
-      messagingSenderId: "951238590009",
-      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-      measurementId: "G-BSM3P8C40G"
-    };
+  <script>
+    // ✅ To-do List
+    const input = document.getElementById("taskInput");
+    const list = document.getElementById("taskList");
 
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    let currentUserUID = null;
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        currentUserUID = user.uid;
-        const userDoc = await getDoc(doc(db, "users", currentUserUID));
-        if (userDoc.exists()) {
-          const data = userDoc.data();
-          document.getElementById("userName").textContent = data.name || "طالب";
-          document.getElementById("userPlan").textContent = data.plan || "غير محدد";
-          document.getElementById("userEmail").textContent = data.email;
-        }
-        loadTasks();
-      } else {
-        window.location.href = "login.html";
-      }
+    document.addEventListener("DOMContentLoaded", () => {
+      const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
+      saved.forEach(task => renderTask(task));
     });
 
-    async function loadTasks() {
-      const taskList = document.getElementById("taskList");
-      taskList.innerHTML = "";
-      let count = 0;
-      const snapshot = await getDocs(collection(db, "users", currentUserUID, "tasks"));
-      snapshot.forEach(docSnap => {
-        const task = docSnap.data().text;
-        renderTask(task, docSnap.id);
-        count++;
-      });
-      document.getElementById("points").textContent = count * 10;
-    }
-
-    async function addTask() {
-      const input = document.getElementById("taskInput");
+    function addTask() {
       const value = input.value.trim();
       if (value === "") return;
 
-      const docRef = await addDoc(collection(db, "users", currentUserUID, "tasks"), {
-        text: value,
-        createdAt: new Date()
-      });
+      renderTask(value);
 
-      renderTask(value, docRef.id);
+      let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+      tasks.push(value);
+      localStorage.setItem("tasks", JSON.stringify(tasks));
+
       input.value = "";
-
-      const snapshot = await getDocs(collection(db, "users", currentUserUID, "tasks"));
-      document.getElementById("points").textContent = snapshot.size * 10;
     }
 
-    function renderTask(task, taskId) {
+    function renderTask(taskText) {
       const li = document.createElement("li");
-      li.textContent = task;
-      const btn = document.createElement("button");
-      btn.textContent = "✔️";
-      btn.onclick = async () => {
-        await deleteDoc(doc(db, "users", currentUserUID, "tasks", taskId));
-        li.remove();
+      li.innerHTML = `${taskText} <button>✔️</button>`;
 
-        const snapshot = await getDocs(collection(db, "users", currentUserUID, "tasks"));
-        document.getElementById("points").textContent = snapshot.size * 10;
-      };
-      li.appendChild(btn);
-      document.getElementById("taskList").appendChild(li);
+      li.querySelector("button").addEventListener("click", () => {
+        li.classList.add("done");
+        setTimeout(() => {
+          li.remove();
+          let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+          tasks = tasks.filter(t => t !== taskText);
+          localStorage.setItem("tasks", JSON.stringify(tasks));
+        }, 500);
+      });
+
+      list.appendChild(li);
+    }
+
+    // ✅ Weekly planner
+    const weeksContainer = document.getElementById("weeksContainer");
+    const daysOfWeek = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس"];
+    const totalWeeks = 16;
+
+    for (let i = 1; i <= totalWeeks; i++) {
+      const week = document.createElement("div");
+      week.className = "week";
+
+      const weekTitle = document.createElement("div");
+      weekTitle.className = "week-title";
+      weekTitle.innerHTML = `
+        <span>📅 الأسبوع ${i}</span>
+        <span>➕</span>
+      `;
+
+      const daysContainer = document.createElement("div");
+      daysContainer.className = "days";
+
+      daysOfWeek.forEach(day => {
+        const dayDiv = document.createElement("div");
+        dayDiv.className = "day";
+        dayDiv.innerHTML = `
+          <h4>${day}</h4>
+          <div class="resources">📄 ملخص المحاضرات: <em>سيتم إضافته هنا</em></div>
+          <div class="quiz">📝 كويز يومي: <button>ابدأ</button></div>
+        `;
+        daysContainer.appendChild(dayDiv);
+      });
+
+      const weeklyQuiz = document.createElement("div");
+      weeklyQuiz.className = "weekly-quiz";
+      weeklyQuiz.innerHTML = `
+        <h4>📊 كويز الأسبوع ${i}</h4>
+        <button>ابدأ الكويز</button>
+      `;
+      daysContainer.appendChild(weeklyQuiz);
+
+      weekTitle.addEventListener("click", () => {
+        const isVisible = daysContainer.style.display === "block";
+        daysContainer.style.display = isVisible ? "none" : "block";
+        weekTitle.querySelector("span:last-child").textContent = isVisible ? "➕" : "➖";
+      });
+
+      week.appendChild(weekTitle);
+      week.appendChild(daysContainer);
+      weeksContainer.appendChild(week);
     }
   </script>
 
