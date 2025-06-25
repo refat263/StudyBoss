@@ -57,6 +57,22 @@
       color: #0a1128;
     }
 
+    .settings {
+      margin-bottom: 20px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .settings input {
+      width: 80px;
+      padding: 8px;
+      border-radius: 8px;
+      border: none;
+      text-align: center;
+    }
+
     a.back {
       margin-top: 30px;
       color: #FFD700;
@@ -68,7 +84,15 @@
 <body>
 
   <h1>⏱️ مؤقت Pomodoro</h1>
+
+  <div class="settings">
+    <input type="number" id="focusMinutes" placeholder="دقائق التركيز" min="1" value="25">
+    <input type="number" id="breakMinutes" placeholder="دقائق الراحة" min="1" value="5">
+    <button onclick="applySettings()">تطبيق</button>
+  </div>
+
   <div class="timer" id="timer">25:00</div>
+
   <div class="controls">
     <button onclick="startTimer()">ابدأ</button>
     <button onclick="pauseTimer()">إيقاف</button>
@@ -79,7 +103,9 @@
 
   <script>
     let timer;
-    let time = 25 * 60; // 25 دقيقة
+    let time = 25 * 60;
+    let focusTime = 25 * 60;
+    let breakTime = 5 * 60;
     let running = false;
 
     function updateDisplay() {
@@ -99,6 +125,8 @@
             clearInterval(timer);
             alert("👏 خلصت الجولة! خد بريك وارجع تاني 💛");
             running = false;
+            time = breakTime;
+            updateDisplay();
           }
         }, 1000);
       }
@@ -111,12 +139,21 @@
 
     function resetTimer() {
       clearInterval(timer);
-      time = 25 * 60;
+      time = focusTime;
       updateDisplay();
       running = false;
     }
 
-    // تشغيل التحديث أول مرة
+    function applySettings() {
+      const focusInput = parseInt(document.getElementById("focusMinutes").value) || 25;
+      const breakInput = parseInt(document.getElementById("breakMinutes").value) || 5;
+
+      focusTime = focusInput * 60;
+      breakTime = breakInput * 60;
+      time = focusTime;
+      updateDisplay();
+    }
+
     updateDisplay();
   </script>
 
