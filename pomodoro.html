@@ -3,16 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>مؤقت التركيز | Study Boss</title>
+  <title>مؤقت Pomodoro | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Cairo', sans-serif;
-      background: radial-gradient(ellipse at bottom, #0a1128, #000);
+      background: linear-gradient(145deg, #0a1128, #1c2541);
       color: #fff;
       display: flex;
       flex-direction: column;
@@ -21,45 +19,46 @@
       min-height: 100vh;
       margin: 0;
       text-align: center;
-      overflow: hidden;
     }
 
     h1 {
-      font-size: 2.3rem;
+      font-size: 2.2rem;
       color: #FFD700;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
       letter-spacing: 1px;
     }
 
     .pomodoro-box {
       background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 215, 0, 0.2);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 215, 0, 0.1);
       border-radius: 20px;
       padding: 40px 30px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
     .timer {
-      width: 250px;
-      height: 250px;
+      width: 240px;
+      height: 240px;
       border-radius: 50%;
-      background: conic-gradient(#FFD700 0% 0%, #222 0% 100%);
+      background: conic-gradient(#FFD700 0% 0%, #333 0% 100%);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2.5rem;
+      font-size: 2.7rem;
       font-weight: bold;
       margin: 0 auto 30px;
       position: relative;
       color: #fff;
+      transition: background 0.3s ease;
     }
 
     .timer::after {
       content: "";
       position: absolute;
-      width: 200px;
-      height: 200px;
+      width: 190px;
+      height: 190px;
       background: #1c2541;
       border-radius: 50%;
       top: 50%;
@@ -88,17 +87,17 @@
       border: none;
       text-align: center;
       font-weight: bold;
-      font-family: 'Cairo', sans-serif;
     }
 
     .settings button {
       padding: 10px 20px;
-      background: #FFD700;
+      background: linear-gradient(to right, #FFD700, #ffa600);
       color: #0a1128;
       border: none;
       border-radius: 10px;
       cursor: pointer;
       font-weight: bold;
+      box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
     }
 
     .controls button {
@@ -129,7 +128,7 @@
 </head>
 <body>
 
-  <h1>⏱️ مؤقت Pomodoro الاحترافي</h1>
+  <h1>⏱️ مؤقت Pomodoro</h1>
 
   <div class="pomodoro-box">
     <div class="settings">
@@ -162,7 +161,7 @@
       document.getElementById("timer").innerHTML = `<span>${mins}:${secs}</span>`;
       const percent = 100 - (time / focusTime * 100);
       document.getElementById("timer").style.background = 
-        `conic-gradient(#FFD700 ${percent}%, #222 ${percent}%)`;
+        `conic-gradient(#FFD700 ${percent}%, #333 ${percent}%)`;
     }
 
     function startTimer() {
