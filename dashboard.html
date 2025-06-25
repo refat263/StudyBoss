@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>لوحة التحكم | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
@@ -15,14 +15,11 @@
       min-height: 100vh;
     }
     h1 {
+      font-size: 2.4rem;
+      color: #FFD700;
+      margin-bottom: 30px;
       text-align: center;
-      font-size: 2.6rem;
-      color: #ffd700;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
     }
-    .container { max-width: 1200px; margin: auto; }
-
     .section {
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(8px);
@@ -30,16 +27,29 @@
       padding: 20px 25px;
       margin-bottom: 30px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      animation: fadeIn 0.5s ease-in-out;
     }
-    .section:hover { transform: translateY(-3px); }
     .section h2 {
       color: #FFD700;
       font-size: 1.5rem;
       margin-bottom: 15px;
     }
 
-    /* Weeks -->
-    .weeks {
+    .progress-bar {
+      height: 16px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .progress {
+      width: 18%;
+      height: 100%;
+      background: #FFD700;
+      border-radius: 8px;
+      transition: width .4s;
+    }
+
+    .weeks-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
       gap: 20px;
@@ -47,256 +57,242 @@
     .week-card {
       background: rgba(255,255,255,0.05);
       border-radius: 15px;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+      padding: 15px;
       box-shadow: 0 2px 15px rgba(0,0,0,0.3);
-      transition: transform .3s, box-shadow .3s;
+      cursor: pointer;
+      transition: transform .3s ease;
     }
     .week-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
     .week-header {
-      background: #ffd700;
-      color: #0a1128;
-      padding: 12px;
-      font-weight: bold;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      color: #FFD700;
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
     }
     .days-list {
       display: none;
-      flex: 1;
-      padding: 15px;
       animation: fadeIn .4s ease;
     }
     .day-item {
       background: rgba(0,0,0,0.2);
       border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 10px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background .2s;
-    }
-    .day-item:hover { background: rgba(0,0,0,0.3); }
-    .day-item h4 { color: #ffd700; font-size: 1rem; }
-    .day-item button {
-      background: #ffd700;
-      border: none;
-      color: #0a1128;
-      padding: 6px 12px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background .3s;
-    }
-    .day-item button:hover { background: #fff; }
-
-    .weekly-quiz {
-      text-align: center;
-      margin-top: 8px;
-    }
-    .weekly-quiz button {
-      background: linear-gradient(45deg,#ffd700,#ffa600);
-      color: #0a1128;
-      border: none;
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-weight: bold;
-      transition: background .3s;
-      cursor: pointer;
-    }
-    .weekly-quiz button:hover { background: #fff; }
-
-    @keyframes fadeIn { from {opacity:0; transform:translateY(-5px);} to {opacity:1; transform:none;} }
-
-    /* To‑Do */
-    .todo input {
-      width: 70%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 10px;
-    }
-    .todo button {
-      padding: 10px 16px;
-      background: #ffd700;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background .3s;
-    }
-    .todo button:hover { background: #fff; color:#0a1128; }
-    .todo ul { list-style: none; }
-    .todo li {
-      background: rgba(0,0,0,0.2);
-      border-radius: 8px;
       padding: 10px;
       margin-bottom: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: transform .2s, opacity .2s;
     }
-    .todo li.completed {
-      opacity: .6;
-      transform: scale(0.97);
-      text-decoration: line-through;
-    }
-    .todo li button {
-      background: none;
+    .day-item h4 { color: #FFD700; margin-bottom: 6px; }
+    .quiz-daily, .quiz-weekly button {
+      background: #FFD700;
+      color: #0a1128;
       border: none;
-      font-size: 1.2rem;
+      padding: 6px 12px;
+      margin: 5px 5px 0 0;
+      border-radius: 6px;
+      font-weight: bold;
       cursor: pointer;
-      color: #0f0;
+      transition: background 0.3s ease;
+    }
+    .quiz-daily:hover, .quiz-weekly button:hover {
+      background: #fff;
+    }
+    .quiz-weekly {
+      text-align: center;
+      margin-top: 10px;
     }
 
-    /* Pomodoro */
-    .pomodoro {
-      text-align: center;
+    .todo input, .todo button {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin: 5px;
     }
+    .todo input { width: 70%; }
+    .todo button {
+      background: #FFD700;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .todo ul { list-style: none; margin-top: 10px; }
+    .todo li {
+      background: rgba(0,0,0,0.2);
+      padding: 10px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      transition: all 0.3s ease;
+    }
+    .todo li.completed {
+      text-decoration: line-through;
+      opacity: 0.6;
+      transform: scale(0.98);
+    }
+
     .pomodoro input {
       width: 70px;
       padding: 8px;
-      border-radius: 6px;
-      border: none;
-      margin: 5px;
       text-align: center;
+      margin: 5px;
+      border: none;
+      border-radius: 6px;
     }
     .pomodoro-timer {
-      width: 160px;
-      height: 160px;
+      width: 180px;
+      height: 180px;
       margin: 20px auto;
-      border: 8px solid #ffd700;
+      border: 8px solid #FFD700;
       border-radius: 50%;
       background: #1c2541;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.6rem;
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+      font-size: 1.8rem;
     }
     .pomodoro-controls button {
-      background: #ffd700;
+      background: #FFD700;
       color: #0a1128;
-      border: none;
       padding: 8px 16px;
-      margin: 0 5px;
-      border-radius: 6px;
+      border: none;
+      margin: 5px;
+      border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
-      transition: background .3s;
     }
-    .pomodoro-controls button:hover { background: #fff; color:#0a1128; }
+
+    @keyframes fadeIn {
+      from {opacity:0; transform:translateY(-5px);}
+      to {opacity:1; transform:none;}
+    }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>أهلاً، رفعت! 👋</h1>
 
-    <div class="section">
-      <h2>📚 خطتك الدراسية: المحترف</h2>
-      <div class="progress-bar"><div class="progress"></div></div>
-    </div>
+<h1>أهلاً، رفعت! 👑</h1>
 
-    <div class="section">
-      <h2>📆 الأسابيع الدراسية</h2>
-      <div class="weeks" id="weeksContainer"></div>
-    </div>
+<div class="section">
+  <h2>📚 خطتك الدراسية: خطة المحترف</h2>
+  <div class="progress-bar"><div class="progress"></div></div>
+</div>
 
-    <div class="section todo">
-      <h2>✅ قائمة المهام اليومية</h2>
-      <input type="text" id="taskInput" placeholder="أضف مهمة...">
-      <button onclick="addTask()">إضافة</button>
-      <ul id="taskList"></ul>
-    </div>
+<div class="section">
+  <h2>📆 الأسابيع الدراسية</h2>
+  <div class="weeks-container" id="weeksContainer"></div>
+</div>
 
-    <div class="section pomodoro">
-      <h2>⏱️ موّقت Pomodoro</h2>
-      <div>
-        <input id="workInput" type="number" value="25"> دقيقة تركيز
-        <input id="breakInput" type="number" value="5"> دقيقة راحة
-      </div>
-      <div class="pomodoro-timer" id="timer">25:00</div>
-      <div class="pomodoro-controls">
-        <button onclick="startTimer()">ابدأ</button>
-        <button onclick="pauseTimer()">إيقاف</button>
-        <button onclick="resetTimer()">إعادة</button>
-      </div>
-    </div>
+<div class="section todo">
+  <h2>✅ المهام اليومية</h2>
+  <input id="taskInput" placeholder="اكتب مهمة جديدة...">
+  <button onclick="addTask()">إضافة</button>
+  <ul id="taskList"></ul>
+</div>
+
+<div class="section pomodoro">
+  <h2>⏱️ مؤقت Pomodoro</h2>
+  <div>
+    <input id="workInput" type="number" value="25"> دقيقة عمل
+    <input id="breakInput" type="number" value="5"> راحة
   </div>
+  <div class="pomodoro-timer" id="timer">25:00</div>
+  <div class="pomodoro-controls">
+    <button onclick="startTimer()">ابدأ</button>
+    <button onclick="pauseTimer()">إيقاف</button>
+    <button onclick="resetTimer()">إعادة</button>
+  </div>
+</div>
 
-  <script>
-    /* الأسابيع + كويز يومي */
-    const days = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"];
-    const weeksContainer = document.getElementById("weeksContainer");
-    for(let w=1; w<=16; w++){
-      const card = document.createElement("div"); card.className="week-card";
-      card.innerHTML = `<div class="week-header">الأسبوع ${w}<span>📂</span></div><div class="days-list">`
-        + days.map(d=>`
-          <div class="day-item">
-            <h4>📘 ${d}</h4>
-            <button onclick="alert('ابدأ كويز ${d} في الأسبوع ${w}!')">كويز اليوم</button>
-          </div>`).join('')
-        + `<div class="weekly-quiz"><button onclick="alert('كويز الأسبوع ${w} جاهز!')">كويز الأسبوع</button></div></div>`;
-      card.querySelector(".week-header").onclick = () => {
-        const dl = card.querySelector(".days-list");
-        dl.style.display = dl.style.display==="block"?"none":"block";
-      };
-      weeksContainer.appendChild(card);
-    }
+<script>
+const days = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"];
+const weeksContainer = document.getElementById("weeksContainer");
 
-    /* المهام */
-    document.addEventListener("DOMContentLoaded", ()=> {
-      (JSON.parse(localStorage.getItem("tasks")||"[]")).forEach(t=>renderTask(t));
-    });
-    function addTask(){
-      const v = document.getElementById("taskInput").value.trim();
-      if(!v) return;
-      renderTask(v);
-      const arr = JSON.parse(localStorage.getItem("tasks")||"[]"); arr.push(v);
-      localStorage.setItem("tasks", JSON.stringify(arr));
-      document.getElementById("taskInput").value="";
-    }
-    function renderTask(t){
-      const li = document.createElement("li"); li.textContent = t;
-      const btn = document.createElement("button"); btn.textContent="✔️";
-      btn.onclick = ()=>{ li.classList.add("completed"); setTimeout(()=>li.remove(),300);
-        const arr = JSON.parse(localStorage.getItem("tasks")||"[]").filter(x=>x!==t);
-        localStorage.setItem("tasks", JSON.stringify(arr));
-      };
-      li.appendChild(btn); document.getElementById("taskList").appendChild(li);
-    }
+for(let w=1; w<=16; w++){
+  const card = document.createElement("div");
+  card.className = "week-card";
+  let content = `<div class="week-header">الأسبوع ${w} <span>📂</span></div><div class="days-list">`;
+  days.forEach(d=>{
+    content += `<div class="day-item">
+      <h4>${d}</h4>
+      <button class="quiz-daily">📘 كويز اليوم</button>
+      <button class="quiz-daily">📄 تحميل الملخص</button>
+    </div>`;
+  });
+  content += `<div class="quiz-weekly"><button>📊 كويز الأسبوع ${w}</button></div></div>`;
+  card.innerHTML = content;
+  card.querySelector(".week-header").onclick = () => {
+    const list = card.querySelector(".days-list");
+    list.style.display = list.style.display === "block" ? "none" : "block";
+  };
+  weeksContainer.appendChild(card);
+}
 
-    /* Pomodoro */
-    let interval, timeVal, running=false;
-    function updateDisplay(){
-      const m = Math.floor(timeVal/60).toString().padStart(2,'0');
-      const s = (timeVal%60).toString().padStart(2,'0');
-      document.getElementById("timer").textContent=`${m}:${s}`;
-    }
-    function startTimer(){
-      if(running) return;
-      const w = parseInt(document.getElementById("workInput").value)||25;
-      timeVal = w*60; running=true;
+// ✅ المهام
+document.addEventListener("DOMContentLoaded", ()=>{
+  const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
+  saved.forEach(t => renderTask(t));
+});
+function addTask(){
+  const val = document.getElementById("taskInput").value.trim();
+  if (!val) return;
+  renderTask(val);
+  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+  tasks.push(val);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+  document.getElementById("taskInput").value = "";
+}
+function renderTask(task){
+  const li = document.createElement("li");
+  li.textContent = task;
+  const btn = document.createElement("button");
+  btn.textContent = "✔️";
+  btn.onclick = () => {
+    li.classList.add("completed");
+    setTimeout(()=>li.remove(), 500);
+    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]").filter(t => t !== task);
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+  };
+  li.appendChild(btn);
+  document.getElementById("taskList").appendChild(li);
+}
+
+// ✅ Pomodoro
+let interval, timeVal = 25*60, running = false;
+function updateDisplay(){
+  const m = String(Math.floor(timeVal/60)).padStart(2,'0');
+  const s = String(timeVal%60).padStart(2,'0');
+  document.getElementById("timer").textContent = `${m}:${s}`;
+}
+function startTimer(){
+  if (running) return;
+  const mins = parseInt(document.getElementById("workInput").value) || 25;
+  timeVal = mins * 60;
+  running = true;
+  updateDisplay();
+  interval = setInterval(()=>{
+    if (timeVal > 0){
+      timeVal--;
       updateDisplay();
-      interval = setInterval(()=>{
-        if(timeVal>0){ timeVal--; updateDisplay(); }
-        else { clearInterval(interval); running=false; alert("👏 خلصت جلسة Pomodoro!"); }
-      },1000);
+    } else {
+      clearInterval(interval);
+      running = false;
+      alert("👏 خلصت الجولة! خد بريك!");
     }
-    function pauseTimer(){ clearInterval(interval); running=false; }
-    function resetTimer(){
-      pauseTimer();
-      const w = parseInt(document.getElementById("workInput").value)||25;
-      timeVal = w*60; updateDisplay();
-    }
-    updateDisplay();
-  </script>
+  }, 1000);
+}
+function pauseTimer(){
+  clearInterval(interval);
+  running = false;
+}
+function resetTimer(){
+  pauseTimer();
+  const mins = parseInt(document.getElementById("workInput").value) || 25;
+  timeVal = mins * 60;
+  updateDisplay();
+}
+updateDisplay();
+</script>
+
 </body>
 </html>
