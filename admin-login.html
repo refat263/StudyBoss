@@ -2,46 +2,47 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>دخول الأدمن | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <title>لوحة تحكم الأدمن | Study Boss</title>
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background: #0a1128;
+      background-color: #0a1128;
       color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+      padding: 40px;
+      direction: rtl;
     }
-    .login-box {
-      background: #1c2541;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
+
+    h1 {
+      color: #FFD700;
     }
-    input {
+
+    label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    input, textarea {
       width: 100%;
       padding: 10px;
-      margin-top: 10px;
-      border-radius: 10px;
+      margin-top: 5px;
+      border-radius: 8px;
       border: none;
+      font-family: inherit;
     }
+
     button {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background: #FFD700;
+      margin-top: 30px;
+      background-color: #FFD700;
       color: #0a1128;
-      font-weight: bold;
+      padding: 12px 24px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      font-size: 1rem;
       cursor: pointer;
+      font-weight: bold;
     }
+
     button:hover {
       background: #fff;
     }
@@ -49,22 +50,72 @@
 </head>
 <body>
 
-<div class="login-box">
-  <h2>لوحة دخول الأدمن 🔐</h2>
-  <input type="password" id="adminPass" placeholder="ادخل كلمة السر">
-  <button onclick="login()">دخول</button>
-</div>
+<h1>🛠️ لوحة تحكم الأدمن</h1>
 
-<script>
-function login() {
-  const pass = document.getElementById('adminPass').value;
-  if (pass === "studyboss2025") {
-    localStorage.setItem("adminLoggedIn", "true");
-    window.location.href = "admin-panel.html";
-  } else {
-    alert("كلمة السر غلط ❌");
+<label>الأسبوع</label>
+<input type="number" id="week" placeholder="مثلاً: 3">
+
+<label>اليوم</label>
+<input type="text" id="day" placeholder="مثلاً: الاثنين">
+
+<label>رابط الملخص</label>
+<input type="text" id="summary" placeholder="https://...">
+
+<label>سؤال الكويز</label>
+<input type="text" id="question" placeholder="ما هو الحمض النووي؟">
+
+<label>اختيارات (افصلهم بفاصلة)</label>
+<input type="text" id="choices" placeholder="DNA, RNA, ATP, H2O">
+
+<label>الإجابة الصحيحة</label>
+<input type="text" id="answer" placeholder="DNA">
+
+<button onclick="uploadData()">💾 حفظ في Firebase</button>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCU7tjQHv0yPO74rAKEAwVjvGGalUmjgBQ",
+    authDomain: "study-boss-admin.firebaseapp.com",
+    databaseURL: "https://study-boss-admin-default-rtdb.firebaseio.com",
+    projectId: "study-boss-admin",
+    storageBucket: "study-boss-admin.firebasestorage.app",
+    messagingSenderId: "365808693326",
+    appId: "1:365808693326:web:df16ee5287a4b4da67d31f"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+
+  function uploadData() {
+    const week = document.getElementById("week").value;
+    const day = document.getElementById("day").value;
+    const summary = document.getElementById("summary").value;
+    const question = document.getElementById("question").value;
+    const choices = document.getElementById("choices").value.split(",");
+    const answer = document.getElementById("answer").value;
+
+    if (!week || !day || !summary || !question || choices.length < 2 || !answer) {
+      alert("❗ من فضلك املى كل البيانات");
+      return;
+    }
+
+    // حفظ الملخص
+    set(ref(db, `summaries/week${week}/${day}`), {
+      url: summary
+    });
+
+    // حفظ الكويز
+    set(ref(db, `quizzes/week${week}/${day}`), {
+      question,
+      choices,
+      answer
+    });
+
+    alert("✅ تم الحفظ بنجاح!");
   }
-}
 </script>
 
 </body>
