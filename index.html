@@ -3,131 +3,162 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Study Boss | نظم ترمك من أول يوم</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <title>Study Boss – المنصة الدراسية</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      margin: 0;
-      padding: 0;
-      background: #0a1128;
       font-family: 'Cairo', sans-serif;
+      background: #0a1128;
       color: #fff;
+      line-height: 1.6;
     }
 
-    .top-bar {
+    header.hero {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
-      padding: 15px 30px;
-      background-color: #0b1a33;
-    }
-
-    .login-link {
-      color: #FFD700;
-      font-weight: bold;
-      text-decoration: none;
-      font-size: 1rem;
-    }
-
-    .container {
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 30px;
-      gap: 40px;
+      padding: 60px 40px;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       flex-wrap: wrap;
     }
 
-    .image-side {
-      flex: 1;
-      max-width: 350px;
-    }
-
-    .image-side img {
-      width: 100%;
-      height: auto;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
-      animation: fadeIn 1.2s ease-in-out;
-    }
-
-    .text-side {
-      flex: 1;
+    .hero-text {
       max-width: 600px;
-      text-align: right;
     }
 
-    .text-side h2 {
-      font-size: 2rem;
-      color: #00bfff;
-      margin-bottom: 20px;
-      animation: fadeInUp 1s ease-in-out;
-    }
-
-    .text-side p {
-      font-size: 1.2rem;
+    .hero-text h1 {
+      font-size: 2.5rem;
       color: #FFD700;
-      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 1.2rem;
+      color: #ddd;
       margin-bottom: 30px;
-      animation: fadeInUp 1.4s ease-in-out;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
     }
 
     .btn {
-      background-color: #FFD700;
-      color: #0a1128;
-      border: none;
-      padding: 14px 30px;
-      border-radius: 12px;
+      padding: 15px 30px;
       font-size: 1.1rem;
-      font-weight: bold;
+      border-radius: 8px;
       cursor: pointer;
       transition: 0.3s;
-      text-decoration: none;
     }
 
-    .btn:hover {
-      background-color: #fff;
+    .btn.primary {
+      background: linear-gradient(90deg, #FFD700, #ffa600);
       color: #0a1128;
+      border: none;
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: scale(0.9); }
-      to { opacity: 1; transform: scale(1); }
+    .btn.primary:hover { opacity: .9; }
+
+    .btn.outline {
+      background: transparent;
+      color: #FFD700;
+      border: 2px solid #FFD700;
     }
 
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .btn.outline:hover { background: rgba(255, 215, 0, 0.1); }
+
+    .hero-img img {
+      max-width: 400px;
+      animation: float 6s infinite ease-in-out;
     }
 
-    @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    section.features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      padding: 40px;
+      background: #0a1128;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(8px);
+      border-radius: 15px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      transition: .3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.7);
+    }
+
+    .card h3 {
+      color: #FFD700;
+      margin-bottom: 15px;
+    }
+
+    .card p {
+      color: #ddd;
+    }
+
+    @media (max-width: 900px) {
+      header.hero {
+        flex-direction: column-reverse;
         text-align: center;
+        gap: 30px;
       }
-      .text-side {
-        text-align: center;
+      .hero-img img {
+        max-width: 300px;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="top-bar">
-    <a href="login.html" class="login-link">تسجيل الدخول</a>
-  </div>
+  <header class="hero">
+    <div class="hero-text">
+      <h1>من غير توتر، من غير لخبطة...<br>Study Boss ينظملك الترم 💼</h1>
+      <p>ابدأ صح معانا – الملخصات، الكويزات اليومية، وجدول دراسي متكامل 💪</p>
+      <div class="btn-group">
+        <button class="btn primary" onclick="goTo('dashboard.html')">ابدأ خطتك</button>
+        <button class="btn outline" onclick="goTo('register.html')">أنشئ حساب</button>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="logo-banner.png" alt="شعار Study Boss">
+    </div>
+  </header>
 
-  <div class="container">
-    <div class="image-side">
-      <img src="studyboss_banner_vertical_framed.jpg" alt="لوجو Study Boss">
+  <section class="features">
+    <div class="card">
+      <h3>📘 ملخصات يومية</h3>
+      <p>يسهّل عليك المذاكرة كل يوم خطوة بخطوة.</p>
     </div>
-    <div class="text-side">
-      <h2>مشكلتك مش في المذاكرة... مشكلتك في إنك تبدأ صح. وده دورنا إحنا 💪</h2>
-      <p>من غير توتر،    Study Boss هينظملك الترم كله من أول محاضرة لحد آخر سؤال في الفاينال.</p>
-      <a href="plans.html" class="btn">ابدأ الآن</a>
+    <div class="card">
+      <h3>❓ كويزات قصيرة</h3>
+      <p>اختبارات يومية وأسبوعية لمتابعة مستواك.</p>
     </div>
-  </div>
+    <div class="card">
+      <h3>⏱️ مؤقت تركيز Pomodoro</h3>
+      <p>خليك منتظم ومنتج طول المذاكرة.</p>
+    </div>
+  </section>
+
+  <script>
+    function goTo(page) {
+      window.location.href = page;
+    }
+  </script>
 
 </body>
 </html>
