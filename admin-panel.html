@@ -1,50 +1,118 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>لوحة تحكم الأدمن | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family:'Cairo'; background:#0a1128; color:#fff; padding:30px; }
-    h1 { color:#FFD700; margin-bottom:20px; }
-    .section { background:#1c2541; padding:20px; border-radius:15px; margin-bottom:20px; }
-    input, button { width:100%; padding:12px; margin:8px 0; border-radius:8px; border:none; font-size:1rem; }
-    button { background:#FFD700; color:#0a1128; font-weight:bold; cursor:pointer; }
+    body {
+      background: #0a1128;
+      color: #fff;
+      font-family: 'Cairo', sans-serif;
+      padding: 30px;
+    }
+    h1 {
+      color: #FFD700;
+      margin-bottom: 30px;
+    }
+    .section {
+      background: rgba(255,255,255,0.05);
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 40px;
+      box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      color: #FFD700;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      margin-bottom: 15px;
+    }
+    button {
+      background: #FFD700;
+      color: #0a1128;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #fff;
+      color: #0a1128;
+    }
   </style>
 </head>
 <body>
-  <h1>لوحة تحكم الأدمن</h1>
-  <div class="section">
-    <h2>📄 رفع ملخص يومي</h2>
-    <input type="number" id="weekNum" placeholder="رقم الأسبوع">
-    <input type="text" id="dayName" placeholder="اسم اليوم (مثلاً السبت)">
-    <input type="text" id="pdfLink" placeholder="رابط ملف PDF">
-    <button onclick="saveSummary()">حفظ الملخص</button>
-  </div>
-  <div class="section">
-    <h2>📝 إضافة كويز يومي</h2>
-    <input type="number" id="quizWeek" placeholder="رقم الأسبوع">
-    <input type="text" id="quizDay" placeholder="اسم اليوم">
-    <input type="text" id="quizLink" placeholder="رابط الكويز">
-    <button onclick="saveQuiz()">حفظ الكويز</button>
-  </div>
-  <script>
-    function saveSummary(){
-      const w = document.getElementById("weekNum").value.trim();
-      const d = document.getElementById("dayName").value.trim();
-      const l = document.getElementById("pdfLink").value.trim();
-      if (!w||!d||!l) return alert("برجاء ملء كل البيانات!");
-      localStorage.setItem(`summary_${w}_${d}`, l);
-      alert("✅ تم حفظ ملخص اليوم");
-    }
-    function saveQuiz(){
-      const w = document.getElementById("quizWeek").value.trim();
-      const d = document.getElementById("quizDay").value.trim();
-      const l = document.getElementById("quizLink").value.trim();
-      if (!w||!d||!l) return alert("برجاء ملء كل البيانات!");
-      localStorage.setItem(`quiz_${w}_${d}`, l);
-      alert("✅ تم حفظ كويز اليوم");
-    }
-  </script>
+
+<h1>📊 لوحة تحكم الأدمن - Study Boss</h1>
+
+<div class="section">
+  <h2>📚 إضافة ملخص</h2>
+  <label>رقم الأسبوع</label>
+  <input type="number" id="summaryWeek">
+
+  <label>اليوم</label>
+  <select id="summaryDay">
+    <option value="saturday">السبت</option>
+    <option value="sunday">الأحد</option>
+    <option value="monday">الاثنين</option>
+    <option value="tuesday">الثلاثاء</option>
+    <option value="wednesday">الأربعاء</option>
+    <option value="thursday">الخميس</option>
+  </select>
+
+  <label>رابط الملخص</label>
+  <input type="text" id="summaryLink" placeholder="مثال: https://...">
+
+  <button onclick="addSummary()">إضافة الملخص</button>
+</div>
+
+<div class="section">
+  <h2>🧠 إضافة سؤال كويز</h2>
+
+  <label>رقم الأسبوع</label>
+  <input type="number" id="quizWeek">
+
+  <label>اليوم</label>
+  <select id="quizDay">
+    <option value="saturday">السبت</option>
+    <option value="sunday">الأحد</option>
+    <option value="monday">الاثنين</option>
+    <option value="tuesday">الثلاثاء</option>
+    <option value="wednesday">الأربعاء</option>
+    <option value="thursday">الخميس</option>
+  </select>
+
+  <label>السؤال</label>
+  <input type="text" id="quizQuestion">
+
+  <label>الاختيارات (افصلهم بفاصلة)</label>
+  <input type="text" id="quizChoices" placeholder="مثال: أ, ب, ج, د">
+
+  <label>الإجابة الصحيحة</label>
+  <input type="text" id="quizAnswer">
+
+  <button onclick="addQuiz()">إضافة السؤال</button>
+</div>
+
+<script>
+function addSummary() {
+  alert("🚧 دي وظيفة وهمية حالياً – لازم backend أو Firebase لحفظ البيانات فعليًا في summaries.json");
+}
+
+function addQuiz() {
+  alert("🚧 دي وظيفة وهمية برضو – محتاجة backend أو GitHub API لرفع البيانات إلى quizzes.json");
+}
+</script>
+
 </body>
 </html>
