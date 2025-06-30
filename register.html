@@ -3,175 +3,128 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>تسجيل طالب | Study Boss</title>
+  <title>التسجيل | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #0a1128, #1c2541);
-      color: #fff;
       margin: 0;
-      padding: 40px 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
+      padding: 0;
+      background: linear-gradient(160deg, #0a1128, #1c2541);
+      font-family: 'Cairo', sans-serif;
+      color: #fff;
     }
-
-    h1 {
-      font-size: 2.2rem;
-      color: #FFD700;
-      margin-bottom: 25px;
-      text-align: center;
-    }
-
-    form {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      padding: 30px 25px;
-      border-radius: 20px;
-      width: 100%;
+    .container {
       max-width: 500px;
-      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      margin: 50px auto;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
+      backdrop-filter: blur(8px);
       animation: fadeIn .8s ease-in-out;
     }
-
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #FFD700;
+    }
+    label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #fff;
+    }
     input, select {
       width: 100%;
-      padding: 14px;
-      margin-bottom: 15px;
-      border-radius: 10px;
+      padding: 10px;
+      border-radius: 8px;
       border: none;
+      margin-bottom: 15px;
+      font-family: 'Cairo', sans-serif;
       font-size: 1rem;
-      background: #ffffff15;
-      color: #fff;
-      outline: none;
     }
-
-    input::placeholder {
-      color: #ccc;
-    }
-
     select option {
       color: #000;
     }
-
     button {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       background-color: #FFD700;
-      color: #0a1128;
-      font-weight: bold;
-      font-size: 1.1rem;
       border: none;
       border-radius: 10px;
+      font-weight: bold;
+      color: #0a1128;
+      font-size: 1.1rem;
       cursor: pointer;
-      transition: background .3s ease;
+      transition: background 0.3s;
     }
-
     button:hover {
-      background-color: #ffffff;
+      background-color: #fff;
+      color: #0a1128;
     }
-
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity: 0; transform: translateY(-20px);}
+      to { opacity: 1; transform: translateY(0);}
     }
   </style>
 </head>
 <body>
 
-<h1>📋 تسجيل طالب جديد في Study Boss</h1>
+<div class="container">
+  <h2>تسجيل طالب جديد 🎓</h2>
+  <form id="registerForm">
+    <label for="name">الاسم بالكامل</label>
+    <input type="text" id="name" required />
 
-<form id="registerForm">
-  <input type="text" id="name" placeholder="الاسم بالكامل" required />
-  <input type="email" id="email" placeholder="البريد الإلكتروني" required />
-  <input type="tel" id="phone" placeholder="رقم الهاتف" required />
+    <label for="email">البريد الإلكتروني</label>
+    <input type="email" id="email" required />
 
-  <select id="year" required>
-    <option value="">السنة الدراسية</option>
-    <option value="الأولى">الأولى</option>
-    <option value="الثانية">الثانية</option>
-    <option value="الثالثة">الثالثة</option>
-    <option value="الرابعة">الرابعة</option>
-  </select>
+    <label for="phone">رقم الهاتف</label>
+    <input type="tel" id="phone" required />
 
-  <select id="department" required>
-    <option value="">القسم (مثال: كهرباء، ميكانيكا...)</option>
-    <option value="عام">عام</option>
-    <option value="كهرباء">كهرباء</option>
-    <option value="ميكانيكا">ميكانيكا</option>
-    <option value="مدني">مدني</option>
-    <option value="اتصالات">اتصالات</option>
-    <option value="حاسبات">حاسبات</option>
-    <option value="عمارة">عمارة</option>
-    <option value="تمريض">تمريض</option>
-    <option value="صيدلة">صيدلة</option>
-  </select>
+    <label for="college">الكلية / التخصص</label>
+    <select id="college" required>
+      <option value="">اختر الكلية</option>
+      <option value="تمريض">تمريض</option>
+      <option value="صيدلة">صيدلة</option>
+      <option value="طب بشري">طب بشري</option>
+      <option value="علاج طبيعي">علاج طبيعي</option>
+      <option value="علوم طبية">علوم طبية</option>
+      <option value="هندسة">هندسة</option>
+      <option value="تجارة">تجارة</option>
+      <option value="حاسبات ومعلومات">حاسبات ومعلومات</option>
+      <option value="أخرى">أخرى</option>
+    </select>
 
-  <select id="plan" required>
-    <option value="">اختر خطتك</option>
-    <option value="الخطة 1">الخطة 1 - ملخصات فقط</option>
-    <option value="الخطة 2">الخطة 2 - ملخصات + متابعة</option>
-    <option value="الخطة 3">الخطة 3 - كل شيء + مراجعة</option>
-  </select>
+    <label for="plan">الخطة الدراسية</label>
+    <select id="plan" required>
+      <option value="">📦 اختر خطتك</option>
+      <option value="⭐ الخطة الأساسية">⭐ الخطة الأساسية</option>
+      <option value="🔥 خطة المتابعة">🔥 خطة المتابعة</option>
+      <option value="👑 خطة المحترف">👑 خطة المحترف</option>
+    </select>
 
-  <button type="submit">سجلني 👌</button>
-</form>
+    <button type="submit">تسجيل</button>
+  </form>
+</div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCU7tjQHv0yPO74rAKEAwVjvGGalUmjgBQ",
-    authDomain: "study-boss-admin.firebaseapp.com",
-    databaseURL: "https://study-boss-admin-default-rtdb.firebaseio.com",
-    projectId: "study-boss-admin",
-    storageBucket: "study-boss-admin.appspot.com",
-    messagingSenderId: "365808693326",
-    appId: "1:365808693326:web:df16ee5287a4b4da67d31f"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
-
+<script>
   document.getElementById("registerForm").addEventListener("submit", function(e) {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
-    const year = document.getElementById("year").value;
-    const department = document.getElementById("department").value;
+    const college = document.getElementById("college").value;
     const plan = document.getElementById("plan").value;
 
-    const code = "STB-" + Math.random().toString(36).substr(2, 6).toUpperCase();
+    if (!name || !email || !phone || !college || !plan) {
+      alert("يرجى ملء جميع الحقول.");
+      return;
+    }
 
-    const studentData = {
-      name,
-      email,
-      phone,
-      year,
-      department,
-      selectedPlan: plan,
-      isPaid: false,
-      activatedPlan: null,
-      code
-    };
-
-    set(ref(db, 'students/' + code), studentData)
-      .then(() => {
-        localStorage.setItem("studentCode", code);
-        window.location.href = "payment.html";
-      })
-      .catch((error) => {
-        alert("حصل خطأ أثناء التسجيل: " + error.message);
-      });
+    // ✅ هنا هيتم التعامل مع Firebase لاحقًا
+    alert("✅ تم التسجيل بنجاح!\nهيتم توجيهك لصفحة التعليمات الخاصة بالدفع.");
+    window.location.href = "payment-info.html";
   });
 </script>
 
