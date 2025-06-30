@@ -1,298 +1,98 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لوحة التحكم | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>داشبورد الطالب | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(160deg, #0a1128, #1c2541);
+      background: #0a1128;
       color: #fff;
-      padding: 30px;
-      min-height: 100vh;
+      padding: 20px;
     }
-    h1 {
-      font-size: 2.4rem;
+    h1, h2, h3 {
       color: #FFD700;
-      margin-bottom: 30px;
-      text-align: center;
     }
     .section {
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(8px);
-      border-radius: 20px;
-      padding: 20px 25px;
-      margin-bottom: 30px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-      animation: fadeIn 0.5s ease-in-out;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
     }
-    .section h2 {
-      color: #FFD700;
-      font-size: 1.5rem;
-      margin-bottom: 15px;
-    }
-
-    .progress-bar {
-      height: 16px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 8px;
-      overflow: hidden;
-    }
-    .progress {
-      width: 18%;
-      height: 100%;
-      background: #FFD700;
-      border-radius: 8px;
-      transition: width .4s;
-    }
-
-    .weeks-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px,1fr));
-      gap: 20px;
-    }
-    .week-card {
-      background: rgba(255,255,255,0.05);
-      border-radius: 15px;
+    #proSection {
+      border: 2px solid #FFD700;
       padding: 15px;
-      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
-      cursor: pointer;
-      transition: transform .3s ease;
-    }
-    .week-card:hover {
-      transform: translateY(-4px);
-    }
-    .week-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #FFD700;
-      font-weight: bold;
-      font-size: 1.1rem;
-      margin-bottom: 10px;
-    }
-    .days-list {
+      margin-top: 15px;
       display: none;
-      animation: fadeIn .4s ease;
-    }
-    .day-item {
-      background: rgba(0,0,0,0.2);
-      border-radius: 10px;
-      padding: 10px;
-      margin-bottom: 8px;
-    }
-    .day-item h4 { color: #FFD700; margin-bottom: 6px; }
-    .quiz-daily, .quiz-weekly button {
-      background: #FFD700;
-      color: #0a1128;
-      border: none;
-      padding: 6px 12px;
-      margin: 5px 5px 0 0;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
-    }
-    .quiz-daily:hover, .quiz-weekly button:hover {
-      background: #fff;
-    }
-    .quiz-weekly {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .todo input, .todo button {
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      margin: 5px;
-    }
-    .todo input { width: 70%; }
-    .todo button {
-      background: #FFD700;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .todo ul { list-style: none; margin-top: 10px; }
-    .todo li {
-      background: rgba(0,0,0,0.2);
-      padding: 10px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      transition: all 0.3s ease;
-    }
-    .todo li.completed {
-      text-decoration: line-through;
-      opacity: 0.6;
-      transform: scale(0.98);
-    }
-
-    .pomodoro input {
-      width: 70px;
-      padding: 8px;
-      text-align: center;
-      margin: 5px;
-      border: none;
-      border-radius: 6px;
-    }
-    .pomodoro-timer {
-      width: 180px;
-      height: 180px;
-      margin: 20px auto;
-      border: 8px solid #FFD700;
-      border-radius: 50%;
-      background: #1c2541;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.8rem;
-    }
-    .pomodoro-controls button {
-      background: #FFD700;
-      color: #0a1128;
-      padding: 8px 16px;
-      border: none;
-      margin: 5px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-
-    @keyframes fadeIn {
-      from {opacity:0; transform:translateY(-5px);}
-      to {opacity:1; transform:none;}
     }
   </style>
 </head>
 <body>
 
-<h1>أهلاً، رفعت! 👑</h1>
+  <h1>🎓 داشبورد الطالب</h1>
 
-<div class="section">
-  <h2>📚 خطتك الدراسية: خطة المحترف</h2>
-  <div class="progress-bar"><div class="progress"></div></div>
-</div>
-
-<div class="section">
-  <h2>📆 الأسابيع الدراسية</h2>
-  <div class="weeks-container" id="weeksContainer"></div>
-</div>
-
-<div class="section todo">
-  <h2>✅ المهام اليومية</h2>
-  <input id="taskInput" placeholder="اكتب مهمة جديدة...">
-  <button onclick="addTask()">إضافة</button>
-  <ul id="taskList"></ul>
-</div>
-
-<div class="section pomodoro">
-  <h2>⏱️ مؤقت Pomodoro</h2>
-  <div>
-    <input id="workInput" type="number" value="25"> دقيقة عمل
-    <input id="breakInput" type="number" value="5"> راحة
+  <div class="section">
+    <h2>👋 أهلاً، <span id="studentName">...جاري التحميل</span></h2>
+    <p>📌 خطتك الحالية: <strong id="activePlan">...جاري التحميل</strong></p>
   </div>
-  <div class="pomodoro-timer" id="timer">25:00</div>
-  <div class="pomodoro-controls">
-    <button onclick="startTimer()">ابدأ</button>
-    <button onclick="pauseTimer()">إيقاف</button>
-    <button onclick="resetTimer()">إعادة</button>
+
+  <div id="proSection">
+    <h3>👑 محتوى خطة المحترف</h3>
+    <ul>
+      <li>مراجعة نهائية</li>
+      <li>دعم مباشر من التيم</li>
+      <li>كل الأسابيع مفتوحة</li>
+    </ul>
   </div>
-</div>
 
-<script>
-const days = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"];
-const weeksContainer = document.getElementById("weeksContainer");
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-for(let w=1; w<=16; w++){
-  const card = document.createElement("div");
-  card.className = "week-card";
-  let content = `<div class="week-header">الأسبوع ${w} <span>📂</span></div><div class="days-list">`;
-  days.forEach(d=>{
-    content += `<div class="day-item">
-      <h4>${d}</h4>
-      <button class="quiz-daily">📘 كويز اليوم</button>
-      <button class="quiz-daily">📄 تحميل الملخص</button>
-    </div>`;
-  });
-  content += `<div class="quiz-weekly"><button>📊 كويز الأسبوع ${w}</button></div></div>`;
-  card.innerHTML = content;
-  card.querySelector(".week-header").onclick = () => {
-    const list = card.querySelector(".days-list");
-    list.style.display = list.style.display === "block" ? "none" : "block";
-  };
-  weeksContainer.appendChild(card);
-}
+    const firebaseConfig = {
+      apiKey: "AIzaSyCU7tjQHv0yPO74rAKEAwVjvGGalUmjgBQ",
+      authDomain: "study-boss-admin.firebaseapp.com",
+      databaseURL: "https://study-boss-admin-default-rtdb.firebaseio.com",
+      projectId: "study-boss-admin",
+      storageBucket: "study-boss-admin.appspot.com",
+      messagingSenderId: "365808693326",
+      appId: "1:365808693326:web:df16ee5287a4b4da67d31f"
+    };
 
-// ✅ المهام
-document.addEventListener("DOMContentLoaded", ()=>{
-  const saved = JSON.parse(localStorage.getItem("tasks") || "[]");
-  saved.forEach(t => renderTask(t));
-});
-function addTask(){
-  const val = document.getElementById("taskInput").value.trim();
-  if (!val) return;
-  renderTask(val);
-  const tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
-  tasks.push(val);
-  localStorage.setItem("tasks", JSON.stringify(tasks));
-  document.getElementById("taskInput").value = "";
-}
-function renderTask(task){
-  const li = document.createElement("li");
-  li.textContent = task;
-  const btn = document.createElement("button");
-  btn.textContent = "✔️";
-  btn.onclick = () => {
-    li.classList.add("completed");
-    setTimeout(()=>li.remove(), 500);
-    const tasks = JSON.parse(localStorage.getItem("tasks") || "[]").filter(t => t !== task);
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  };
-  li.appendChild(btn);
-  document.getElementById("taskList").appendChild(li);
-}
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
 
-// ✅ Pomodoro
-let interval, timeVal = 25*60, running = false;
-function updateDisplay(){
-  const m = String(Math.floor(timeVal/60)).padStart(2,'0');
-  const s = String(timeVal%60).padStart(2,'0');
-  document.getElementById("timer").textContent = `${m}:${s}`;
-}
-function startTimer(){
-  if (running) return;
-  const mins = parseInt(document.getElementById("workInput").value) || 25;
-  timeVal = mins * 60;
-  running = true;
-  updateDisplay();
-  interval = setInterval(()=>{
-    if (timeVal > 0){
-      timeVal--;
-      updateDisplay();
-    } else {
-      clearInterval(interval);
-      running = false;
-      alert("👏 خلصت الجولة! خد بريك!");
+    let studentCode = localStorage.getItem("studentCode");
+    if (!studentCode) {
+      const params = new URLSearchParams(window.location.search);
+      studentCode = params.get("code");
     }
-  }, 1000);
-}
-function pauseTimer(){
-  clearInterval(interval);
-  running = false;
-}
-function resetTimer(){
-  pauseTimer();
-  const mins = parseInt(document.getElementById("workInput").value) || 25;
-  timeVal = mins * 60;
-  updateDisplay();
-}
-updateDisplay();
-</script>
+
+    if (!studentCode) {
+      alert("لا يوجد كود طالب مسجل. من فضلك سجل الدخول أولاً.");
+      window.location.href = "login.html";
+    }
+
+    const studentRef = ref(db, "students/" + studentCode);
+    get(studentRef).then(snapshot => {
+      if (!snapshot.exists()) {
+        alert("الكود غير صحيح أو غير موجود.");
+        return;
+      }
+
+      const student = snapshot.val();
+      document.getElementById("studentName").textContent = student.name || "طالب";
+      document.getElementById("activePlan").textContent = student.activatedPlan || "🚫 لم يتم التفعيل بعد";
+
+      if (student.activatedPlan === "خطة المحترف") {
+        document.getElementById("proSection").style.display = "block";
+      }
+    }).catch(error => {
+      console.error("حدث خطأ أثناء تحميل البيانات:", error);
+    });
+  </script>
 
 </body>
 </html>
