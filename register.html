@@ -6,52 +6,92 @@
   <title>تسجيل طالب | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(160deg, #0a1128, #1c2541);
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       color: #fff;
-      padding: 30px;
+      margin: 0;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #FFD700;
+      margin-bottom: 25px;
       text-align: center;
     }
+
     form {
-      background: rgba(255,255,255,0.05);
-      padding: 25px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      padding: 30px 25px;
       border-radius: 20px;
-      max-width: 400px;
-      margin: auto;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+      animation: fadeIn .8s ease-in-out;
     }
+
     input, select {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
+      padding: 14px;
+      margin-bottom: 15px;
       border-radius: 10px;
       border: none;
       font-size: 1rem;
+      background: #ffffff15;
+      color: #fff;
+      outline: none;
     }
+
+    input::placeholder {
+      color: #ccc;
+    }
+
+    select option {
+      color: #000;
+    }
+
     button {
-      background: #FFD700;
+      width: 100%;
+      padding: 14px;
+      background-color: #FFD700;
       color: #0a1128;
-      padding: 12px 24px;
+      font-weight: bold;
+      font-size: 1.1rem;
       border: none;
       border-radius: 10px;
-      font-weight: bold;
-      font-size: 1rem;
       cursor: pointer;
+      transition: background .3s ease;
     }
+
     button:hover {
-      background: #fff;
+      background-color: #ffffff;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
 
-<h1>📋 تسجيل طالب جديد</h1>
+<h1>📋 تسجيل طالب جديد في Study Boss</h1>
 
 <form id="registerForm">
   <input type="text" id="name" placeholder="الاسم بالكامل" required />
   <input type="email" id="email" placeholder="البريد الإلكتروني" required />
   <input type="tel" id="phone" placeholder="رقم الهاتف" required />
+
   <select id="year" required>
     <option value="">السنة الدراسية</option>
     <option value="الأولى">الأولى</option>
@@ -59,13 +99,28 @@
     <option value="الثالثة">الثالثة</option>
     <option value="الرابعة">الرابعة</option>
   </select>
+
+  <select id="department" required>
+    <option value="">القسم (مثال: كهرباء، ميكانيكا...)</option>
+    <option value="عام">عام</option>
+    <option value="كهرباء">كهرباء</option>
+    <option value="ميكانيكا">ميكانيكا</option>
+    <option value="مدني">مدني</option>
+    <option value="اتصالات">اتصالات</option>
+    <option value="حاسبات">حاسبات</option>
+    <option value="عمارة">عمارة</option>
+    <option value="تمريض">تمريض</option>
+    <option value="صيدلة">صيدلة</option>
+  </select>
+
   <select id="plan" required>
     <option value="">اختر خطتك</option>
     <option value="الخطة 1">الخطة 1 - ملخصات فقط</option>
     <option value="الخطة 2">الخطة 2 - ملخصات + متابعة</option>
-    <option value="الخطة 3">الخطة 3 - كل شيء مفتوح + مراجعة نهائية</option>
+    <option value="الخطة 3">الخطة 3 - كل شيء + مراجعة</option>
   </select>
-  <button type="submit">سجلني</button>
+
+  <button type="submit">سجلني 👌</button>
 </form>
 
 <script type="module">
@@ -92,6 +147,7 @@
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const year = document.getElementById("year").value;
+    const department = document.getElementById("department").value;
     const plan = document.getElementById("plan").value;
 
     const code = "STB-" + Math.random().toString(36).substr(2, 6).toUpperCase();
@@ -101,6 +157,7 @@
       email,
       phone,
       year,
+      department,
       selectedPlan: plan,
       isPaid: false,
       activatedPlan: null,
