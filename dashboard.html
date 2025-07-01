@@ -1,98 +1,154 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>داشبورد الطالب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة الطالب | Study Boss</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Cairo', sans-serif;
-      background: #0a1128;
+      margin: 0;
+      padding: 30px;
       color: #fff;
-      padding: 20px;
+      min-height: 100vh;
+      background: #0a1128;
+      transition: background 0.4s;
     }
-    h1, h2, h3 {
+    .premium { background: linear-gradient(160deg, #0a1128, #FFD700); }
+    .advanced { background: linear-gradient(160deg, #0a1128, #00bfff); }
+    .basic   { background: linear-gradient(160deg, #0a1128, #00ff88); }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 2.3rem;
       color: #FFD700;
     }
+
     .section {
       background: rgba(255, 255, 255, 0.05);
+      border-radius: 20px;
       padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
     }
-    #proSection {
-      border: 2px solid #FFD700;
+
+    .section h2 {
+      font-size: 1.4rem;
+      margin-bottom: 10px;
+      color: #FFD700;
+    }
+
+    .weeks-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+
+    .week-card {
+      background: rgba(255, 255, 255, 0.08);
       padding: 15px;
-      margin-top: 15px;
-      display: none;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .week-card h3 {
+      color: #FFD700;
+      margin-bottom: 10px;
+    }
+
+    .day-item {
+      margin-bottom: 8px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 8px 12px;
+    }
+
+    .day-item button {
+      background: #FFD700;
+      color: #0a1128;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-left: 5px;
+    }
+
+    .info {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.1rem;
     }
   </style>
 </head>
 <body>
 
-  <h1>🎓 داشبورد الطالب</h1>
+<h1>لوحة الطالب</h1>
+<div class="info" id="studentInfo">جارٍ التحميل...</div>
 
-  <div class="section">
-    <h2>👋 أهلاً، <span id="studentName">...جاري التحميل</span></h2>
-    <p>📌 خطتك الحالية: <strong id="activePlan">...جاري التحميل</strong></p>
-  </div>
+<div class="section">
+  <h2>📅 الأسابيع الدراسية</h2>
+  <div class="weeks-container" id="weeksContainer"></div>
+</div>
 
-  <div id="proSection">
-    <h3>👑 محتوى خطة المحترف</h3>
-    <ul>
-      <li>مراجعة نهائية</li>
-      <li>دعم مباشر من التيم</li>
-      <li>كل الأسابيع مفتوحة</li>
-    </ul>
-  </div>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+  const firebaseConfig = {
+    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+    authDomain: "studyboss-b2550.firebaseapp.com",
+    projectId: "studyboss-b2550",
+    storageBucket: "studyboss-b2550.appspot.com",
+    messagingSenderId: "951238590009",
+    appId: "1:951238590009:web:1749d6b771b6f3586557e8"
+  };
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCU7tjQHv0yPO74rAKEAwVjvGGalUmjgBQ",
-      authDomain: "study-boss-admin.firebaseapp.com",
-      databaseURL: "https://study-boss-admin-default-rtdb.firebaseio.com",
-      projectId: "study-boss-admin",
-      storageBucket: "study-boss-admin.appspot.com",
-      messagingSenderId: "365808693326",
-      appId: "1:365808693326:web:df16ee5287a4b4da67d31f"
-    };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+  const userCode = localStorage.getItem("userCode");
+  if (!userCode) {
+    alert("لا يوجد كود مستخدم. برجاء تسجيل الدخول.");
+    window.location.href = "login.html";
+  }
 
-    let studentCode = localStorage.getItem("studentCode");
-    if (!studentCode) {
-      const params = new URLSearchParams(window.location.search);
-      studentCode = params.get("code");
-    }
+  const userRef = doc(db, "students", userCode);
+  const infoDiv = document.getElementById("studentInfo");
+  const weeksContainer = document.getElementById("weeksContainer");
 
-    if (!studentCode) {
-      alert("لا يوجد كود طالب مسجل. من فضلك سجل الدخول أولاً.");
-      window.location.href = "login.html";
-    }
+  try {
+    const snap = await getDoc(userRef);
+    if (!snap.exists()) {
+      infoDiv.innerHTML = "لم يتم العثور على بيانات الطالب.";
+    } else {
+      const data = snap.data();
+      document.body.classList.add(data.plan || "basic");
 
-    const studentRef = ref(db, "students/" + studentCode);
-    get(studentRef).then(snapshot => {
-      if (!snapshot.exists()) {
-        alert("الكود غير صحيح أو غير موجود.");
-        return;
+      infoDiv.innerHTML = `👤 مرحباً، ${data.name} <br> 📝 خطتك الحالية: <strong>${data.plan || "لم يتم التفعيل بعد"}</strong>`;
+
+      const days = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس"];
+      for (let i = 1; i <= 16; i++) {
+        const card = document.createElement("div");
+        card.className = "week-card";
+        card.innerHTML = `<h3>الأسبوع ${i}</h3>`;
+        days.forEach(day => {
+          card.innerHTML += `
+            <div class="day-item">
+              <strong>${day}</strong> 
+              <button>📘 كويز</button>
+              <button>📄 ملخص</button>
+            </div>`;
+        });
+        weeksContainer.appendChild(card);
       }
-
-      const student = snapshot.val();
-      document.getElementById("studentName").textContent = student.name || "طالب";
-      document.getElementById("activePlan").textContent = student.activatedPlan || "🚫 لم يتم التفعيل بعد";
-
-      if (student.activatedPlan === "خطة المحترف") {
-        document.getElementById("proSection").style.display = "block";
-      }
-    }).catch(error => {
-      console.error("حدث خطأ أثناء تحميل البيانات:", error);
-    });
-  </script>
+    }
+  } catch (e) {
+    infoDiv.innerHTML = "حدث خطأ أثناء جلب البيانات.";
+    console.error(e);
+  }
+</script>
 
 </body>
 </html>
