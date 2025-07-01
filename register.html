@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تسجيل حساب | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <style>
     body {
       margin: 0;
@@ -68,18 +67,6 @@
       background: linear-gradient(90deg, #fff, #FFD700);
     }
 
-    .login-link {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      color: #ccc;
-    }
-
-    .login-link a {
-      color: #FFD700;
-      text-decoration: none;
-      font-weight: bold;
-    }
-
     .message {
       margin-top: 15px;
       font-weight: bold;
@@ -87,137 +74,122 @@
       transition: 0.3s;
     }
 
-    .success {
-      color: #00ff88;
-    }
-
-    .error {
-      color: #ff4d4d;
-    }
+    .success { color: #00ff88; }
+    .error { color: #ff4d4d; }
   </style>
 </head>
 <body>
 
-  <div class="register-card">
-    <h2>إنشاء حساب جديد</h2>
-    <form id="registerForm">
-      <div class="input-group">
-        <input type="text" id="name" placeholder="الاسم الكامل" required>
-      </div>
-
-      <div class="input-group">
-        <input type="email" id="email" placeholder="البريد الإلكتروني" required>
-      </div>
-
-      <div class="input-group">
-        <input type="tel" id="phone" placeholder="رقم التليفون" required>
-      </div>
-
-      <div class="input-group">
-        <select id="college" required>
-          <option value="">اختر الكلية</option>
-          <option value="تمريض">تمريض</option>
-          <option value="هندسة">هندسة</option>
-          <option value="علوم تطبيقية">علوم تطبيقية</option>
-          <option value="بيزنس">بيزنس</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <select id="year" required>
-          <option value="">اختر السنة الدراسية</option>
-          <option value="1">الأولى</option>
-          <option value="2">الثانية</option>
-          <option value="3">الثالثة</option>
-          <option value="4">الرابعة</option>
-        </select>
-      </div>
-
-      <div class="input-group">
-        <select id="governorate" required>
-          <option value="">اختر المحافظة</option>
-          <option value="القاهرة">القاهرة</option>
-          <option value="الجيزة">الجيزة</option>
-          <option value="الإسكندرية">الإسكندرية</option>
-          <option value="الدقهلية">الدقهلية</option>
-          <!-- زوّد باقي المحافظات هنا -->
-        </select>
-      </div>
-
-      <div class="input-group">
-        <input type="password" id="password" placeholder="كلمة المرور" required>
-      </div>
-
-      <button type="submit">تسجيل</button>
-      <div id="message" class="message"></div>
-    </form>
-
-    <div class="login-link">
-      عندك حساب؟ <a href="login.html">سجّل دخولك</a>
+<div class="register-card">
+  <h2>إنشاء حساب جديد</h2>
+  <form id="registerForm">
+    <div class="input-group"><input type="text" id="name" placeholder="الاسم الكامل" required></div>
+    <div class="input-group"><input type="email" id="email" placeholder="البريد الإلكتروني" required></div>
+    <div class="input-group"><input type="tel" id="phone" placeholder="رقم التليفون" required></div>
+    <div class="input-group">
+      <select id="college" required>
+        <option value="">اختر الكلية</option>
+        <option value="تمريض">تمريض</option>
+        <option value="هندسة">هندسة</option>
+        <option value="علوم تطبيقية">علوم تطبيقية</option>
+        <option value="بيزنس">بيزنس</option>
+      </select>
     </div>
-  </div>
+    <div class="input-group">
+      <select id="year" required>
+        <option value="">اختر السنة الدراسية</option>
+        <option value="1">الأولى</option>
+        <option value="2">الثانية</option>
+        <option value="3">الثالثة</option>
+        <option value="4">الرابعة</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <select id="governorate" required>
+        <option value="">اختر المحافظة</option>
+        <option value="القاهرة">القاهرة</option>
+        <option value="الجيزة">الجيزة</option>
+        <option value="الإسكندرية">الإسكندرية</option>
+        <option value="الدقهلية">الدقهلية</option>
+        <!-- ممكن تكمل باقي المحافظات هنا -->
+      </select>
+    </div>
+    <div class="input-group"><input type="password" id="password" placeholder="كلمة المرور" required></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    <button type="submit">تسجيل</button>
+    <div id="message" class="message"></div>
+  </form>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-      authDomain: "studyboss-b2550.firebaseapp.com",
-      projectId: "studyboss-b2550",
-      storageBucket: "studyboss-b2550.appspot.com",
-      messagingSenderId: "951238590009",
-      appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-      measurementId: "G-BSM3P8C40G"
-    };
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+  const firebaseConfig = {
+    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+    authDomain: "studyboss-b2550.firebaseapp.com",
+    projectId: "studyboss-b2550",
+    storageBucket: "studyboss-b2550.appspot.com",
+    messagingSenderId: "951238590009",
+    appId: "1:951238590009:web:1749d6b771b6f3586557e8"
+  };
 
-    const form = document.getElementById("registerForm");
-    const message = document.getElementById("message");
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
+  const form = document.getElementById("registerForm");
+  const message = document.getElementById("message");
 
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const college = document.getElementById("college").value;
-      const year = document.getElementById("year").value;
-      const governorate = document.getElementById("governorate").value;
-      const password = document.getElementById("password").value;
+  function generateStudentCode(length = 6) {
+    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let code = "";
+    for (let i = 0; i < length; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
 
-      try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const uid = userCredential.user.uid;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-        await setDoc(doc(db, "users", uid), {
-          name,
-          email,
-          phone,
-          college,
-          year,
-          governorate,
-          createdAt: serverTimestamp()
-        });
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const college = document.getElementById("college").value;
+    const year = document.getElementById("year").value;
+    const governorate = document.getElementById("governorate").value;
+    const password = document.getElementById("password").value;
 
-        message.textContent = "تم إنشاء الحساب بنجاح ✅";
-        message.className = "message success";
+    const studentCode = generateStudentCode();
+    const paymentStatus = "pending";
+    const plan = "none";
 
-        setTimeout(() => {
-          window.location.href = "login.html";
-        }, 1500);
-      } catch (error) {
-        message.textContent = "❌ حصلت مشكلة أثناء التسجيل: " + error.message;
-        message.className = "message error";
-      }
-    });
-  </script>
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+
+      await setDoc(doc(db, "users", uid), {
+        name, email, phone, college, year, governorate,
+        studentCode, paymentStatus, plan,
+        createdAt: serverTimestamp()
+      });
+
+      message.textContent = `✅ تم التسجيل بنجاح. كودك هو: ${studentCode}`;
+      message.className = "message success";
+
+      // تحويل المستخدم لصفحة التأكيد
+      setTimeout(() => {
+        window.location.href = `confirmation.html?code=${studentCode}`;
+      }, 2000);
+
+    } catch (error) {
+      message.textContent = "❌ خطأ: " + error.message;
+      message.className = "message error";
+    }
+  });
+</script>
 
 </body>
 </html>
-
-
