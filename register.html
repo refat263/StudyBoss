@@ -1,132 +1,80 @@
-<!DOCTYPE html>
-<html lang="ar" dir="rtl">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>التسجيل | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(160deg, #0a1128, #1c2541);
-      font-family: 'Cairo', sans-serif;
-      color: #fff;
-    }
-    .container {
-      max-width: 500px;
-      margin: 50px auto;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 30px;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.4);
-      backdrop-filter: blur(8px);
-      animation: fadeIn .8s ease-in-out;
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 25px;
-      color: #FFD700;
-    }
-    label {
-      display: block;
-      margin: 10px 0 5px;
-      color: #fff;
-    }
-    input, select {
-      width: 100%;
-      padding: 10px;
-      border-radius: 8px;
-      border: none;
-      margin-bottom: 15px;
-      font-family: 'Cairo', sans-serif;
-      font-size: 1rem;
-    }
-    select option {
-      color: #000;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #FFD700;
-      border: none;
-      border-radius: 10px;
-      font-weight: bold;
-      color: #0a1128;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    button:hover {
-      background-color: #fff;
-      color: #0a1128;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-20px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-  </style>
-</head>
-<body>
+<!-- نفس الـ <head> بتاعك يفضل كما هو -->
 
-<div class="container">
-  <h2>تسجيل طالب جديد 🎓</h2>
-  <form id="registerForm">
-    <label for="name">الاسم بالكامل</label>
-    <input type="text" id="name" required />
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    <label for="email">البريد الإلكتروني</label>
-    <input type="email" id="email" required />
+  // إعداد Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
+    authDomain: "studyboss-b2550.firebaseapp.com",
+    projectId: "studyboss-b2550",
+    storageBucket: "studyboss-b2550.appspot.com",
+    messagingSenderId: "951238590009",
+    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
+    measurementId: "G-BSM3P8C40G"
+  };
 
-    <label for="phone">رقم الهاتف</label>
-    <input type="tel" id="phone" required />
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
 
-    <label for="college">الكلية / التخصص</label>
-    <select id="college" required>
-      <option value="">اختر الكلية</option>
-      <option value="تمريض">تمريض</option>
-      <option value="صيدلة">صيدلة</option>
-      <option value="طب بشري">طب بشري</option>
-      <option value="علاج طبيعي">علاج طبيعي</option>
-      <option value="علوم طبية">علوم طبية</option>
-      <option value="هندسة">هندسة</option>
-      <option value="تجارة">تجارة</option>
-      <option value="حاسبات ومعلومات">حاسبات ومعلومات</option>
-      <option value="أخرى">أخرى</option>
-    </select>
+  const form = document.getElementById("registerForm");
+  const message = document.getElementById("message");
 
-    <label for="plan">الخطة الدراسية</label>
-    <select id="plan" required>
-      <option value="">📦 اختر خطتك</option>
-      <option value="⭐ الخطة الأساسية">⭐ الخطة الأساسية</option>
-      <option value="🔥 خطة المتابعة">🔥 خطة المتابعة</option>
-      <option value="👑 خطة المحترف">👑 خطة المحترف</option>
-    </select>
+  // دالة توليد كود عشوائي للطالب
+  function generateStudentCode(length = 6) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < length; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+  }
 
-    <button type="submit">تسجيل</button>
-  </form>
-</div>
-
-<script>
-  document.getElementById("registerForm").addEventListener("submit", function(e) {
+  form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const name = document.getElementById("name").value.trim();
     const email = document.getElementById("email").value.trim();
     const phone = document.getElementById("phone").value.trim();
     const college = document.getElementById("college").value;
-    const plan = document.getElementById("plan").value;
+    const year = document.getElementById("year").value;
+    const governorate = document.getElementById("governorate").value;
+    const password = document.getElementById("password").value;
 
-    if (!name || !email || !phone || !college || !plan) {
-      alert("يرجى ملء جميع الحقول.");
-      return;
+    const studentCode = generateStudentCode();
+    const paymentStatus = "pending"; // مبدأيًا لم يتم الدفع
+    const plan = "none"; // مبدأيًا بدون خطة
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const uid = userCredential.user.uid;
+
+      await setDoc(doc(db, "users", uid), {
+        name,
+        email,
+        phone,
+        college,
+        year,
+        governorate,
+        studentCode,
+        paymentStatus,
+        plan,
+        createdAt: serverTimestamp()
+      });
+
+      message.textContent = "✅ تم إنشاء الحساب بنجاح. كودك هو: " + studentCode;
+      message.className = "message success";
+
+      setTimeout(() => {
+        window.location.href = "confirmation.html?code=" + studentCode;
+      }, 2000);
+
+    } catch (error) {
+      message.textContent = "❌ حصلت مشكلة أثناء التسجيل: " + error.message;
+      message.className = "message error";
     }
-
-    // ✅ هنا هيتم التعامل مع Firebase لاحقًا
-    alert("✅ تم التسجيل بنجاح!\nهيتم توجيهك لصفحة التعليمات الخاصة بالدفع.");
-    window.location.href = "payment-info.html";
   });
 </script>
-
-</body>
-</html>
