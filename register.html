@@ -1,68 +1,85 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <!-- (مثل ما أرسلته سابقًا — بدون تغيير في التصميم) -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>تسجيل حساب | Study Boss</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+  /* تصميم البطاقة كما هو بدون تغيير */
+  body { margin:0; font-family:'Cairo'; background:linear-gradient(135deg,#0a1128,#1c2541); display:flex; align-items:center; justify-content:center; height:100vh; padding:20px; }
+  .register-card { background:rgba(255,255,255,0.05); backdrop-filter:blur(15px); border:1px solid rgba(255,255,255,0.1); padding:30px 25px; border-radius:20px; box-shadow:0 0 25px rgba(255,215,0,0.2); width:100%; max-width:500px; color:#fff; }
+  .register-card h2 { margin-bottom:20px; color:#FFD700; font-size:2rem; text-align:center; }
+  .input-group { margin-bottom:15px; }
+  .input-group input, .input-group select { width:100%; padding:12px; border-radius:10px; border:none; font-size:1rem; box-sizing:border-box; }
+  button { width:100%; padding:12px; background:linear-gradient(90deg,#FFD700,#ffa600); color:#0a1128; border:none; border-radius:12px; font-size:1.1rem; font-weight:700; cursor:pointer; }
+  button:hover { background:linear-gradient(90deg,#fff,#FFD700); }
+  .login-link { margin-top:20px; text-align:center; color:#ccc; }
+  .login-link a { color:#FFD700; font-weight:700; text-decoration:none; }
+  .message { margin-top:15px; font-weight:700; font-size:1rem; transition:.3s; text-align:center; }
+  .success { color:#0f0; }
+  .error { color:#f44; }
+</style>
 </head>
 <body>
-  <div class="register-card">
-    <h2>إنشاء حساب جديد</h2>
-    <form id="registerForm">
-      <!-- الحقول: الاسم، الإيميل، الهاتف، الكلية، السنة، المحافظة، كلمة المرور -->
-      <button type="submit">تسجيل</button>
-      <div id="message" class="message"></div>
-    </form>
-    <div class="login-link">
-      عندك حساب؟ <a href="login.html">سجّل دخولك</a>
+<div class="register-card">
+  <h2>إنشاء حساب جديد</h2>
+  <form id="registerForm">
+    <div class="input-group"><input type="text" id="name" placeholder="الاسم الكامل" required></div>
+    <div class="input-group"><input type="email" id="email" placeholder="البريد الإلكتروني" required></div>
+    <div class="input-group"><input type="tel" id="phone" placeholder="رقم التليفون" required></div>
+    <div class="input-group">
+      <select id="college" required>
+        <option value="">اختر الكلية</option>
+        <option>تمريض</option><option>هندسة</option><option>علوم تطبيقية</option><option>بيزنس</option>
+      </select>
     </div>
-  </div>
+    <div class="input-group">
+      <select id="year" required>
+        <option value="">اختر السنة الدراسية</option>
+        <option value="1">الأولى</option><option value="2">الثانية</option><option value="3">الثالثة</option><option value="4">الرابعة</option>
+      </select>
+    </div>
+    <div class="input-group">
+      <select id="governorate" required>
+        <option value="">اختر المحافظة</option>
+        <option>القاهرة</option><option>الجيزة</option><option>الإسكندرية</option><option>الدقهلية</option>
+      </select>
+    </div>
+    <div class="input-group"><input type="password" id="password" placeholder="كلمة المرور" required></div>
+    <button type="submit">تسجيل</button>
+    <div id="message" class="message"></div>
+  </form>
+  <div class="login-link">عندك حساب؟ <a href="login.html">سجّل دخولك</a></div>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-    const firebaseConfig = {
-      apiKey: "...",
-      authDomain: "...",
-      projectId: "studyboss-b2550",
-      storageBucket: "...",
-      messagingSenderId: "...",
-      appId: "..."
-    };
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+const app = initializeApp({
+  apiKey: "...", authDomain: "...", projectId: "studyboss-b2550",
+  storageBucket: "...", messagingSenderId: "...", appId: "..."
+});
+const auth = getAuth(app), db = getFirestore(app);
 
-    const form = document.getElementById("registerForm");
-    const message = document.getElementById("message");
+document.getElementById("registerForm").addEventListener("submit", async function(e){
+  e.preventDefault();
+  const data = ["name","email","phone","college","year","governorate","password"].reduce((o,id)=>{o[id]=document.getElementById(id).value;return o;},{});
+  const plan = localStorage.getItem("selectedPlan") || "الخطة الأساسية";
 
-    form.addEventListener("submit", async e => {
-      e.preventDefault();
-      const name = document.getElementById("name").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const college = document.getElementById("college").value;
-      const year = document.getElementById("year").value;
-      const governorate = document.getElementById("governorate").value;
-      const password = document.getElementById("password").value;
-      const plan = localStorage.getItem("selectedPlan") || "الخطة الأساسية";
-
-      try {
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
-        const uid = userCred.user.uid;
-        await setDoc(doc(db, "students", uid), {
-          name, email, phone, college, year, governorate,
-          plan, activated: false, code: uid,
-          createdAt: serverTimestamp()
-        });
-        message.textContent = "تم إنشاء الحساب بنجاح ✅";
-        message.className = "message success";
-        setTimeout(() => window.location.href="login.html", 1500);
-      } catch (err) {
-        message.textContent = "❌ حصلت مشكلة: " + err.message;
-        message.className = "message error";
-      }
-    });
-  </script>
+  try {
+    const uc = await createUserWithEmailAndPassword(auth, data.email, data.password);
+    const uid = uc.user.uid;
+    await setDoc(doc(db, "students", uid), {...data, plan, activated:false, code:uid, createdAt: serverTimestamp()});
+    document.getElementById("message").textContent="تم إنشاء الحساب بنجاح ✅"; document.getElementById("message").className="message success";
+    setTimeout(()=>location.href="login.html",1500);
+  } catch(err) {
+    document.getElementById("message").textContent="❌ "+err.message; document.getElementById("message").className="message error";
+  }
+});
+</script>
 </body>
 </html>
