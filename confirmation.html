@@ -4,82 +4,98 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تأكيد التسجيل | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: 'Cairo', sans-serif;
-      background: linear-gradient(145deg, #0a1128, #1c2541);
-      color: #fff;
+      background: linear-gradient(135deg, #0a1128, #1c2541);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 30px;
       min-height: 100vh;
-    }
-
-    .card {
-      background: rgba(255,255,255,0.05);
-      padding: 30px;
-      border-radius: 20px;
+      color: #fff;
       text-align: center;
-      box-shadow: 0 0 25px rgba(255,215,0,0.2);
-      max-width: 500px;
     }
 
-    h2 {
+    .confirmation-card {
+      background: rgba(255, 255, 255, 0.06);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255, 215, 0, 0.2);
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .confirmation-card h2 {
       color: #FFD700;
       font-size: 2rem;
       margin-bottom: 20px;
     }
 
-    .student-code {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #00ffcc;
-      margin-bottom: 25px;
-    }
-
-    .instructions {
+    .confirmation-card p {
       font-size: 1.1rem;
-      color: #ccc;
       line-height: 1.8;
+      margin-bottom: 20px;
     }
 
-    .highlight {
-      color: #FFD700;
+    .code-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px 20px;
+      border-radius: 10px;
+      font-size: 1.3rem;
       font-weight: bold;
+      color: #00ff88;
+      margin: 15px 0;
+      direction: ltr;
+      letter-spacing: 2px;
     }
 
-    .footer {
-      margin-top: 30px;
-      font-size: 0.9rem;
-      color: #888;
+    .btn {
+      display: inline-block;
+      background: #FFD700;
+      color: #0a1128;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #fff;
+      color: #0a1128;
     }
   </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>🎉 تم تسجيل حسابك بنجاح!</h2>
-    <div class="student-code">🎓 كودك هو: <span id="code">...</span></div>
+<div class="confirmation-card">
+  <h2>🎉 تم التسجيل بنجاح!</h2>
+  <p>شكراً لانضمامك لـ <strong>Study Boss</strong> 👑</p>
 
-    <div class="instructions">
-      برجاء تحويل الاشتراك على رقم فودافون كاش التالي:<br><br>
-      <span class="highlight">010xxxxxxxx</span><br><br>
-      ثم إرسال إثبات التحويل على نفس الرقم على واتساب.<br><br>
-      بعد التأكيد، هيتم تفعيل خطتك يدويًا من قبل فريقنا.
-    </div>
+  <p>🔑 كودك الشخصي هو:</p>
+  <div class="code-box" id="codeBox">#</div>
 
-    <div class="footer">Study Boss - نظم ترمك من أول يوم 🎯</div>
-  </div>
+  <p>🎯 يرجى تحويل الاشتراك على رقم فودافون كاش:</p>
+  <p><strong style="color: #FFD700;">01012345678</strong></p>
 
-  <script>
-    // جلب الكود من URL
-    const params = new URLSearchParams(window.location.search);
-    const code = params.get("code");
+  <p>ثم إرسال إثبات التحويل على نفس الرقم على واتساب.</p>
 
-    document.getElementById("code").textContent = code ? code : "لم يتم توليد كود";
-  </script>
+  <a href="login.html" class="btn">تسجيل الدخول</a>
+</div>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const studentCode = params.get('code');
+  if (studentCode) {
+    document.getElementById("codeBox").textContent = studentCode;
+  } else {
+    document.getElementById("codeBox").textContent = "—";
+  }
+</script>
 
 </body>
 </html>
