@@ -1,33 +1,60 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>خطط الاشتراك | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    /* CSS كامل زي اللي أرسلته سابقًا لتصميم الخطط بأسلوب جذاب */
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>خطط الاشتراك | Study Boss</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* CSS التصميم كما هو بدون تغيير */
+  body { font-family: 'Cairo',sans-serif; margin:0; background:#0a1128; color:#fff; text-align:center; padding:40px 20px; }
+  h1 { color:#FFD700; font-size:2.8rem; margin-bottom:40px; }
+  .plans { display:flex; flex-wrap:wrap; justify-content:center; gap:30px; }
+  .plan { background:#1c2541; border:2px solid #FFD700; border-radius:20px; padding:30px; width:300px; box-shadow:0 0 15px rgba(255,215,0,0.2); transition:transform .3s ease; position:relative; }
+  .plan:hover { transform:scale(1.05); }
+  .plan h2 { color:#FFD700; font-size:2rem; margin-bottom:10px; }
+  .price { font-size:1.6rem; color:#FFD700; margin-bottom:20px; }
+  .features { text-align:right; margin-bottom:20px; line-height:1.7; font-size:1rem; }
+  .btn { background:#FFD700; color:#0a1128; border:none; padding:12px 25px; border-radius:10px; font-size:1rem; cursor:pointer; transition:0.3s; font-weight:bold; text-decoration:none; display:inline-block; }
+  .btn:hover { background:#fff; color:#0a1128; }
+  .tag { position:absolute; top:-10px; left:-10px; background:#FFD700; color:#0a1128; padding:5px 10px; border-top-right-radius:10px; border-bottom-left-radius:10px; font-weight:bold; font-size:.9rem; }
+  @media (max-width:768px){ .plans { flex-direction:column; align-items:center; } }
+</style>
 </head>
 <body>
   <h1>خطط الاشتراك</h1>
   <div class="plans">
     <div class="plan">
       <h2>⭐ الخطة الأساسية</h2>
-      <div class="price">119 جنيه / شهريًا</div>
-      <div class="features">...</div>
-      <a class="btn" href="register.html" onclick="setPlan('الخطة الأساسية')">اشترك الآن</a>
+      <div class="price">119 جنيه / شهريًا</div>
+      <div class="features">
+        ✅ ملخصات المحاضرات أول بأول<br>
+        ✅ وضع ليلي ونهاري<br>
+        ✅ متابعة شهرية من فريق الدعم<br>
+        ❌ لا يوجد تواصل مباشر<br>
+        ❌ لا توجد مراجعة نهائية<br>
+        ❌ يجب حل Quiz لفتح الأسابيع
+      </div>
+      <a href="register.html" class="btn" onclick="selectPlan('الخطة الأساسية')">اشترك الآن</a>
     </div>
+
     <div class="plan">
       <div class="tag">الأكثر اختيارًا</div>
       <h2>🔥 خطة المتابعة</h2>
-      <div class="price">179 جنيه / شهريًا</div>
-      <div class="features">...</div>
-      <a class="btn" href="register.html" onclick="setPlan('خطة المتابعة')">اشترك الآن</a>
+      <div class="price">179 جنيه / شهريًا</div>
+      <div class="features">
+        ✅ كل مميزات الخطة الأساسية<br>
+        ✅ تواصل واتساب/مكالمات<br>
+        ✅ جدول مذاكرة وتنبيهات<br>
+        ✅ متابعة كل أسبوعين<br>
+        ❌ يجب حل Quiz لفتح الأسابيع
+      </div>
+      <a href="register.html" class="btn" onclick="selectPlan('خطة المتابعة')">اشترك الآن</a>
     </div>
+
     <div class="plan">
       <h2>👑 خطة المحترف</h2>
-      <div class="price">249 جنيه / شهريًا</div>
+      <div class="price">249 جنيه / شهريًا</div>
       <div class="features">
         ✅ كل مميزات خطة المتابعة<br>
         ✅ جميع الأسابيع مفتوحة بدون Quiz<br>
@@ -37,13 +64,13 @@
         ✅ نقاط وشهادات تحفيزية<br>
         ✅ Quiz يومي تقييمي لكل ملخص
       </div>
-      <a class="btn" href="register.html" onclick="setPlan('خطة المحترف')">اشترك الآن</a>
+      <a href="register.html" class="btn" onclick="selectPlan('خطة المحترف')">اشترك الآن</a>
     </div>
   </div>
 
   <script>
-    function setPlan(planName) {
-      localStorage.setItem("selectedPlan", planName);
+    function selectPlan(plan){
+      localStorage.setItem('selectedPlan', plan);
     }
   </script>
 </body>
