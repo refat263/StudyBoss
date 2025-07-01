@@ -1,83 +1,94 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>لوحة الطالب | Study Boss</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    body { font-family:'Cairo'; margin:0; padding:30px; color:#fff; min-height:100vh; transition:background .4s; }
-    body.الخطة\ الأساسية   { background: linear-gradient(160deg, #0a1128, #00ff88); }
-    body.خطة\ المتابعة     { background: linear-gradient(160deg, #0a1128, #00bfff); }
-    body.خطة\ المحترف      { background: linear-gradient(160deg, #0a1128, #FFD700); }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>لوحة التحكم | Study Boss</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; font-family:'Cairo'; background:#0a1128; color:#fff; padding:30px; }
+  h1 { color:#FFD700; font-size:2.2rem; margin-bottom:20px; text-align:center }
+  .section { background:#1c2541; border-radius:15px; padding:20px; margin-bottom:20px; box-shadow:0 0 10px rgba(255,215,0,0.2); }
+  .weeks-container { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:20px; margin-top:10px }
+  .week-card { background:rgba(255,255,255,0.06); border-radius:20px; padding:20px; transition:.3s; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.2) }
+  .week-card:hover { transform:translateY(-5px); box-shadow:0 10px 25px rgba(255,215,0,0.2) }
+  .week-header { display:flex; justify-content:space-between; align-items:center; color:#FFD700; font-size:1.2rem; font-weight:bold }
+  .days-list { display:none; margin-top:15px; animation:fadeIn .5s ease }
+  .day-item { background:#0a1128; margin-bottom:10px; padding:12px; border-radius:12px; border:1px solid #FFD700 }
+  .day-item h4 { margin:0 0 8px; color:#FFD700 }
+  .day-item .quiz button { background:#FFD700; color:#0a1128; border:none; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer }
+  .weekly-quiz { text-align:center; margin-top:10px }
+  .weekly-quiz button { background:linear-gradient(to right,#FFD700,#ffa600); color:#0a1128; padding:8px 16px; border:none;border-radius:10px;font-weight:bold;cursor:pointer }
 
-    h1 { text-align:center; margin-bottom:30px; font-size:2.3rem; color:#FFD700; }
-    .info { text-align:center; margin-bottom:20px; font-size:1.1rem; }
-
-    .section { background:rgba(255,255,255,0.05); border-radius:20px; padding:20px;
-      margin-bottom:25px; box-shadow:0 4px 15px rgba(0,0,0,0.4); }
-    .weeks-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
-    .week-card { background:rgba(255,255,255,0.08); padding:15px; border-radius:15px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.3); }
-    .week-card h3 { color:#FFD700; }
-    .day-item { margin-bottom:8px; background:rgba(0,0,0,0.2); border-radius:10px; padding:8px 12px; }
-    .day-item button { background:#FFD700;color:#0a1128;border:none;padding:5px 10px;border-radius:6px;
-      cursor:pointer;margin-left:5px; }
-  </style>
+  @keyframes fadeIn { from { opacity:0; transform:translateY(-5px) } to { opacity:1; transform:translateY(0) } }
+</style>
 </head>
 <body>
-  <h1>لوحة الطالب</h1>
-  <div class="info" id="studentInfo">جارٍ التحميل...</div>
-  <div class="section">
-    <h2>📅 الأسابيع الدراسية</h2>
-    <div class="weeks-container" id="weeksContainer"></div>
+
+<h1>أهلاً، رفعت! 👋</h1>
+
+<div class="section">
+  <h2>📚 خطتك الدراسية: خطة المحترف</h2>
+  <p>أنت حالياً في الأسبوع 3 من 16</p>
+  <div class="progress-bar">
+    <div class="progress" style="width:18%; height:20px; background:#FFD700; border-radius:10px;"></div>
   </div>
+</div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+<div class="section">
+  <h2>📆 الأسابيع الدراسية</h2>
+  <div class="weeks-container" id="weeksContainer"></div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "...",
-      authDomain: "...",
-      projectId: "studyboss-b2550",
-      storageBucket: "...",
-      messagingSenderId: "...",
-      appId: "..."
-    };
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+<div class="section todo">
+  <h2>✅ قائمة المهام اليومية</h2>
+  <input type="text" id="taskInput" placeholder="اكتب مهمة جديدة...">
+  <button onclick="addTask()">إضافة</button>
+  <ul id="taskList"></ul>
+</div>
 
-    const weeksContainer = document.getElementById("weeksContainer");
-    const info = document.getElementById("studentInfo");
+<div class="section">
+  <h2>⏱️ محتاج تركيز؟</h2>
+  <p>جرب تقنية Pomodoro عشان تزود إنتاجيتك 👇</p>
+  <a href="pomodoro.html" class="pomodoro-link">ابدأ Pomodoro</a>
+</div>
 
-    onAuthStateChanged(auth, async user => {
-      if (!user) return window.location.href = "login.html";
-      const snap = await getDoc(doc(db,"students",user.uid));
-      if (!snap.exists()) return info.textContent="حسابك مش موجود";
-      const data = snap.data();
-
-      document.body.classList.add(data.plan.replace(' ', '\\ '));
-      info.innerHTML = `👋 أهلاً، <strong>${data.name}</strong><br>🗓️ خطتك: <strong>${data.plan}</strong>`;
-
-      const days = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"];
-      for (let w=1; w<=16; w++){
-        const card = document.createElement("div");
-        card.className = "week-card";
-        card.innerHTML = `<h3>الأسبوع ${w}</h3>`;
-        days.forEach(d => {
-          card.innerHTML += `
-            <div class="day-item">
-              <strong>${d}</strong>
-              <button>📘 ملخص</button>
-              <button>📊 كويز</button>
-            </div>`;
-        });
-        weeksContainer.appendChild(card);
-      }
+<script>
+  // الأسابيع
+  const days=["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"], weeksContainer=document.getElementById("weeksContainer");
+  for(let w=1;w<=16;w++){
+    const card=document.createElement("div"); card.className="week-card";
+    const header=document.createElement("div"); header.className="week-header"; header.innerHTML=`الأسبوع ${w} <span>📂</span>`;
+    const daysList=document.createElement("div"); daysList.className="days-list";
+    days.forEach(d=>{
+      const dItem=document.createElement("div"); dItem.className="day-item";
+      dItem.innerHTML=`<h4>📘 ${d}</h4><p>📄 الملخص: <em>لم تضف بعد</em></p><div class="quiz"><button>ابدأ كويز اليوم</button></div>`;
+      daysList.appendChild(dItem);
     });
-  </script>
+    const weeklyQuiz=document.createElement("div"); weeklyQuiz.className="weekly-quiz";
+    weeklyQuiz.innerHTML=`<h4>📊 كويز الأسبوع ${w}</h4><button>ابدأ الآن</button>`;
+    daysList.appendChild(weeklyQuiz);
+    header.onclick=()=> daysList.style.display=(daysList.style.display==="block"?"none":"block");
+    card.appendChild(header); card.appendChild(daysList);
+    weeksContainer.appendChild(card);
+  }
+
+  // To‑Do
+  document.addEventListener("DOMContentLoaded",()=>{
+    JSON.parse(localStorage.getItem("tasks")||"[]").forEach(t=>renderTask(t));
+  });
+  function addTask(){
+    const v=document.getElementById("taskInput").value.trim(); if(!v) return; renderTask(v);
+    const arr=JSON.parse(localStorage.getItem("tasks")||"[]"); arr.push(v); localStorage.setItem("tasks",JSON.stringify(arr));
+    document.getElementById("taskInput").value="";
+  }
+  function renderTask(t){
+    const li=document.createElement("li"); li.textContent=t;
+    const btn=document.createElement("button"); btn.textContent="✔️"; btn.onclick=()=>{ li.classList.add("completed"); setTimeout(()=>li.remove(),500);
+      const arr=JSON.parse(localStorage.getItem("tasks")||"[]").filter(x=>x!==t); localStorage.setItem("tasks",JSON.stringify(arr)); };
+    li.appendChild(btn); document.getElementById("taskList").appendChild(li);
+  }
+</script>
+
 </body>
 </html>
