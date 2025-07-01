@@ -1,80 +1,68 @@
-<!-- نفس الـ <head> بتاعك يفضل كما هو -->
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- (مثل ما أرسلته سابقًا — بدون تغيير في التصميم) -->
+</head>
+<body>
+  <div class="register-card">
+    <h2>إنشاء حساب جديد</h2>
+    <form id="registerForm">
+      <!-- الحقول: الاسم، الإيميل، الهاتف، الكلية، السنة، المحافظة، كلمة المرور -->
+      <button type="submit">تسجيل</button>
+      <div id="message" class="message"></div>
+    </form>
+    <div class="login-link">
+      عندك حساب؟ <a href="login.html">سجّل دخولك</a>
+    </div>
+  </div>
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-  import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
-  // إعداد Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.appspot.com",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8",
-    measurementId: "G-BSM3P8C40G"
-  };
+    const firebaseConfig = {
+      apiKey: "...",
+      authDomain: "...",
+      projectId: "studyboss-b2550",
+      storageBucket: "...",
+      messagingSenderId: "...",
+      appId: "..."
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
 
-  const form = document.getElementById("registerForm");
-  const message = document.getElementById("message");
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const college = document.getElementById("college").value;
+      const year = document.getElementById("year").value;
+      const governorate = document.getElementById("governorate").value;
+      const password = document.getElementById("password").value;
+      const plan = localStorage.getItem("selectedPlan") || "الخطة الأساسية";
 
-  // دالة توليد كود عشوائي للطالب
-  function generateStudentCode(length = 6) {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = '';
-    for (let i = 0; i < length; i++) {
-      code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return code;
-  }
-
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const name = document.getElementById("name").value.trim();
-    const email = document.getElementById("email").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-    const college = document.getElementById("college").value;
-    const year = document.getElementById("year").value;
-    const governorate = document.getElementById("governorate").value;
-    const password = document.getElementById("password").value;
-
-    const studentCode = generateStudentCode();
-    const paymentStatus = "pending"; // مبدأيًا لم يتم الدفع
-    const plan = "none"; // مبدأيًا بدون خطة
-
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const uid = userCredential.user.uid;
-
-      await setDoc(doc(db, "users", uid), {
-        name,
-        email,
-        phone,
-        college,
-        year,
-        governorate,
-        studentCode,
-        paymentStatus,
-        plan,
-        createdAt: serverTimestamp()
-      });
-
-      message.textContent = "✅ تم إنشاء الحساب بنجاح. كودك هو: " + studentCode;
-      message.className = "message success";
-
-      setTimeout(() => {
-        window.location.href = "confirmation.html?code=" + studentCode;
-      }, 2000);
-
-    } catch (error) {
-      message.textContent = "❌ حصلت مشكلة أثناء التسجيل: " + error.message;
-      message.className = "message error";
-    }
-  });
-</script>
+      try {
+        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = userCred.user.uid;
+        await setDoc(doc(db, "students", uid), {
+          name, email, phone, college, year, governorate,
+          plan, activated: false, code: uid,
+          createdAt: serverTimestamp()
+        });
+        message.textContent = "تم إنشاء الحساب بنجاح ✅";
+        message.className = "message success";
+        setTimeout(() => window.location.href="login.html", 1500);
+      } catch (err) {
+        message.textContent = "❌ حصلت مشكلة: " + err.message;
+        message.className = "message error";
+      }
+    });
+  </script>
+</body>
+</html>
