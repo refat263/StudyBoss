@@ -6,149 +6,78 @@
   <title>لوحة الطالب | Study Boss</title>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Cairo', sans-serif;
-      margin: 0;
-      padding: 30px;
-      color: #fff;
-      min-height: 100vh;
-      background: #0a1128;
-      transition: background 0.4s;
-    }
-    .premium { background: linear-gradient(160deg, #0a1128, #FFD700); }
-    .advanced { background: linear-gradient(160deg, #0a1128, #00bfff); }
-    .basic   { background: linear-gradient(160deg, #0a1128, #00ff88); }
+    body { font-family:'Cairo'; margin:0; padding:30px; color:#fff; min-height:100vh; transition:background .4s; }
+    body.الخطة\ الأساسية   { background: linear-gradient(160deg, #0a1128, #00ff88); }
+    body.خطة\ المتابعة     { background: linear-gradient(160deg, #0a1128, #00bfff); }
+    body.خطة\ المحترف      { background: linear-gradient(160deg, #0a1128, #FFD700); }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.3rem;
-      color: #FFD700;
-    }
+    h1 { text-align:center; margin-bottom:30px; font-size:2.3rem; color:#FFD700; }
+    .info { text-align:center; margin-bottom:20px; font-size:1.1rem; }
 
-    .section {
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 20px;
-      padding: 20px;
-      margin-bottom: 25px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-    }
-
-    .section h2 {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #FFD700;
-    }
-
-    .weeks-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-    }
-
-    .week-card {
-      background: rgba(255, 255, 255, 0.08);
-      padding: 15px;
-      border-radius: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-
-    .week-card h3 {
-      color: #FFD700;
-      margin-bottom: 10px;
-    }
-
-    .day-item {
-      margin-bottom: 8px;
-      background: rgba(0,0,0,0.2);
-      border-radius: 10px;
-      padding: 8px 12px;
-    }
-
-    .day-item button {
-      background: #FFD700;
-      color: #0a1128;
-      border: none;
-      padding: 5px 10px;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-left: 5px;
-    }
-
-    .info {
-      text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
+    .section { background:rgba(255,255,255,0.05); border-radius:20px; padding:20px;
+      margin-bottom:25px; box-shadow:0 4px 15px rgba(0,0,0,0.4); }
+    .weeks-container { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:20px; }
+    .week-card { background:rgba(255,255,255,0.08); padding:15px; border-radius:15px;
+      box-shadow:0 2px 10px rgba(0,0,0,0.3); }
+    .week-card h3 { color:#FFD700; }
+    .day-item { margin-bottom:8px; background:rgba(0,0,0,0.2); border-radius:10px; padding:8px 12px; }
+    .day-item button { background:#FFD700;color:#0a1128;border:none;padding:5px 10px;border-radius:6px;
+      cursor:pointer;margin-left:5px; }
   </style>
 </head>
 <body>
+  <h1>لوحة الطالب</h1>
+  <div class="info" id="studentInfo">جارٍ التحميل...</div>
+  <div class="section">
+    <h2>📅 الأسابيع الدراسية</h2>
+    <div class="weeks-container" id="weeksContainer"></div>
+  </div>
 
-<h1>لوحة الطالب</h1>
-<div class="info" id="studentInfo">جارٍ التحميل...</div>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
-<div class="section">
-  <h2>📅 الأسابيع الدراسية</h2>
-  <div class="weeks-container" id="weeksContainer"></div>
-</div>
+    const firebaseConfig = {
+      apiKey: "...",
+      authDomain: "...",
+      projectId: "studyboss-b2550",
+      storageBucket: "...",
+      messagingSenderId: "...",
+      appId: "..."
+    };
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    const weeksContainer = document.getElementById("weeksContainer");
+    const info = document.getElementById("studentInfo");
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyDiVwdFR-rAs66ugn7youiIkLin_1OCWxw",
-    authDomain: "studyboss-b2550.firebaseapp.com",
-    projectId: "studyboss-b2550",
-    storageBucket: "studyboss-b2550.appspot.com",
-    messagingSenderId: "951238590009",
-    appId: "1:951238590009:web:1749d6b771b6f3586557e8"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const userCode = localStorage.getItem("userCode");
-  if (!userCode) {
-    alert("لا يوجد كود مستخدم. برجاء تسجيل الدخول.");
-    window.location.href = "login.html";
-  }
-
-  const userRef = doc(db, "students", userCode);
-  const infoDiv = document.getElementById("studentInfo");
-  const weeksContainer = document.getElementById("weeksContainer");
-
-  try {
-    const snap = await getDoc(userRef);
-    if (!snap.exists()) {
-      infoDiv.innerHTML = "لم يتم العثور على بيانات الطالب.";
-    } else {
+    onAuthStateChanged(auth, async user => {
+      if (!user) return window.location.href = "login.html";
+      const snap = await getDoc(doc(db,"students",user.uid));
+      if (!snap.exists()) return info.textContent="حسابك مش موجود";
       const data = snap.data();
-      document.body.classList.add(data.plan || "basic");
 
-      infoDiv.innerHTML = `👤 مرحباً، ${data.name} <br> 📝 خطتك الحالية: <strong>${data.plan || "لم يتم التفعيل بعد"}</strong>`;
+      document.body.classList.add(data.plan.replace(' ', '\\ '));
+      info.innerHTML = `👋 أهلاً، <strong>${data.name}</strong><br>🗓️ خطتك: <strong>${data.plan}</strong>`;
 
-      const days = ["السبت", "الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس"];
-      for (let i = 1; i <= 16; i++) {
+      const days = ["السبت","الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس"];
+      for (let w=1; w<=16; w++){
         const card = document.createElement("div");
         card.className = "week-card";
-        card.innerHTML = `<h3>الأسبوع ${i}</h3>`;
-        days.forEach(day => {
+        card.innerHTML = `<h3>الأسبوع ${w}</h3>`;
+        days.forEach(d => {
           card.innerHTML += `
             <div class="day-item">
-              <strong>${day}</strong> 
-              <button>📘 كويز</button>
-              <button>📄 ملخص</button>
+              <strong>${d}</strong>
+              <button>📘 ملخص</button>
+              <button>📊 كويز</button>
             </div>`;
         });
         weeksContainer.appendChild(card);
       }
-    }
-  } catch (e) {
-    infoDiv.innerHTML = "حدث خطأ أثناء جلب البيانات.";
-    console.error(e);
-  }
-</script>
-
+    });
+  </script>
 </body>
 </html>
